@@ -64,6 +64,11 @@ def root():
     return FileResponse("static/index.html")
 
 
+@app.get("/embed")
+def embed():
+    return FileResponse("static/embed.html")
+
+
 @app.get("/widget.js")
 def widget():
     """Serve the embeddable widget script."""
