@@ -1,0 +1,11 @@
+{
+    "company_name": "Städfirma AB",
+    "logo_url": "/logo",
+    "colors": {
+        "primary": "#2563eb",
+        "primary_dark": "#1d4ed8",
+        "text": "#ffffff"
+    },
+    "avatar_emoji": "🧹",
+    "welcome_message": "Hej! Välkommen till Städfirma AB. Jag kan hjälpa dig med frågor om tjänster, priser och bokningar. Vad kan jag hjälpa dig med?"
+}

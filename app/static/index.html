@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Städfirma AB — Chatt</title>
+    <title>Laddar...</title>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet" />
     <style>
         /* ═══════════════════════════════════════════════
-       THEME VARIABLES — override these per client
+       THEME VARIABLES — dynamically loaded from /config
        ═══════════════════════════════════════════════ */
         :root {
             --brand: #2563eb;
@@ -411,9 +411,11 @@
     <!-- Chat window -->
     <div id="chat-window" role="dialog" aria-label="Kundtjänst chatt">
         <div class="chat-header">
-            <div class="header-avatar">🧹</div>
+            <div class="header-avatar" id="headerAvatar"><img src="/logo"
+                    style="width:38px;height:38px;border-radius:50%;object-fit:cover;" alt="Logo"
+                    onerror="this.style.display='none'"></div>
             <div class="header-info">
-                <h2>Städfirma AB</h2>
+                <h2 id="companyName">Laddar...</h2>
                 <div class="header-status">
                     <div class="status-dot"></div>
                     <span>Svarar direkt — dygnet runt</span>
@@ -423,9 +425,10 @@
 
         <div class="chat-messages" id="chatMessages">
             <div class="msg-row bot">
-                <div class="msg-avatar">🤖</div>
-                <div class="msg-bubble">Hej! Välkommen till Städfirma AB. Jag kan hjälpa dig med frågor om tjänster,
-                    priser och bokningar. Vad kan jag hjälpa dig med?</div>
+                <div class="msg-avatar" id="welcomeAvatar"><img src="/logo"
+                        style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="Logo"
+                        onerror="this.style.display='none'"></div>
+                <div class="msg-bubble" id="welcomeMessage">Laddar...</div>
             </div>
         </div>
 
@@ -449,11 +452,34 @@
             </button>
         </div>
 
-        <div class="chat-footer">Powered by AI</div>
+        <div class="chat-footer">Powered by Meetopia</div>
     </div>
 
     <script>
         const API_URL = '';
+        let companyConfig = {};
+
+        // Load company configuration on page load
+        async function loadConfig() {
+            try {
+                const response = await fetch(`${API_URL}/config`);
+                companyConfig = await response.json();
+
+                // Apply configuration
+                document.title = `${companyConfig.company_name} — Chatt`;
+                document.getElementById('companyName').textContent = companyConfig.company_name;
+                document.getElementById('welcomeMessage').textContent = companyConfig.welcome_message;
+
+                // Update colors
+                document.documentElement.style.setProperty('--brand', companyConfig.colors.primary);
+                document.documentElement.style.setProperty('--brand-dark', companyConfig.colors.primary_dark);
+            } catch (err) {
+                console.error('Failed to load config:', err);
+            }
+        }
+
+        // Load config immediately
+        loadConfig();
 
         const toggle = document.getElementById('chat-toggle');
         const chatWindow = document.getElementById('chat-window');
@@ -483,7 +509,7 @@
             row.className = `msg-row ${isUser ? 'user' : 'bot'}`;
             row.innerHTML = isUser
                 ? `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-avatar"></div>`
-                : `<div class="msg-avatar">🤖</div><div class="msg-bubble">${escapeHtml(text)}</div>`;
+                : `<div class="msg-avatar"><img src="/logo" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="Logo"></div><div class="msg-bubble">${escapeHtml(text)}</div>`;
             chatMessages.appendChild(row);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
