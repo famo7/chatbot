@@ -68,6 +68,7 @@
         pointer-events:none;
         transition:opacity 0.25s ease, transform 0.25s ease;
         background:#fff;
+        z-index:2147483647;
     `;
 
     // Create iframe
