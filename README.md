@@ -1,72 +1,220 @@
-# Stadfirma Chatbot
+# Multi-Tenant AI Chatbot
 
-AI-powered customer service chatbot for **Stadfirma AB** (a Swedish cleaning company). Built with FastAPI and vanilla JavaScript. Uses OpenRouter API (DeepSeek v3.2) to answer customer questions in Swedish about services, pricing, booking, and more.
+AI-powered customer service chatbot supporting multiple companies via subdomains. Built with FastAPI and vanilla JavaScript. Uses OpenRouter API (DeepSeek v3.2) for AI responses.
+
+## Features
+
+- **Multi-tenant architecture** - Each company gets their own subdomain
+- **Embeddable widget** - Add chat to any website with one script tag
+- **Dynamic theming** - Company colors, logos, and branding
+- **Rate limiting** - 10 requests/minute per IP
+- **History trimming** - Prevents token blowup (max 10 messages)
+- **Cloudflare-ready** - SSL, security headers, DDoS protection
 
 ## Project Structure
 
 ```
-stadfirma-bot/
-├── README.md
-└── app/
-    ├── main.py            # FastAPI application
-    ├── company_data.py    # Company Q&A data
-    ├── requirements.txt   # Python dependencies
-    ├── .env               # Environment variables (not committed)
-    ├── .gitignore
-    └── static/
-        └── index.html     # Chat widget UI
+chatbot/
+├── app/
+│   ├── main.py              # FastAPI application
+│   ├── requirements.txt     # Python dependencies
+│   ├── .env                 # Environment variables (not committed)
+│   ├── static/
+│   │   ├── index.html       # Chat widget UI
+│   │   └── widget.js        # Embeddable widget script
+│   └── tenants/             # Company data (not in git)
+│       └── stadfirma/       # Example tenant
+│           ├── config.json  # Company config (name, colors)
+│           ├── data.json    # Q&A data
+│           └── logo.png     # Company logo
+├── deploy.sh                # Deployment script
+└── deploy/
+    ├── nginx-chatbot.conf   # Nginx configuration
+    └── chatbot.service      # Systemd service
 ```
 
-## Setup
+## Quick Start
+
+### 1. Clone and Setup
 
 ```bash
-cd stadfirma-bot/app
+git clone https://github.com/famo7/chatbot.git
+cd chatbot/app
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in `app/`:
+### 2. Environment Variables
 
-```
+Create `app/.env`:
+
+```env
 OPENROUTER_API_KEY=your_openrouter_api_key
 OPENROUTER_MODEL=deepseek/deepseek-v3.2
 ```
 
-## Run
+### 3. Add Tenant Data
 
-```bash
-uvicorn main:app --reload
+Create `app/tenants/stadfirma/config.json`:
+
+```json
+{
+    "company_name": "Städfirma AB",
+    "logo_url": "/logo",
+    "colors": {
+        "primary": "#2563eb",
+        "primary_dark": "#1d4ed8",
+        "text": "#ffffff"
+    },
+    "welcome_message": "Hej! Välkommen till Städfirma AB..."
+}
 ```
 
-- App: http://localhost:8000
-- API docs: http://localhost:8000/docs
+Create `app/tenants/stadfirma/data.json`:
 
-## API
+```json
+[
+    {"question": "Vad heter företaget?", "answer": "Städfirma AB"},
+    {"question": "Vilka tjänster erbjuder ni?", "answer": "..."}
+]
+```
 
-| Method | Endpoint | Description | Rate Limit |
-|--------|----------|-------------|------------|
-| GET | `/` | Serves the chat widget UI | - |
-| POST | `/chat` | Send message, get AI response | 10/min per IP |
+Add logo: `app/tenants/stadfirma/logo.png`
 
-### Example
+### 4. Run Locally
 
 ```bash
-curl -X POST http://localhost:8000/chat \
+uvicorn main:app --reload --port 8001
+```
+
+Test: http://localhost:8001
+
+## Deployment
+
+### Server Setup
+
+```bash
+./deploy.sh setup      # Install dependencies
+./deploy.sh deploy     # Full deployment
+```
+
+### Nginx Configuration
+
+```bash
+./deploy.sh nginx      # Configure nginx
+```
+
+### DNS Setup (Cloudflare)
+
+Add A record:
+- Type: A
+- Name: stadfirma
+- Target: YOUR_VPS_IP
+- Proxy: On
+
+## Usage
+
+### Direct Access
+
+Visit your subdomain:
+```
+https://stadfirma.meetopia.tech
+```
+
+### Embed on Any Website
+
+Add this script tag to any HTML page:
+
+```html
+<script src="https://stadfirma.meetopia.tech/widget.js"></script>
+```
+
+The widget will:
+- Appear as a floating chat button (bottom-right)
+- Use company's brand colors
+- Load the full chat in an iframe
+- Work on mobile and desktop
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | Chat widget UI |
+| GET | `/config` | Company configuration |
+| GET | `/logo` | Company logo image |
+| GET | `/widget.js` | Embeddable widget script |
+| POST | `/chat` | Send message, get AI response |
+
+### Chat Example
+
+```bash
+curl -X POST https://stadfirma.meetopia.tech/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "Vad kostar städning?", "history": []}'
 ```
 
+Response:
+```json
+{"response": "Vi erbjuder fönsterputs för 300 kr/timme..."}
+```
+
+## Adding a New Company
+
+1. **Create tenant directory:**
+   ```bash
+   mkdir app/tenants/newcompany
+   ```
+
+2. **Add files:**
+   - `config.json` - Company name, colors, welcome message
+   - `data.json` - Q&A pairs
+   - `logo.png` - Company logo (optional)
+
+3. **Add DNS record:**
+   ```
+   Type: A
+   Name: newcompany
+   Target: YOUR_VPS_IP
+   ```
+
+4. **Done!** Access at `https://newcompany.meetopia.tech`
+
 ## Tech Stack
 
-- **Backend**: FastAPI, Python 3.12
+- **Backend**: FastAPI, Python 3.13
 - **AI**: OpenRouter API (DeepSeek v3.2)
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **Rate limiting**: slowapi
+- **Rate Limiting**: slowapi
+- **Server**: Nginx + Systemd
+- **SSL**: Cloudflare Origin CA
+
+## Security Notes
+
+- `.env` and `tenants/` are **not committed to git**
+- API key stored only on server
+- Rate limiting prevents abuse
+- CORS restricted to your domain in production
+- Tenant data stays on server only
+
+## Management Commands
+
+```bash
+./deploy.sh deploy    # Deploy changes
+./deploy.sh update    # Pull & restart
+./deploy.sh logs      # View logs
+./deploy.sh restart   # Restart service
+./deploy.sh status    # Check status
+```
 
 ## Notes
 
-- All responses are in Swedish
-- Chat history is maintained client-side and sent with each request (no server-side persistence)
-- Company Q&A data is defined in `company_data.py` -- edit this file to customize
-- CORS is open for development (all origins allowed)
+- All AI responses are in Swedish
+- Chat history kept client-side (max 10 messages)
+- Logo fallback: hides if image fails to load
+- Widget button color matches company brand
+- Mobile responsive design
+
+## License
+
+MIT
