@@ -1,4 +1,4 @@
-(async function () {
+(async function() {
     const scripts = document.getElementsByTagName('script');
     const currentScript = scripts[scripts.length - 1];
     const host = new URL(currentScript.src).origin;
@@ -11,7 +11,7 @@
         const config = await res.json();
         primaryColor = config.colors?.primary || '#2563eb';
         companyName = config.company_name || 'Chat';
-    } catch (e) { }
+    } catch (e) {}
 
     // ── Toggle button ──
     const toggleBtn = document.createElement('button');
