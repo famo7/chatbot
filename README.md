@@ -116,11 +116,13 @@ Test: http://localhost:8001
 
 ### DNS Setup (Cloudflare)
 
-Add A record:
+Add wildcard A record:
 - Type: A
-- Name: stadfirma
+- Name: *
 - Target: YOUR_VPS_IP
 - Proxy: On
+
+New companies work automatically — no DNS changes needed!
 
 ## Usage
 
@@ -170,7 +172,7 @@ Response:
 
 ## Adding a New Company
 
-1. **Create tenant directory:**
+1. **Create tenant directory on VPS:**
    ```bash
    mkdir app/tenants/newcompany
    ```
@@ -180,14 +182,7 @@ Response:
    - `data.json` - Q&A pairs
    - `logo.png` - Company logo (optional)
 
-3. **Add DNS record:**
-   ```
-   Type: A
-   Name: newcompany
-   Target: YOUR_VPS_IP
-   ```
-
-4. **Done!** Access at `https://newcompany.meetopia.tech`
+3. **Done!** Live at `https://newcompany.meetopia.tech`
 
 ## Tech Stack
 
