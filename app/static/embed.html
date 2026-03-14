@@ -317,7 +317,7 @@
     <!-- Chat window -->
     <div id="chat-window" role="dialog" aria-label="Kundtjänst chatt">
         <div class="chat-header">
-            <div class="header-avatar" id="headerAvatar"><img src="/logo"
+            <div class="header-avatar" id="headerAvatar"><img data-src="logo"
                     style="width:38px;height:38px;border-radius:50%;object-fit:cover;" alt=""
                     onerror="this.style.display='none'; this.parentElement.textContent = (window.companyConfig && window.companyConfig.avatar_emoji) || '🤖';"></div>
             <div class="header-info">
@@ -331,7 +331,7 @@
 
         <div class="chat-messages" id="chatMessages">
             <div class="msg-row bot">
-                <div class="msg-avatar" id="welcomeAvatar"><img src="/logo"
+                <div class="msg-avatar" id="welcomeAvatar"><img data-src="logo"
                         style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt=""
                         onerror="this.style.display='none'; this.parentElement.textContent = (window.companyConfig && window.companyConfig.avatar_emoji) || '🤖';"></div>
                 <div class="msg-bubble" id="welcomeMessage">Laddar...</div>
@@ -377,6 +377,11 @@
                 document.getElementById('companyName').textContent = companyConfig.company_name;
                 document.getElementById('welcomeMessage').textContent = companyConfig.welcome_message;
 
+                // Update logo URLs
+                const logoUrl = window.location.origin + '/logo';
+                document.querySelector('#headerAvatar img').src = logoUrl;
+                document.querySelector('#welcomeAvatar img').src = logoUrl;
+
                 // Update colors
                 document.documentElement.style.setProperty('--brand', companyConfig.colors.primary);
                 document.documentElement.style.setProperty('--brand-dark', companyConfig.colors.primary_dark);
@@ -406,7 +411,7 @@
             row.className = `msg-row ${isUser ? 'user' : 'bot'}`;
             row.innerHTML = isUser
                 ? `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-avatar"></div>`
-                : `<div class="msg-avatar"><img src="/logo" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="" onerror="this.style.display='none'; this.parentElement.textContent = (window.companyConfig && window.companyConfig.avatar_emoji) || '🤖';"></div><div class="msg-bubble">${escapeHtml(text)}</div>`;
+                : `<div class="msg-avatar"><img src="${window.location.origin + '/logo'}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="" onerror="this.style.display='none'; this.parentElement.textContent = (window.companyConfig && window.companyConfig.avatar_emoji) || '🤖';"></div><div class="msg-bubble">${escapeHtml(text)}</div>`;
             chatMessages.appendChild(row);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
