@@ -103,7 +103,7 @@
 
     // Assemble
     iframeContainer.appendChild(iframe);
+    wrapper.appendChild(iframeContainer);
     wrapper.appendChild(toggleBtn);
     document.body.appendChild(wrapper);
-    document.body.appendChild(iframeContainer);
 })();
