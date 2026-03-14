@@ -20,7 +20,7 @@
     // Create wrapper div
     const wrapper = document.createElement('div');
     wrapper.id = 'chatbot-widget-wrapper';
-    wrapper.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:99999;font-family:system-ui,-apple-system,sans-serif;';
+    wrapper.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:2147483647;font-family:system-ui,-apple-system,sans-serif;';
 
     // Create toggle button
     const toggleBtn = document.createElement('button');
