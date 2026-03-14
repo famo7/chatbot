@@ -24,13 +24,14 @@ chatbot/
 │   │   └── widget.js        # Embeddable widget script
 │   └── tenants/             # Company data (not in git)
 │       └── stadfirma/       # Example tenant
-│           ├── config.json  # Company config (name, colors)
+│           ├── config.json  # Company config (name, colors, avatar)
 │           ├── data.json    # Q&A data
 │           └── logo.png     # Company logo
 ├── deploy.sh                # Deployment script
-└── deploy/
-    ├── nginx-chatbot.conf   # Nginx configuration
-    └── chatbot.service      # Systemd service
+├── deploy/
+│   ├── nginx-chatbot.conf   # Nginx configuration
+│   └── chatbot.service      # Systemd service
+└── scripts/                 # Utility scripts
 ```
 
 ## Quick Start
@@ -67,7 +68,8 @@ Create `app/tenants/stadfirma/config.json`:
         "primary_dark": "#1d4ed8",
         "text": "#ffffff"
     },
-    "welcome_message": "Hej! Välkommen till Städfirma AB..."
+    "avatar_emoji": "🧹",
+    "welcome_message": "Hej! Välkommen till Städfirma AB. Jag kan hjälpa dig med frågor om tjänster, priser och bokningar. Vad kan jag hjälpa dig med?"
 }
 ```
 
@@ -76,7 +78,14 @@ Create `app/tenants/stadfirma/data.json`:
 ```json
 [
     {"question": "Vad heter företaget?", "answer": "Städfirma AB"},
-    {"question": "Vilka tjänster erbjuder ni?", "answer": "..."}
+    {"question": "När grundades företaget?", "answer": "Vi grundades 2015."},
+    {"question": "Vilka tjänster erbjuder ni?", "answer": "Vi erbjuder: Fönsterputs, Kontorsstädning, Storstädning, Flyttstädning och Mattvätt."},
+    {"question": "Vad kostar era tjänster?", "answer": "Fönsterputs: 300 kr/timme, Kontorsstädning: 250 kr/timme, Storstädning: 400 kr/timme, Flyttstädning: 3500 kr fast pris, Mattvätt: 50 kr/kvm."},
+    {"question": "Hur kontaktar jag er?", "answer": "E-post: info@stadfirma.se, Telefon: +46 70 123 45 67, Adress: Storgatan 1, 123 45 Stockholm"},
+    {"question": "Vilka är era öppettider?", "answer": "Måndag-fredag: 08:00-18:00, Lördag: 09:00-14:00. Minst 48 timmars förvarning krävs för bokningar."},
+    {"question": "Vilka områden täcker ni?", "answer": "Vi täcker: Stockholm, Solna, Sundbyberg och Lidingö. Kontakta oss för att kolla om vi finns i ditt område."},
+    {"question": "Hur bokar jag en tjänst?", "answer": "Ring oss på +46 70 123 45 67 eller maila info@stadfirma.se. Vi kräver minst 48 timmars förvarning."},
+    {"question": "Gäller RUT-avdrag?", "answer": "Ja! Du kan använda RUT-avdraget för hemstädning och fönsterputs. Det innebär att du betalar halva priset — vi sköter resten direkt med Skatteverket."}
 ]
 ```
 
@@ -200,11 +209,17 @@ Response:
 ## Management Commands
 
 ```bash
-./deploy.sh deploy    # Deploy changes
-./deploy.sh update    # Pull & restart
-./deploy.sh logs      # View logs
-./deploy.sh restart   # Restart service
-./deploy.sh status    # Check status
+./deploy.sh setup      # Initial setup (venv, dependencies)
+./deploy.sh install    # Install systemd service
+./deploy.sh deploy     # Full deployment (setup, install, start)
+./deploy.sh update     # Pull changes and update
+./deploy.sh nginx      # Configure Nginx
+./deploy.sh start      # Start the service
+./deploy.sh stop       # Stop the service
+./deploy.sh restart    # Restart the service
+./deploy.sh logs       # View application logs
+./deploy.sh status     # Check service status
+./deploy.sh help       # Show help message
 ```
 
 ## Notes
@@ -214,6 +229,7 @@ Response:
 - Logo fallback: hides if image fails to load
 - Widget button color matches company brand
 - Mobile responsive design
+- Support for custom avatar emojis per tenant
 
 ## License
 
