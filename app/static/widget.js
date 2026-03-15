@@ -1,6 +1,5 @@
 (async function() {
-    const scripts = document.getElementsByTagName('script');
-    const currentScript = scripts[scripts.length - 1];
+    const currentScript = document.currentScript || document.querySelector('script[src*="widget.js"]');
     const host = new URL(currentScript.src).origin;
 
     // Fetch company config

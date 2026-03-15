@@ -7,7 +7,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 import os
 import json
-import requests
+import httpx
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -31,10 +31,16 @@ def load_tenant_data(tenant_name):
     return data, config, tenant_dir
 
 def get_tenant_from_request(request: Request):
-    """Extract tenant from subdomain."""
+    """Extract tenant from subdomain and validate against existing folders."""
     host = request.headers.get('Host', '')
     # "stadfirma.meetopia.tech" → "stadfirma"
     subdomain = host.split(".")[0]
+    
+    # Validate that the subdomain is an actual tenant folder
+    tenant_dir = os.path.join(BASE_TENANTS_DIR, subdomain)
+    if not os.path.isdir(tenant_dir):
+        subdomain = DEFAULT_TENANT
+    
     return subdomain
 
 limiter = Limiter(key_func=get_remote_address)
@@ -94,8 +100,8 @@ def get_logo(request: Request):
 
 
 @app.post("/chat")
-@limiter.limit("10/minute")
-def chat(request: Request, body: ChatRequest):
+@limiter.limit("30/minute")
+async def chat(request: Request, body: ChatRequest):
     tenant = get_tenant_from_request(request)
     company_data, company_config, _ = load_tenant_data(tenant)
     
@@ -111,19 +117,20 @@ def chat(request: Request, body: ChatRequest):
         system_prompt += f"F: {item['question']}\nS: {item['answer']}\n\n"
 
     try:
-        response = requests.post(
-            url="https://openrouter.ai/api/v1/chat/completions",
-            headers={"Authorization": f"Bearer {os.getenv('OPENROUTER_API_KEY')}"},
-            json={
-                "model": os.getenv("OPENROUTER_MODEL"),
-                "messages": [
-                    {"role": "system", "content": system_prompt},
-                    *trimmed_history,
-                    {"role": "user", "content": body.message},
-                ],
-            },
-            timeout=15,
-        )
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={"Authorization": f"Bearer {os.getenv('OPENROUTER_API_KEY')}"},
+                json={
+                    "model": os.getenv("OPENROUTER_MODEL"),
+                    "messages": [
+                        {"role": "system", "content": system_prompt},
+                        *trimmed_history,
+                        {"role": "user", "content": body.message},
+                    ],
+                },
+                timeout=15,
+            )
 
         data = response.json()
 
