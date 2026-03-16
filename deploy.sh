@@ -97,7 +97,7 @@ deploy() {
     fi
     
     print_status "Deployment complete!"
-    print_status "Chatbot available at: https://chat.meetopia.tech"
+    print_status "Chatbot available at: https://comp1.orbixa.se"
 }
 
 # Update application

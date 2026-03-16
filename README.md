@@ -130,7 +130,7 @@ New companies work automatically — no DNS changes needed!
 
 Visit your subdomain:
 ```
-https://stadfirma.meetopia.tech
+https://comp1.orbixa.se
 ```
 
 ### Embed on Any Website
@@ -138,7 +138,7 @@ https://stadfirma.meetopia.tech
 Add this script tag to any HTML page:
 
 ```html
-<script src="https://stadfirma.meetopia.tech/widget.js"></script>
+<script src="https://comp1.orbixa.se/widget.js"></script>
 ```
 
 The widget will:
@@ -160,7 +160,7 @@ The widget will:
 ### Chat Example
 
 ```bash
-curl -X POST https://stadfirma.meetopia.tech/chat \
+curl -X POST https://comp1.orbixa.se/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "Vad kostar städning?", "history": []}'
 ```
@@ -182,7 +182,7 @@ Response:
    - `data.json` - Q&A pairs
    - `logo.png` - Company logo (optional)
 
-3. **Done!** Live at `https://newcompany.meetopia.tech`
+3. **Done!** Live at `https://newcompany.orbixa.se`
 
 ## Tech Stack
 

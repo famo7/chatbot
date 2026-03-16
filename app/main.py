@@ -33,7 +33,7 @@ def load_tenant_data(tenant_name):
 def get_tenant_from_request(request: Request):
     """Extract tenant from subdomain and validate against existing folders."""
     host = request.headers.get('Host', '')
-    # "stadfirma.meetopia.tech" → "stadfirma"
+    # "comp1.orbixa.se" → "comp1"
     subdomain = host.split(".")[0]
     
     # Validate that the subdomain is an actual tenant folder
