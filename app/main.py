@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
@@ -46,6 +47,7 @@ def get_tenant_from_request(request: Request):
 limiter = Limiter(key_func=get_remote_address)
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -67,6 +69,11 @@ MAX_HISTORY = 10
 
 @app.get("/")
 def root():
+    return FileResponse("static/landing.html")
+
+
+@app.get("/chat-ui")
+def chat_ui():
     return FileResponse("static/index.html")
 
 
@@ -79,7 +86,12 @@ def embed():
 def widget():
     """Serve the embeddable widget script."""
     return FileResponse("static/widget.js", media_type="application/javascript")
-
+@app.get("/debug-static")
+def debug_static():
+    import os
+    static_dir = os.path.abspath("static")
+    files = os.listdir(static_dir)
+    return {"static_dir": static_dir, "files": files}
 
 @app.get("/config")
 def get_config(request: Request):

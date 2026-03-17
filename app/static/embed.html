@@ -5,203 +5,71 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Laddar...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧹</text></svg>">
     <style>
-        /* ═══════════════════════════════════════════════
-       THEME VARIABLES — dynamically loaded from /config
-       ═══════════════════════════════════════════════ */
         :root {
             --brand: #2563eb;
             --brand-dark: #1d4ed8;
             --brand-text: #ffffff;
         }
 
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         html,
         body {
             height: 100%;
+            margin: 0;
+            padding: 0;
             font-family: 'Geist', sans-serif;
         }
 
-        /* ── Chat window ── */
-        #chat-window {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 380px;
-            height: 560px;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 9998;
-            border-radius: 16px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        /* ── Header ── */
         .chat-header {
             background: var(--brand);
             color: var(--brand-text);
-            padding: 16px 18px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
         }
 
-        .header-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: white;
-            padding: 2px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
+        .send-btn {
+            background: var(--brand);
+            color: var(--brand-text);
         }
 
-        .header-info h2 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
+        .send-btn:hover {
+            background: var(--brand-dark);
         }
 
-        .header-status {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 2px;
-        }
-
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            background: #4ade80;
-            border-radius: 50%;
-        }
-
-        .header-status span {
-            font-size: 0.72rem;
-            opacity: 0.9;
-        }
-
-        /* ── Messages ── */
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 14px;
-            background: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            scroll-behavior: smooth;
-        }
-
-        .chat-messages::-webkit-scrollbar {
-            width: 3px;
-        }
-
-        .chat-messages::-webkit-scrollbar-thumb {
-            background: #e2e8f0;
-            border-radius: 3px;
-        }
-
-        .msg-row {
-            display: flex;
-            align-items: flex-end;
-            gap: 7px;
-            animation: fadeUp 0.2s ease;
-        }
-
-        .msg-row.user {
-            justify-content: flex-end;
+        .chat-input:focus {
+            border-color: var(--brand);
+            background: #fff;
         }
 
         @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(6px);
+                transform: translateY(6px)
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0)
             }
         }
 
-        .msg-avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            flex-shrink: 0;
-            background: #fff;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        .msg-row {
+            animation: fadeUp 0.2s ease;
         }
 
-        .msg-row.user .msg-avatar {
-            background: var(--brand);
-            order: 2;
-        }
+        @keyframes bounce2 {
 
-        .msg-bubble {
-            max-width: 74%;
-            padding: 9px 13px;
-            border-radius: 16px;
-            font-size: 0.875rem;
-            line-height: 1.55;
-        }
+            0%,
+            60%,
+            100% {
+                transform: translateY(0)
+            }
 
-        .msg-row.bot .msg-bubble {
-            background: #fff;
-            color: #1e293b;
-            border-bottom-left-radius: 4px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
-        }
-
-        .msg-row.user .msg-bubble {
-            background: var(--brand);
-            color: var(--brand-text);
-            border-bottom-right-radius: 4px;
-        }
-
-        /* ── Typing indicator ── */
-        .typing-row {
-            padding: 0 14px 8px;
-            display: flex;
-            align-items: flex-end;
-            gap: 7px;
-        }
-
-        #typingIndicator {
-            padding: 9px 13px;
-            background: #fff;
-            border-radius: 16px;
-            border-bottom-left-radius: 4px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
-            display: none;
-            gap: 4px;
-            align-items: center;
-        }
-
-        #typingIndicator.active {
-            display: flex;
+            30% {
+                transform: translateY(-5px)
+            }
         }
 
         .dot {
@@ -209,7 +77,7 @@
             height: 6px;
             background: #94a3b8;
             border-radius: 50%;
-            animation: bounce 1.2s infinite;
+            animation: bounce2 1.2s infinite;
         }
 
         .dot:nth-child(2) {
@@ -220,142 +88,73 @@
             animation-delay: 0.36s;
         }
 
-        @keyframes bounce {
-
-            0%,
-            60%,
-            100% {
-                transform: translateY(0);
-            }
-
-            30% {
-                transform: translateY(-5px);
-            }
+        .chat-messages::-webkit-scrollbar {
+            width: 3px;
         }
 
-        /* ── Input bar ── */
-        .chat-input-bar {
-            padding: 12px 14px;
-            background: #fff;
-            border-top: 1px solid #f1f5f9;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 9px 15px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 999px;
-            font-family: inherit;
-            font-size: 0.875rem;
-            color: #1e293b;
-            outline: none;
-            transition: border-color 0.2s;
-            background: #f8fafc;
-        }
-
-        .chat-input:focus {
-            border-color: var(--brand);
-            background: #fff;
-        }
-
-        .chat-input::placeholder {
-            color: #94a3b8;
-        }
-
-        .send-btn {
-            width: 38px;
-            height: 38px;
-            border: none;
-            background: var(--brand);
-            color: var(--brand-text);
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s, transform 0.15s;
-            flex-shrink: 0;
-        }
-
-        .send-btn:hover {
-            background: var(--brand-dark);
-            transform: scale(1.06);
-        }
-
-        .send-btn:active {
-            transform: scale(0.94);
-        }
-
-        .send-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .chat-footer {
-            text-align: center;
-            padding: 6px;
-            font-size: 0.68rem;
-            color: #cbd5e1;
-            background: #fff;
-            letter-spacing: 0.02em;
-        }
-
-        @media (max-width: 480px) {
-            #chat-window {
-                width: 100vw;
-                height: 100vh;
-                right: 0;
-                bottom: 0;
-            }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 3px;
         }
     </style>
 </head>
 
-<body>
+<body class="h-full">
 
-    <!-- Chat window -->
-    <div id="chat-window" role="dialog" aria-label="Kundtjänst chatt">
-        <div class="chat-header">
-            <div class="header-avatar" id="headerAvatar"><img data-src="logo"
-                    style="width:38px;height:38px;border-radius:50%;object-fit:cover;" alt=""
-                    onerror="this.style.display='none'; this.parentElement.textContent = (window.companyConfig && window.companyConfig.avatar_emoji) || '🤖';">
+    <div id="chat-window" role="dialog" aria-label="Kundtjänst chatt"
+        class="fixed bottom-5 right-5 w-[380px] h-[560px] bg-white flex flex-col overflow-hidden z-[9998] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15),0_10px_20px_rgba(0,0,0,0.1)] max-sm:w-screen max-sm:h-screen max-sm:right-0 max-sm:bottom-0 max-sm:rounded-none">
+
+        <!-- Header -->
+        <div class="chat-header flex items-center gap-3 px-[18px] py-4 flex-shrink-0">
+            <div class="w-[38px] h-[38px] rounded-full bg-white p-0.5 overflow-hidden flex items-center justify-center flex-shrink-0"
+                id="headerAvatar">
+                <img data-src="logo" style="width:38px;height:38px;border-radius:50%;object-fit:cover;" alt=""
+                    onerror="this.style.display='none'; this.parentElement.textContent=(window.companyConfig&&window.companyConfig.avatar_emoji)||'🤖';">
             </div>
-            <div class="header-info">
-                <h2 id="companyName">Laddar...</h2>
-                <div class="header-status">
-                    <div class="status-dot"></div>
-                    <span>Svarar direkt — dygnet runt</span>
+            <div>
+                <h2 id="companyName" class="text-[0.95rem] font-semibold tracking-[-0.01em]">Laddar...</h2>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                    <div class="w-[7px] h-[7px] bg-[#4ade80] rounded-full"></div>
+                    <span class="text-[0.72rem] opacity-90">Svarar direkt — dygnet runt</span>
                 </div>
             </div>
         </div>
 
-        <div class="chat-messages" id="chatMessages">
-            <div class="msg-row bot">
-                <div class="msg-avatar" id="welcomeAvatar"><img data-src="logo"
-                        style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt=""
-                        onerror="this.style.display='none'; this.parentElement.textContent = (window.companyConfig && window.companyConfig.avatar_emoji) || '🤖';">
+        <!-- Messages -->
+        <div id="chatMessages"
+            class="chat-messages flex-1 overflow-y-auto px-3.5 py-4 bg-[#f8fafc] flex flex-col gap-2.5 scroll-smooth">
+            <div class="msg-row flex items-end gap-1.5">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.1)] overflow-hidden"
+                    id="welcomeAvatar">
+                    <img data-src="logo" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt=""
+                        onerror="this.style.display='none'; this.parentElement.textContent=(window.companyConfig&&window.companyConfig.avatar_emoji)||'🤖';">
                 </div>
-                <div class="msg-bubble" id="welcomeMessage">Laddar...</div>
+                <div id="welcomeMessage"
+                    class="max-w-[74%] px-3 py-2 rounded-2xl rounded-bl-[4px] text-[0.875rem] leading-[1.55] bg-white text-[#1e293b] shadow-[0_1px_4px_rgba(0,0,0,0.07)]">
+                    Laddar...</div>
             </div>
         </div>
 
-        <div class="typing-row">
-            <div class="msg-avatar" style="background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.1);">🤖</div>
-            <div id="typingIndicator">
+        <!-- Typing indicator -->
+        <div class="flex items-end gap-1.5 px-3.5 pb-2">
+            <div
+                class="w-7 h-7 rounded-full bg-white flex items-center justify-center shadow-[0_1px_4px_rgba(0,0,0,0.1)] text-sm flex-shrink-0">
+                🤖</div>
+            <div id="typingIndicator"
+                class="px-3 py-2 bg-white rounded-2xl rounded-bl-[4px] shadow-[0_1px_4px_rgba(0,0,0,0.07)] gap-1 items-center hidden">
                 <div class="dot"></div>
                 <div class="dot"></div>
                 <div class="dot"></div>
             </div>
         </div>
 
-        <div class="chat-input-bar">
-            <input type="text" id="chatInput" class="chat-input" placeholder="Skriv ett meddelande..." />
-            <button id="sendBtn" class="send-btn" aria-label="Skicka">
+        <!-- Input -->
+        <div class="flex gap-2 items-center px-3.5 py-3 bg-white border-t border-[#f1f5f9] flex-shrink-0">
+            <input type="text" id="chatInput"
+                class="chat-input flex-1 px-4 py-2 border-[1.5px] border-[#e2e8f0] rounded-full font-[inherit] text-[0.875rem] text-[#1e293b] outline-none transition-colors bg-[#f8fafc] placeholder:text-[#94a3b8]"
+                placeholder="Skriv ett meddelande..." />
+            <button id="sendBtn"
+                class="send-btn w-[38px] h-[38px] border-none rounded-full cursor-pointer flex items-center justify-center transition-all hover:scale-[1.06] active:scale-[0.94] disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
                     <line x1="22" y1="2" x2="11" y2="13" />
@@ -364,60 +163,52 @@
             </button>
         </div>
 
-        <div class="chat-footer">Powered by Orbixa</div>
+        <div class="text-center py-1.5 text-[0.68rem] text-[#cbd5e1] bg-white tracking-[0.02em]">Powered by Orbixa</div>
     </div>
 
     <script>
         const API_URL = '';
         let companyConfig = {};
 
-        // Load company configuration on page load
         async function loadConfig() {
             try {
-                const response = await fetch(`${API_URL}/config`);
-                companyConfig = await response.json();
-
-                // Apply configuration
+                const r = await fetch(`${API_URL}/config`);
+                companyConfig = await r.json();
                 window.companyConfig = companyConfig;
                 document.title = `${companyConfig.company_name} — Chatt`;
                 document.getElementById('companyName').textContent = companyConfig.company_name;
                 document.getElementById('welcomeMessage').textContent = companyConfig.welcome_message;
-
-                // Update logo URLs
                 const logoUrl = window.location.origin + '/logo';
                 document.querySelector('#headerAvatar img').src = logoUrl;
                 document.querySelector('#welcomeAvatar img').src = logoUrl;
-
-                // Update colors
                 document.documentElement.style.setProperty('--brand', companyConfig.colors.primary);
                 document.documentElement.style.setProperty('--brand-dark', companyConfig.colors.primary_dark);
-            } catch (err) {
-                console.error('Failed to load config:', err);
-            }
+            } catch (e) { console.error(e); }
         }
-
-        // Load config immediately
         loadConfig();
 
-        const chatWindow = document.getElementById('chat-window');
         const chatMessages = document.getElementById('chatMessages');
         const chatInput = document.getElementById('chatInput');
         const sendBtn = document.getElementById('sendBtn');
         const typingIndicator = document.getElementById('typingIndicator');
         let history = [];
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+        function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
         function addMessage(text, isUser = false) {
             const row = document.createElement('div');
-            row.className = `msg-row ${isUser ? 'user' : 'bot'}`;
-            row.innerHTML = isUser
-                ? `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-avatar"></div>`
-                : `<div class="msg-avatar"><img src="${window.location.origin + '/logo'}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="" onerror="this.style.display='none'; this.parentElement.textContent = (window.companyConfig && window.companyConfig.avatar_emoji) || '🤖';"></div><div class="msg-bubble">${escapeHtml(text)}</div>`;
+            row.className = 'msg-row flex items-end gap-1.5' + (isUser ? ' justify-end' : '');
+            if (isUser) {
+                row.innerHTML = `
+          <div class="max-w-[74%] px-3 py-2 rounded-2xl rounded-br-[4px] text-[0.875rem] leading-[1.55]" style="background:var(--brand);color:var(--brand-text)">${escapeHtml(text)}</div>
+          <div class="w-7 h-7 rounded-full flex-shrink-0" style="background:var(--brand)"></div>`;
+            } else {
+                row.innerHTML = `
+          <div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 bg-white shadow-[0_1px_4px_rgba(0,0,0,0.1)] overflow-hidden">
+            <img src="${window.location.origin + '/logo'}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" alt="" onerror="this.style.display='none'; this.parentElement.textContent=(window.companyConfig&&window.companyConfig.avatar_emoji)||'🤖';">
+          </div>
+          <div class="max-w-[74%] px-3 py-2 rounded-2xl rounded-bl-[4px] text-[0.875rem] leading-[1.55] bg-white text-[#1e293b] shadow-[0_1px_4px_rgba(0,0,0,0.07)]">${escapeHtml(text)}</div>`;
+            }
             chatMessages.appendChild(row);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
@@ -431,9 +222,8 @@
             addMessage(message, true);
             chatInput.value = '';
             sendBtn.disabled = true;
-            typingIndicator.classList.add('active');
+            typingIndicator.style.display = 'flex';
             chatMessages.scrollTop = chatMessages.scrollHeight;
-
             try {
                 const res = await fetch(`${API_URL}/chat`, {
                     method: 'POST',
@@ -441,12 +231,12 @@
                     body: JSON.stringify({ message, history }),
                 });
                 const data = await res.json();
-                typingIndicator.classList.remove('active');
+                typingIndicator.style.display = 'none';
                 history.push({ role: 'user', content: message });
                 history.push({ role: 'assistant', content: data.response });
                 setTimeout(() => addMessage(data.response), 300);
-            } catch (err) {
-                typingIndicator.classList.remove('active');
+            } catch (e) {
+                typingIndicator.style.display = 'none';
                 addMessage('Något gick fel. Försök igen senare.');
             } finally {
                 sendBtn.disabled = false;
@@ -454,7 +244,6 @@
             }
         }
     </script>
-
 </body>
 
 </html>

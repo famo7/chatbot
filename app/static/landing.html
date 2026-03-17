@@ -4,1119 +4,942 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Orbixa — AI-kundtjänst för svenska företag</title>
+    <title>Orbixa — AI-kundtjänst som aldrig sover</title>
+    <meta name="description"
+        content="Lägg till en AI-assistent på er hemsida på en dag. Svarar på kundfrågor 24/7, anpassad till ert företag. Inga kortuppgifter för att testa.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        bricolage: ['Bricolage Grotesque', 'sans-serif'],
+                        mono: ['DM Mono', 'monospace'],
+                    },
+                    colors: {
+                        bg: '#060608',
+                        s1: '#0e0e12',
+                        s2: '#16161c',
+                        s3: '#1e1e26',
+                        green: '#7fff5f',
+                        t1: '#ececec',
+                        t2: '#a0a0b0',
+                        t3: '#585868',
+                    },
+                },
+            },
+        }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:wght@300;400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=DM+Mono:wght@300;400&display=swap"
         rel="stylesheet" />
     <style>
-        :root {
-            --bg: #080808;
-            --surface: #111111;
-            --surface2: #1a1a1a;
-            --border: rgba(255, 255, 255, 0.07);
-            --accent: #a8ff57;
-            --accent-dim: rgba(168, 255, 87, 0.12);
-            --accent-glow: rgba(168, 255, 87, 0.25);
-            --text: #f0f0f0;
-            --muted: #666;
-            --muted2: #444;
-        }
-
-        *,
-        *::before,
-        *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            font-family: 'Instrument Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Bricolage Grotesque', sans-serif;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
         }
 
-        /* ── GRAIN OVERLAY ── */
-        body::before {
+        /* Grain overlay */
+        body::after {
             content: '';
             position: fixed;
             inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.025;
             pointer-events: none;
-            z-index: 9999;
-            opacity: 0.4;
+            z-index: 9998;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
         }
 
-        /* ── NAV ── */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 48px;
-            background: rgba(8, 8, 8, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-logo {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 1.3rem;
-            color: var(--text);
-            text-decoration: none;
-            letter-spacing: -0.03em;
-        }
-
-        .nav-logo span {
-            color: var(--accent);
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-        }
-
-        .nav-link {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.2s;
-        }
-
-        .nav-link:hover {
-            color: var(--text);
-        }
-
-        .nav-cta {
-            background: var(--accent);
-            color: #000;
-            padding: 9px 20px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .nav-cta:hover {
-            opacity: 0.85;
-        }
-
-        /* ── HERO ── */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 120px 48px 80px;
-            position: relative;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .hero-glow {
-            position: absolute;
-            top: 20%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(168, 255, 87, 0.08) 0%, transparent 65%);
-            pointer-events: none;
-        }
-
-        .hero-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%);
-            pointer-events: none;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--accent-dim);
-            border: 1px solid rgba(168, 255, 87, 0.2);
-            color: var(--accent);
-            font-size: 0.75rem;
-            font-weight: 500;
-            padding: 6px 14px;
-            border-radius: 100px;
-            margin-bottom: 32px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            animation: fadeUp 0.6s ease both;
-        }
-
-        .hero-badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
+        @keyframes blink {
 
             0%,
             100% {
-                opacity: 1;
+                opacity: 1
             }
 
             50% {
-                opacity: 0.4;
+                opacity: 0.3
             }
         }
 
-        .hero h1 {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: clamp(3rem, 6vw, 5.5rem);
-            line-height: 1.0;
-            letter-spacing: -0.04em;
-            max-width: 900px;
-            margin: 0 auto 24px;
-            animation: fadeUp 0.6s 0.1s ease both;
-        }
-
-        .hero h1 em {
-            font-style: normal;
-            color: var(--accent);
-        }
-
-        .hero-sub {
-            font-size: 1.1rem;
-            color: var(--muted);
-            max-width: 520px;
-            margin: 0 auto 48px;
-            line-height: 1.7;
-            font-weight: 300;
-            animation: fadeUp 0.6s 0.2s ease both;
-        }
-
-        .hero-actions {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 80px;
-            animation: fadeUp 0.6s 0.3s ease both;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--accent);
-            color: #000;
-            padding: 14px 28px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: opacity 0.2s, transform 0.15s;
-        }
-
-        .btn-primary:hover {
-            opacity: 0.85;
-            transform: translateY(-1px);
-        }
-
-        .btn-ghost {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: transparent;
-            color: var(--muted);
-            padding: 14px 28px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            font-weight: 400;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: border-color 0.2s, color 0.2s;
-        }
-
-        .btn-ghost:hover {
-            border-color: var(--muted2);
-            color: var(--text);
-        }
-
-        /* ── DEMO SECTION ── */
-        .demo-section {
-            animation: fadeUp 0.6s 0.4s ease both;
-            width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .demo-label {
-            font-size: 0.72rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .demo-label::before,
-        .demo-label::after {
-            content: '';
-            flex: 1;
-            max-width: 120px;
-            height: 1px;
-            background: var(--border);
-        }
-
-        .demo-window {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow:
-                0 0 0 1px rgba(255, 255, 255, 0.03),
-                0 40px 80px rgba(0, 0, 0, 0.6),
-                0 0 80px var(--accent-glow);
-        }
-
-        .demo-topbar {
-            background: var(--surface2);
-            border-bottom: 1px solid var(--border);
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .demo-dots {
-            display: flex;
-            gap: 6px;
-        }
-
-        .demo-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .demo-dot:nth-child(1) {
-            background: #ff5f57;
-        }
-
-        .demo-dot:nth-child(2) {
-            background: #febc2e;
-        }
-
-        .demo-dot:nth-child(3) {
-            background: #28c840;
-        }
-
-        .demo-url {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 5px 12px;
-            font-size: 0.75rem;
-            color: var(--muted);
-            text-align: center;
-        }
-
-        .demo-iframe-wrap {
-            width: 100%;
-            height: 540px;
-            position: relative;
-        }
-
-        .demo-iframe-wrap iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
-        .demo-overlay-label {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(8, 8, 8, 0.85);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 8px 14px;
-            font-size: 0.75rem;
-            color: var(--muted);
-            backdrop-filter: blur(10px);
-            pointer-events: none;
-        }
-
-        .demo-overlay-label span {
-            color: var(--accent);
-        }
-
-        /* ── STATS ── */
-        .stats {
-            padding: 80px 48px;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .stats-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background: var(--border);
-        }
-
-        .stat-item {
-            background: var(--bg);
-            padding: 40px 32px;
-            text-align: center;
-        }
-
-        .stat-num {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 2.8rem;
-            letter-spacing: -0.04em;
-            color: var(--accent);
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 0.82rem;
-            color: var(--muted);
-            font-weight: 300;
-        }
-
-        /* ── HOW IT WORKS ── */
-        .how {
-            padding: 120px 48px;
-        }
-
-        .how-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .section-eyebrow {
-            font-size: 0.72rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 16px;
-            font-weight: 500;
-        }
-
-        .section-title {
-            font-family: 'Syne', sans-serif;
-            font-weight: 700;
-            font-size: clamp(1.8rem, 3vw, 2.6rem);
-            letter-spacing: -0.03em;
-            line-height: 1.15;
-            margin-bottom: 64px;
-            max-width: 480px;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--border);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .step {
-            background: var(--surface);
-            padding: 40px 32px;
-            position: relative;
-        }
-
-        .step:hover {
-            background: var(--surface2);
-        }
-
-        .step-num {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 3rem;
-            color: var(--muted2);
-            letter-spacing: -0.04em;
-            margin-bottom: 20px;
-            line-height: 1;
-        }
-
-        .step-title {
-            font-family: 'Syne', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 10px;
-            color: var(--text);
-        }
-
-        .step-desc {
-            font-size: 0.85rem;
-            color: var(--muted);
-            line-height: 1.65;
-            font-weight: 300;
-        }
-
-        .step-tag {
-            display: inline-block;
-            margin-top: 20px;
-            background: var(--accent-dim);
-            color: var(--accent);
-            font-size: 0.72rem;
-            padding: 4px 10px;
-            border-radius: 4px;
-            letter-spacing: 0.04em;
-        }
-
-        /* ── FEATURES ── */
-        .features {
-            padding: 0 48px 120px;
-        }
-
-        .features-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
-        .feature-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 32px;
-            transition: border-color 0.2s, background 0.2s;
-        }
-
-        .feature-card:hover {
-            border-color: var(--muted2);
-            background: var(--surface2);
-        }
-
-        .feature-icon {
-            font-size: 1.5rem;
-            margin-bottom: 16px;
-        }
-
-        .feature-title {
-            font-family: 'Syne', sans-serif;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 8px;
-        }
-
-        .feature-desc {
-            font-size: 0.84rem;
-            color: var(--muted);
-            line-height: 1.65;
-            font-weight: 300;
-        }
-
-        /* ── PRICING ── */
-        .pricing {
-            padding: 0 48px 120px;
-        }
-
-        .pricing-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .pricing-cards {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            max-width: 680px;
-        }
-
-        .pricing-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 36px 32px;
-        }
-
-        .pricing-card.featured {
-            border-color: var(--accent);
-            background: var(--surface2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pricing-card.featured::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-        }
-
-        .pricing-label {
-            font-size: 0.72rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 20px;
-        }
-
-        .pricing-card.featured .pricing-label {
-            color: var(--accent);
-        }
-
-        .pricing-price {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 2.4rem;
-            letter-spacing: -0.04em;
-            margin-bottom: 4px;
-        }
-
-        .pricing-period {
-            font-size: 0.8rem;
-            color: var(--muted);
-            margin-bottom: 28px;
-        }
-
-        .pricing-features {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 32px;
-        }
-
-        .pricing-features li {
-            font-size: 0.84rem;
-            color: var(--muted);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 300;
-        }
-
-        .pricing-features li::before {
-            content: '✓';
-            color: var(--accent);
-            font-weight: 600;
-            font-size: 0.8rem;
-            flex-shrink: 0;
-        }
-
-        .pricing-btn {
-            display: block;
-            text-align: center;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.88rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .pricing-btn-ghost {
-            border: 1px solid var(--border);
-            color: var(--muted);
-        }
-
-        .pricing-btn-ghost:hover {
-            border-color: var(--muted2);
-            color: var(--text);
-        }
-
-        .pricing-btn-accent {
-            background: var(--accent);
-            color: #000;
-        }
-
-        .pricing-btn-accent:hover {
-            opacity: 0.85;
-        }
-
-        /* ── CTA SECTION ── */
-        .cta-section {
-            padding: 0 48px 120px;
-        }
-
-        .cta-inner {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .cta-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 80px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-box::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(168, 255, 87, 0.07) 0%, transparent 65%);
-            pointer-events: none;
-        }
-
-        .cta-box h2 {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: clamp(2rem, 4vw, 3.2rem);
-            letter-spacing: -0.04em;
-            margin-bottom: 16px;
-        }
-
-        .cta-box p {
-            color: var(--muted);
-            font-size: 1rem;
-            font-weight: 300;
-            margin-bottom: 40px;
-            max-width: 480px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.7;
-        }
-
-        .cta-form {
-            display: flex;
-            gap: 12px;
-            max-width: 440px;
-            margin: 0 auto;
-        }
-
-        .cta-input {
-            flex: 1;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 16px;
-            font-family: 'Instrument Sans', sans-serif;
-            font-size: 0.88rem;
-            color: var(--text);
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .cta-input:focus {
-            border-color: var(--accent);
-        }
-
-        .cta-input::placeholder {
-            color: var(--muted);
-        }
-
-        .cta-submit {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 24px;
-            font-family: 'Instrument Sans', sans-serif;
-            font-size: 0.88rem;
-            font-weight: 500;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: opacity 0.2s;
-        }
-
-        .cta-submit:hover {
-            opacity: 0.85;
-        }
-
-        /* ── FOOTER ── */
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 40px 48px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .footer-logo {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: var(--text);
-            letter-spacing: -0.02em;
-        }
-
-        .footer-logo span {
-            color: var(--accent);
-        }
-
-        footer p {
-            font-size: 0.8rem;
-            color: var(--muted);
-        }
-
-        .footer-link {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: color 0.2s;
-        }
-
-        .footer-link:hover {
-            color: var(--text);
-        }
-
-        /* ── ANIMATIONS ── */
         @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(20px)
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0)
             }
         }
 
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+        .pill-dot {
+            animation: blink 2s infinite;
+            flex-shrink: 0;
         }
 
-        .reveal.visible {
+        .hero-in {
+            animation: fadeUp 0.55s ease both;
+        }
+
+        .hero-in-1 {
+            animation: fadeUp 0.55s 0.08s ease both;
+        }
+
+        .hero-in-2 {
+            animation: fadeUp 0.55s 0.16s ease both;
+        }
+
+        .hero-in-3 {
+            animation: fadeUp 0.55s 0.24s ease both;
+        }
+
+        .hero-in-4 {
+            animation: fadeUp 0.55s 0.32s ease both;
+        }
+
+        .hero-in-5 {
+            animation: fadeUp 0.55s 0.40s ease both;
+        }
+
+        .hl {
+            background: linear-gradient(135deg, #7fff5f 0%, #b8ff85 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+
+        .fade-up.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* ── MOBILE ── */
-        @media (max-width: 768px) {
-            nav {
-                padding: 16px 20px;
-            }
+        /* FAQ accordion */
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.32s ease;
+        }
 
-            .nav-right .nav-link {
-                display: none;
-            }
+        .faq-item.active .faq-a {
+            max-height: 240px;
+        }
 
-            .hero {
-                padding: 100px 20px 60px;
-            }
+        .faq-chevron {
+            transition: transform 0.3s;
+            color: #585868;
+            flex-shrink: 0;
+        }
 
-            .stats {
-                padding: 60px 20px;
-            }
+        .faq-item.active .faq-chevron {
+            transform: rotate(180deg);
+        }
 
-            .stats-inner {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        /* Pricing glow lines */
+        .hot-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #7fff5f, transparent);
+        }
 
-            .how {
-                padding: 80px 20px;
-            }
+        .cta-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #7fff5f, transparent);
+        }
 
-            .steps {
-                grid-template-columns: 1fr;
-            }
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
 
-            .features {
-                padding: 0 20px 80px;
-            }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .pricing {
-                padding: 0 20px 80px;
-            }
-
-            .pricing-cards {
-                grid-template-columns: 1fr;
-                max-width: 100%;
-            }
-
-            .cta-section {
-                padding: 0 20px 80px;
-            }
-
-            .cta-box {
-                padding: 48px 24px;
-            }
-
-            .cta-form {
-                flex-direction: column;
-            }
-
-            footer {
-                padding: 32px 20px;
-                flex-direction: column;
-                gap: 16px;
-                text-align: center;
-            }
+        ::-webkit-scrollbar-thumb {
+            background: #1e1e26;
+            border-radius: 4px;
         }
     </style>
 </head>
 
-<body>
+<body class="bg-bg text-t1 overflow-x-hidden">
 
-    <!-- NAV -->
-    <nav>
-        <a href="#" class="nav-logo">Orbi<span>xa</span></a>
-        <div class="nav-right">
-            <a href="#how" class="nav-link">Hur det fungerar</a>
-            <a href="#pricing" class="nav-link">Priser</a>
-            <a href="#contact" class="nav-cta">Kom igång</a>
+    <!-- ═══════════════════════════════════ NAV ═══════════════════════════════════ -->
+    <nav class="fixed top-0 left-0 right-0 z-[1000] bg-[rgba(6,6,8,0.9)] backdrop-blur-xl border-b border-white/[0.06]">
+        <div class="max-w-[1100px] mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+            <a href="#" class="flex-shrink-0">
+                <span style="font-family:Bricolage Grotesque,sans-serif;font-weight:800;font-size:1.25rem;letter-spacing:-0.03em;color:#ececec">Orbi<span style="color:#7fff5f">xa</span></span>
+            </a>
+            <div class="flex items-center gap-4 sm:gap-8">
+                <a href="#how"
+                    class="hidden sm:block text-t3 text-[0.85rem] hover:text-t2 transition-colors no-underline">Hur det
+                    fungerar</a>
+                <a href="#pricing"
+                    class="hidden sm:block text-t3 text-[0.85rem] hover:text-t2 transition-colors no-underline">Priser</a>
+                <a href="#faq"
+                    class="hidden md:block text-t3 text-[0.85rem] hover:text-t2 transition-colors no-underline">FAQ</a>
+                <a href="#contact"
+                    class="bg-green text-black px-4 sm:px-5 py-2 rounded-[7px] font-semibold text-[0.85rem] no-underline hover:opacity-85 transition-opacity whitespace-nowrap">Boka
+                    demo →</a>
+            </div>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-glow"></div>
-        <div class="hero-grid"></div>
+    <!-- ═══════════════════════════════════ HERO ══════════════════════════════════ -->
+    <section
+        class="max-w-[1100px] mx-auto px-5 sm:px-8 pt-[110px] sm:pt-[130px] pb-16 sm:pb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[90vh]">
 
-        <div class="hero-badge">Nu tillgängligt för svenska företag</div>
+        <!-- Left copy -->
+        <div>
+            <!-- Badge -->
+            <div
+                class="hero-in inline-flex items-center gap-2 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.2)] text-green font-mono text-[0.68rem] font-medium tracking-[0.08em] uppercase px-3.5 py-1.5 rounded-full mb-5">
+                <span class="pill-dot w-1.5 h-1.5 rounded-full bg-green shadow-[0_0_8px_#7fff5f]"></span>
+                Ny tjänst — begränsat antal platser i lanseringen
+            </div>
 
-        <h1>AI-kundtjänst som<br><em>aldrig sover</em></h1>
+            <!-- Headline -->
+            <h1 class="hero-in-1 text-[clamp(2.2rem,5vw,3.8rem)] font-extrabold tracking-[-0.04em] leading-[1.04] mb-5">
+                Kunder frågar kl&nbsp;22.<br>
+                <span class="hl">Ni svarar ändå.</span>
+            </h1>
 
-        <p class="hero-sub">Lägg till en rad kod på er hemsida. Era kunder får svar på frågor om priser, tjänster och
-            bokning — dygnet runt, automatiskt.</p>
+            <!-- Sub -->
+            <p class="hero-in-2 text-[1.05rem] font-light text-t2 leading-[1.8] mb-7 max-w-[480px]">
+                Orbixa lägger till en AI-assistent på er hemsida som svarar på frågor om era priser, tjänster och
+                bokning — dygnet runt, automatiskt, med ert eget varumärke.
+            </p>
 
-        <div class="hero-actions">
-            <a href="#contact" class="btn-primary">
-                Testa gratis i 30 dagar
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                </svg>
-            </a>
-            <a href="#demo" class="btn-ghost">Se demo nedan</a>
-        </div>
-
-        <!-- DEMO WINDOW -->
-        <div class="demo-section" id="demo">
-            <div class="demo-label">Live demo — städfirma</div>
-            <div class="demo-window">
-                <div class="demo-topbar">
-                    <div class="demo-dots">
-                        <div class="demo-dot"></div>
-                        <div class="demo-dot"></div>
-                        <div class="demo-dot"></div>
+            <!-- Checkmarks -->
+            <div class="hero-in-3 flex flex-col gap-2.5 mb-8">
+                <div class="flex items-start gap-3 text-[0.9rem] text-t2 font-light">
+                    <div
+                        class="w-[18px] h-[18px] mt-0.5 rounded-full bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.25)] flex items-center justify-center flex-shrink-0">
+                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="3.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
                     </div>
-                    <div class="demo-url">cleanpro.orbixa.se</div>
+                    <span>Ni skickar er info — <strong class="text-t1 font-medium">vi sätter upp allt åt
+                            er</strong></span>
                 </div>
-                <div class="demo-iframe-wrap">
-                    <iframe src="https://cleanpro.orbixa.se/embed" title="Orbixa Demo" allow="same-origin"></iframe>
-                    <div class="demo-overlay-label">⚡ Svarar på <span>0.8s</span> i snitt</div>
+                <div class="flex items-start gap-3 text-[0.9rem] text-t2 font-light">
+                    <div
+                        class="w-[18px] h-[18px] mt-0.5 rounded-full bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.25)] flex items-center justify-center flex-shrink-0">
+                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="3.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                    </div>
+                    <span>En rad kod på er hemsida — <strong class="text-t1 font-medium">igång samma dag</strong></span>
+                </div>
+                <div class="flex items-start gap-3 text-[0.9rem] text-t2 font-light">
+                    <div
+                        class="w-[18px] h-[18px] mt-0.5 rounded-full bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.25)] flex items-center justify-center flex-shrink-0">
+                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="3.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                    </div>
+                    <span>Er logga och färger — <strong class="text-t1 font-medium">kunden ser bara er</strong></span>
+                </div>
+                <div class="flex items-start gap-3 text-[0.9rem] text-t2 font-light">
+                    <div
+                        class="w-[18px] h-[18px] mt-0.5 rounded-full bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.25)] flex items-center justify-center flex-shrink-0">
+                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="3.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                    </div>
+                    <span>Boten svarar <strong class="text-t1 font-medium">bara på era frågor</strong> — inga konstiga
+                        svar</span>
+                </div>
+            </div>
+
+            <!-- CTA buttons -->
+            <div class="hero-in-4 flex flex-col sm:flex-row gap-3 mb-5">
+                <a href="#contact"
+                    class="inline-flex items-center justify-center gap-2 bg-green text-black font-semibold text-[0.95rem] px-7 py-3.5 rounded-lg no-underline shadow-[0_0_28px_rgba(127,255,95,0.25)] hover:opacity-[0.88] hover:-translate-y-px transition-all">
+                    Starta gratis — 30 dagar
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </a>
+                <a href="#demo"
+                    class="inline-flex items-center justify-center gap-2 text-t2 text-[0.95rem] px-6 py-3.5 border border-white/10 rounded-lg no-underline hover:border-t3 hover:text-t1 transition-all">
+                    Se live-demo ↓
+                </a>
+            </div>
+
+            <!-- Trust note -->
+            <p class="hero-in-5 font-mono text-[0.68rem] text-t3 tracking-[0.04em]">
+                <span class="text-green">●</span>&nbsp; Inga kortuppgifter &nbsp;·&nbsp; Avsluta när som helst
+                &nbsp;·&nbsp; Inga kunddata lagras
+            </p>
+        </div>
+
+        <!-- Demo window -->
+        <div class="mt-8 lg:mt-0" id="demo">
+            <div
+                class="bg-s1 border border-white/10 rounded-[14px] overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_30px_80px_rgba(0,0,0,0.6),0_0_60px_rgba(127,255,95,0.07)]">
+                <div class="bg-s2 border-b border-white/[0.06] px-4 py-2.5 flex items-center gap-3">
+                    <div class="flex gap-1.5 flex-shrink-0">
+                        <div class="w-2.5 h-2.5 rounded-full bg-[#ff5f57]"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-[#febc2e]"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-[#28c840]"></div>
+                    </div>
+                    <div
+                        class="flex-1 min-w-0 bg-white/[0.04] border border-white/[0.06] rounded-md px-3 py-1 font-mono text-[0.72rem] text-t3 text-center truncate">
+                        cleanpro.orbixa.se — live demo</div>
+                </div>
+                <iframe class="w-full h-[400px] sm:h-[460px] border-none block" src="https://cleanpro.orbixa.se/embed"
+                    title="Orbixa Live Demo" loading="lazy"></iframe>
+            </div>
+            <!-- Stat pills -->
+            <div class="mt-6 flex justify-center">
+                <div
+                    class="flex gap-4 sm:gap-6 bg-s2 border border-white/10 rounded-[10px] px-4 sm:px-6 py-3 sm:py-3.5 shadow-[0_10px_40px_rgba(0,0,0,0.5)] whitespace-nowrap">
+                    <div class="text-center"><span
+                            class="font-bold text-sm sm:text-base text-green block leading-tight">Under 1s</span><span
+                            class="text-[0.65rem] sm:text-[0.72rem] text-t3">Svarstid</span></div>
+                    <div class="w-px bg-white/[0.06]"></div>
+                    <div class="text-center"><span
+                            class="font-bold text-sm sm:text-base text-green block leading-tight">24/7</span><span
+                            class="text-[0.65rem] sm:text-[0.72rem] text-t3">Alltid online</span></div>
+                    <div class="w-px bg-white/[0.06]"></div>
+                    <div class="text-center"><span
+                            class="font-bold text-sm sm:text-base text-green block leading-tight">1
+                            rad kod</span><span class="text-[0.65rem] sm:text-[0.72rem] text-t3">Att installera</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- STATS -->
-    <div class="stats">
-        <div class="stats-inner">
-            <div class="stat-item reveal">
-                <span class="stat-num">24/7</span>
-                <span class="stat-label">Alltid tillgänglig</span>
+    <!-- ══════════════════════════════ PROBLEM SECTION ════════════════════════════ -->
+    <section class="py-16 sm:py-20 px-5 sm:px-8 border-t border-white/[0.06]">
+        <div class="max-w-[1100px] mx-auto">
+            <div class="text-center max-w-[640px] mx-auto mb-10 sm:mb-14">
+                <span
+                    class="font-mono text-[0.7rem] text-green tracking-[0.12em] uppercase inline-block mb-3">Problemet</span>
+                <h2 class="text-[clamp(1.7rem,3.5vw,2.5rem)] font-bold tracking-[-0.04em] leading-[1.15] mb-4">De flesta
+                    kunder frågar — och försvinner sedan.</h2>
+                <p class="text-base text-t2 font-light leading-[1.75]">En besökare som inte får svar direkt bokar hos
+                    konkurrenten. Inte för att ni är sämre — utan för att ni inte var tillgängliga just då.</p>
             </div>
-            <div class="stat-item reveal">
-                <span class="stat-num">&lt;1s</span>
-                <span class="stat-label">Svarstid</span>
-            </div>
-            <div class="stat-item reveal">
-                <span class="stat-num">1 rad</span>
-                <span class="stat-label">Kod att lägga till</span>
-            </div>
-            <div class="stat-item reveal">
-                <span class="stat-num">100%</span>
-                <span class="stat-label">Anpassad till ert företag</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- HOW IT WORKS -->
-    <section class="how" id="how">
-        <div class="how-inner">
-            <div class="section-eyebrow reveal">Hur det fungerar</div>
-            <h2 class="section-title reveal">Igång på<br>10 minuter.</h2>
-            <div class="steps">
-                <div class="step reveal">
-                    <div class="step-num">01</div>
-                    <div class="step-title">Ni skickar er info</div>
-                    <div class="step-desc">Priser, tjänster, vanliga frågor — vi konfigurerar boten åt er. Ni behöver
-                        inte röra ett finger.</div>
-                    <span class="step-tag">Vi fixar allt</span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="fade-up bg-s1 border border-white/[0.06] rounded-[14px] p-7 text-center">
+                    <div class="text-[2.4rem] font-extrabold tracking-[-0.04em] text-green mb-2">67%</div>
+                    <div class="text-[0.85rem] text-t2 font-light leading-[1.6]">av kunder väljer det företag som svarar
+                        <em class="not-italic font-medium text-t1">först</em> — inte bäst.
+                    </div>
                 </div>
-                <div class="step reveal">
-                    <div class="step-num">02</div>
-                    <div class="step-title">Vi sätter upp allt</div>
-                    <div class="step-desc">Er bot är anpassad med ert företagsnamn, era färger och er logga. Den svarar
-                        bara på era frågor.</div>
-                    <span class="step-tag">Samma dag</span>
+                <div class="fade-up bg-s1 border border-white/[0.06] rounded-[14px] p-7 text-center">
+                    <div class="text-[2.4rem] font-extrabold tracking-[-0.04em] text-green mb-2">58%</div>
+                    <div class="text-[0.85rem] text-t2 font-light leading-[1.6]">av frågor på hemsidor skickas <em
+                            class="not-italic font-medium text-t1">utanför kontorstid</em> — kl 18–09.</div>
                 </div>
-                <div class="step reveal">
-                    <div class="step-num">03</div>
-                    <div class="step-title">Klistra in en rad</div>
-                    <div class="step-desc">Er webbutvecklare lägger till ett script-tag på er hemsida. Klart. Boten är
-                        live.</div>
-                    <span class="step-tag">5 minuter</span>
+                <div class="fade-up bg-s1 border border-white/[0.06] rounded-[14px] p-7 text-center">
+                    <div class="text-[2.4rem] font-extrabold tracking-[-0.04em] text-green mb-2">&lt;5min</div>
+                    <div class="text-[0.85rem] text-t2 font-light leading-[1.6]">är den optimala svarstiden. En dag
+                        senare är för sent för de flesta.</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FEATURES -->
-    <section class="features">
-        <div class="features-inner">
-            <div class="section-eyebrow reveal">Funktioner</div>
-            <h2 class="section-title reveal">Allt ni behöver,<br>inget ni inte behöver.</h2>
-            <div class="features-grid">
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🎨</div>
-                    <div class="feature-title">Er grafiska profil</div>
-                    <div class="feature-desc">Boten matchar era färger och er logga. Kunderna ser ert varumärke, inte
-                        vårt.</div>
+    <!-- ═══════════════════════════════ HOW IT WORKS ══════════════════════════════ -->
+    <section class="py-16 sm:py-24 px-5 sm:px-8" id="how">
+        <div class="max-w-[1100px] mx-auto">
+            <div class="text-center max-w-[580px] mx-auto mb-10 sm:mb-14">
+                <span class="font-mono text-[0.7rem] text-green tracking-[0.12em] uppercase inline-block mb-3">Så
+                    fungerar det</span>
+                <h2 class="text-[clamp(1.7rem,3.5vw,2.5rem)] font-bold tracking-[-0.04em] leading-[1.15] mb-4">Igång på
+                    en dag. På riktigt.</h2>
+                <p class="text-base text-t2 font-light leading-[1.75]">Ni behöver inte röra ett finger tekniskt. Vi
+                    sköter allt — ni lägger bara in en rad kod.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div
+                    class="fade-up relative bg-s1 border border-white/[0.06] rounded-[14px] p-8 hover:border-white/[0.12] hover:-translate-y-[2px] transition-all duration-200">
+                    <span
+                        class="absolute -top-2.5 left-6 bg-green text-black font-mono text-[0.68rem] font-bold px-3 py-0.5 rounded-full">Steg
+                        1</span>
+                    <div
+                        class="mt-2 mb-3 w-11 h-11 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.15)] rounded-[10px] flex items-center justify-center">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                            <polyline points="10 9 9 9 8 9" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-base mb-2 tracking-[-0.02em]">Ni skickar er information</h3>
+                    <p class="text-[0.85rem] text-t2 leading-[1.65] font-light">Priser, tjänster, vanliga frågor — ett
+                        mejl eller dokument räcker. Vi konfigurerar AI:n baserat på exakt det ni skickar.</p>
+                    <div class="flex items-center gap-1.5 mt-5 text-green font-mono text-[0.7rem]">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        Tar er 5–10 minuter
+                    </div>
                 </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🌙</div>
-                    <div class="feature-title">Alltid online</div>
-                    <div class="feature-desc">Kunder som undrar om priser kl 22 på en fredag får svar direkt. Ni sover —
-                        boten jobbar.</div>
+                <div
+                    class="fade-up relative bg-s1 border border-white/[0.06] rounded-[14px] p-8 hover:border-white/[0.12] hover:-translate-y-[2px] transition-all duration-200">
+                    <span
+                        class="absolute -top-2.5 left-6 bg-green text-black font-mono text-[0.68rem] font-bold px-3 py-0.5 rounded-full">Steg
+                        2</span>
+                    <div
+                        class="mt-2 mb-3 w-11 h-11 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.15)] rounded-[10px] flex items-center justify-center">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-base mb-2 tracking-[-0.02em]">Vi anpassar och testar</h3>
+                    <p class="text-[0.85rem] text-t2 leading-[1.65] font-light">Vi konfigurerar boten med era svar,
+                        sätter er logga och färger, och testar att allt fungerar korrekt innan vi levererar.</p>
+                    <div class="flex items-center gap-1.5 mt-5 text-green font-mono text-[0.7rem]">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        Klart inom 24 timmar
+                    </div>
                 </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">🔒</div>
-                    <div class="feature-title">Svarar bara på era frågor</div>
-                    <div class="feature-desc">Boten håller sig till er information. Ingen hallucination, inga konstiga
-                        svar.</div>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon">⚡</div>
-                    <div class="feature-title">En rad kod</div>
-                    <div class="feature-desc">Fungerar på alla hemsidor — WordPress, Squarespace, egenbyggt. Inget API,
-                        inget krångel.</div>
+                <div
+                    class="fade-up relative bg-s1 border border-white/[0.06] rounded-[14px] p-8 hover:border-white/[0.12] hover:-translate-y-[2px] transition-all duration-200">
+                    <span
+                        class="absolute -top-2.5 left-6 bg-green text-black font-mono text-[0.68rem] font-bold px-3 py-0.5 rounded-full">Steg
+                        3</span>
+                    <div
+                        class="mt-2 mb-3 w-11 h-11 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.15)] rounded-[10px] flex items-center justify-center">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-base mb-2 tracking-[-0.02em]">Klistra in en rad — live</h3>
+                    <p class="text-[0.85rem] text-t2 leading-[1.65] font-light">Ni eller er webbutvecklare lägger in ett
+                        script-tag. Det fungerar på WordPress, Squarespace, Wix, Webflow — allt. Sedan är ni live.</p>
+                    <div class="flex items-center gap-1.5 mt-5 text-green font-mono text-[0.7rem]">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        5 minuter att installera
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PRICING -->
-    <section class="pricing" id="pricing">
-        <div class="pricing-inner">
-            <div class="section-eyebrow reveal">Priser</div>
-            <h2 class="section-title reveal">Enkelt och<br>transparent.</h2>
-            <div class="pricing-cards">
-                <div class="pricing-card reveal">
-                    <div class="pricing-label">Start</div>
-                    <div class="pricing-price">299 kr</div>
-                    <div class="pricing-period">per månad + 990 kr setup</div>
-                    <ul class="pricing-features">
-                        <li>En hemsida</li>
-                        <li>Obegränsade frågor</li>
-                        <li>Er logga och färger</li>
-                        <li>Vi konfigurerar allt</li>
+    <!-- ═══════════════════════════════ WHAT YOU GET ══════════════════════════════ -->
+    <section class="py-16 sm:py-24 px-5 sm:px-8 bg-s1 border-t border-b border-white/[0.06]" id="features">
+        <div class="max-w-[1100px] mx-auto">
+            <div class="text-center max-w-[580px] mx-auto mb-10 sm:mb-14">
+                <span class="font-mono text-[0.7rem] text-green tracking-[0.12em] uppercase inline-block mb-3">Vad ni
+                    får</span>
+                <h2 class="text-[clamp(1.7rem,3.5vw,2.5rem)] font-bold tracking-[-0.04em] leading-[1.15] mb-4">Allt som
+                    behövs. Inget som inte behövs.</h2>
+                <p class="text-base text-t2 font-light leading-[1.75]">Orbixa är byggt för att vara enkelt att komma
+                    igång med — och faktiskt fungera.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div
+                    class="fade-up bg-bg border border-white/[0.06] rounded-[14px] p-7 hover:border-white/[0.12] transition-colors">
+                    <div
+                        class="w-11 h-11 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.15)] rounded-[10px] flex items-center justify-center mb-4">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3" />
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-[0.95rem] mb-2 tracking-[-0.02em]">Ert varumärke, inte vårt</h3>
+                    <p class="text-[0.84rem] text-t2 leading-[1.65] font-light">Er logga, era färger och ert tonläge.
+                        Kunden ser aldrig att det är Orbixa bakom — de ser bara er.</p>
+                </div>
+                <div
+                    class="fade-up bg-bg border border-white/[0.06] rounded-[14px] p-7 hover:border-white/[0.12] transition-colors">
+                    <div
+                        class="w-11 h-11 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.15)] rounded-[10px] flex items-center justify-center mb-4">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-[0.95rem] mb-2 tracking-[-0.02em]">Svar på under 1 sekund</h3>
+                    <p class="text-[0.84rem] text-t2 leading-[1.65] font-light">Ingen spinner, ingen väntan. Kunden
+                        ställer frågan och får svar direkt — precis som de förväntar sig.</p>
+                </div>
+                <div
+                    class="fade-up bg-bg border border-white/[0.06] rounded-[14px] p-7 hover:border-white/[0.12] transition-colors">
+                    <div
+                        class="w-11 h-11 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.15)] rounded-[10px] flex items-center justify-center mb-4">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-[0.95rem] mb-2 tracking-[-0.02em]">Alltid online — på riktigt</h3>
+                    <p class="text-[0.84rem] text-t2 leading-[1.65] font-light">Kl 22 en fredag, röd dag, mitt på
+                        natten. Boten svarar alltid. Ni behöver aldrig oroa er för missade frågor.</p>
+                </div>
+                <div
+                    class="fade-up bg-bg border border-white/[0.06] rounded-[14px] p-7 hover:border-white/[0.12] transition-colors">
+                    <div
+                        class="w-11 h-11 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.15)] rounded-[10px] flex items-center justify-center mb-4">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-[0.95rem] mb-2 tracking-[-0.02em]">Svarar bara på era frågor</h3>
+                    <p class="text-[0.84rem] text-t2 leading-[1.65] font-light">Boten är tränad enbart på den
+                        information ni ger oss. Den hittar inte på och den svarar inte utanför ert område.</p>
+                </div>
+                <div
+                    class="fade-up bg-bg border border-white/[0.06] rounded-[14px] p-7 hover:border-white/[0.12] transition-colors">
+                    <div
+                        class="w-11 h-11 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.15)] rounded-[10px] flex items-center justify-center mb-4">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                            <line x1="12" y1="18" x2="12.01" y2="18" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-[0.95rem] mb-2 tracking-[-0.02em]">Perfekt på mobil</h3>
+                    <p class="text-[0.84rem] text-t2 leading-[1.65] font-light">Mer än hälften av era besökare är på
+                        telefon. Chatten fungerar lika smidigt på mobil som på dator.</p>
+                </div>
+                <div
+                    class="fade-up bg-bg border border-white/[0.06] rounded-[14px] p-7 hover:border-white/[0.12] transition-colors">
+                    <div
+                        class="w-11 h-11 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.15)] rounded-[10px] flex items-center justify-center mb-4">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7fff5f" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-[0.95rem] mb-2 tracking-[-0.02em]">Ingen kunddata lagras</h3>
+                    <p class="text-[0.84rem] text-t2 leading-[1.65] font-light">Vi lagrar inga konversationer, inga
+                        personuppgifter. Allt sker i realtid. Det finns inget att läcka — och inget att oroa sig för.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════ PRICING ═══════════════════════════════ -->
+    <section class="py-16 sm:py-24 px-5 sm:px-8" id="pricing">
+        <div class="max-w-[1100px] mx-auto">
+            <div class="text-center max-w-[580px] mx-auto mb-10 sm:mb-14">
+                <span
+                    class="font-mono text-[0.7rem] text-green tracking-[0.12em] uppercase inline-block mb-3">Priser</span>
+                <h2 class="text-[clamp(1.7rem,3.5vw,2.5rem)] font-bold tracking-[-0.04em] leading-[1.15] mb-4">Enkelt.
+                    Inga dolda avgifter.</h2>
+                <p class="text-base text-t2 font-light leading-[1.75]">Testa i 30 dagar utan att betala ett öre. Inga
+                    kortuppgifter krävs.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-[720px] mx-auto">
+
+                <!-- Start -->
+                <div class="fade-up bg-s1 border border-white/10 rounded-2xl p-8 sm:p-9 flex flex-col">
+                    <div class="text-[1.05rem] font-bold mb-1">Start</div>
+                    <div class="text-[0.84rem] text-t3 mb-5">Perfekt för att komma igång</div>
+                    <div class="flex items-baseline gap-1.5 mb-1">
+                        <span class="text-[2.6rem] font-extrabold tracking-[-0.04em]">699</span>
+                        <span class="text-[0.9rem] text-t3">kr/mån</span>
+                    </div>
+                    <div class="text-[0.8rem] text-t3 mb-6 pb-5 border-b border-white/[0.06]">+ 990 kr engångsavgift för
+                        setup</div>
+                    <ul class="flex flex-col gap-3 mb-8 list-none p-0 flex-1">
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>En hemsida med chatwidget</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Obegränsade konversationer</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Er logga, era färger, ert namn</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Vi konfigurerar allt åt er</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Uppdateringar via mejl — vi fixar det</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Support via e-post</span>
+                        </li>
                     </ul>
-                    <a href="#contact" class="pricing-btn pricing-btn-ghost">Kom igång</a>
+                    <a href="#contact"
+                        class="block text-center py-3 rounded-lg font-semibold text-[0.9rem] no-underline border border-white/10 text-t2 hover:border-t3 hover:text-t1 transition-all">Börja
+                        gratis →</a>
                 </div>
-                <div class="pricing-card featured reveal">
-                    <div class="pricing-label">Pro</div>
-                    <div class="pricing-price">499 kr</div>
-                    <div class="pricing-period">per månad + 990 kr setup</div>
-                    <ul class="pricing-features">
-                        <li>En hemsida</li>
-                        <li>Obegränsade frågor</li>
-                        <li>Er logga och färger</li>
-                        <li>Vi konfigurerar allt</li>
-                        <li>Prioriterad support</li>
-                        <li>Uppdateringar ingår</li>
+
+                <!-- Pro -->
+                <div
+                    class="fade-up bg-s1 border border-green rounded-2xl p-8 sm:p-9 relative overflow-hidden flex flex-col shadow-[0_0_40px_rgba(127,255,95,0.08)] hot-line">
+                    <span
+                        class="absolute -top-[11px] left-1/2 -translate-x-1/2 bg-green text-black font-mono text-[0.68rem] font-bold px-4 py-1 rounded-full whitespace-nowrap">Rekommenderas</span>
+                    <div class="text-[1.05rem] font-bold mb-1 mt-2">Pro</div>
+                    <div class="text-[0.84rem] text-t3 mb-5">För er som vill ha prioritet och mer</div>
+                    <div class="flex items-baseline gap-1.5 mb-1">
+                        <span class="text-[2.6rem] font-extrabold tracking-[-0.04em]">999</span>
+                        <span class="text-[0.9rem] text-t3">kr/mån</span>
+                    </div>
+                    <div class="text-[0.8rem] text-t3 mb-6 pb-5 border-b border-white/[0.06]">+ 990 kr engångsavgift för
+                        setup</div>
+                    <ul class="flex flex-col gap-3 mb-8 list-none p-0 flex-1">
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Allt i Start</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Prioriterad support — svar inom 4 timmar</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Uppdateringar av botinnehåll ingår — obegränsat</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Anpassning av välkomstmeddelande och tonläge</span>
+                        </li>
+                        <li class="flex items-start gap-2.5 text-[0.88rem] text-t2 font-light">
+                            <svg class="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="#7fff5f" stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Ni är alltid längst fram i kön</span>
+                        </li>
                     </ul>
-                    <a href="#contact" class="pricing-btn pricing-btn-accent">Kom igång</a>
+                    <a href="#contact"
+                        class="block text-center py-3 rounded-lg font-semibold text-[0.9rem] no-underline bg-green text-black hover:opacity-85 transition-opacity">Starta
+                        gratis testperiod →</a>
                 </div>
+            </div>
+
+            <!-- Bottom note -->
+            <p class="text-center font-mono text-[0.72rem] text-t3 tracking-[0.04em] mt-8">
+                Båda planerna inkluderar 30 dagars gratis testperiod &nbsp;·&nbsp; Inga kortuppgifter krävs
+                &nbsp;·&nbsp; Avsluta när som helst
+            </p>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════ FAQ ════════════════════════════════════ -->
+    <section class="py-16 sm:py-24 px-5 sm:px-8 bg-s1 border-t border-white/[0.06]" id="faq">
+        <div class="max-w-[1100px] mx-auto">
+            <div class="text-center max-w-[580px] mx-auto mb-10 sm:mb-14">
+                <span class="font-mono text-[0.7rem] text-green tracking-[0.12em] uppercase inline-block mb-3">Vanliga
+                    frågor</span>
+                <h2 class="text-[clamp(1.7rem,3.5vw,2.5rem)] font-bold tracking-[-0.04em] leading-[1.15]">Det ni undrar
+                    över</h2>
+            </div>
+            <div class="flex flex-col gap-2.5 max-w-[760px] mx-auto">
+
+                <div class="faq-item bg-bg border border-white/[0.06] rounded-[10px] overflow-hidden">
+                    <button
+                        class="faq-q w-full px-5 py-[18px] flex items-center justify-between bg-transparent border-none text-t1 font-[inherit] text-[0.92rem] font-medium text-left cursor-pointer hover:bg-s2 transition-colors gap-4">
+                        <span>Hur fungerar testperioden — vad ingår?</span>
+                        <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="faq-a">
+                        <div class="px-5 pb-5 text-[0.88rem] text-t2 leading-[1.75] font-light">Ni får en fullt
+                            fungerande chatbot på er hemsida i 30 dagar utan att betala något och utan att ange
+                            kortuppgifter. Allt ingår — setup, konfiguration, er logga och färger. Om ni väljer att
+                            fortsätta efter 30 dagar debiteras månadsavgiften plus en engångsavgift för setup. Väljer ni
+                            att avsluta är ni välkomna att höra av er igen när ni är redo.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-bg border border-white/[0.06] rounded-[10px] overflow-hidden">
+                    <button
+                        class="faq-q w-full px-5 py-[18px] flex items-center justify-between bg-transparent border-none text-t1 font-[inherit] text-[0.92rem] font-medium text-left cursor-pointer hover:bg-s2 transition-colors gap-4">
+                        <span>Fungerar det på min hemsida?</span>
+                        <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="faq-a">
+                        <div class="px-5 pb-5 text-[0.88rem] text-t2 leading-[1.75] font-light">Ja. Det fungerar på
+                            WordPress, Squarespace, Wix, Webflow, Shopify och alla egna sidor — om du kan lägga till en
+                            rad kod på hemsidan fungerar det. Vi hjälper er om ni är osäkra på hur.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-bg border border-white/[0.06] rounded-[10px] overflow-hidden">
+                    <button
+                        class="faq-q w-full px-5 py-[18px] flex items-center justify-between bg-transparent border-none text-t1 font-[inherit] text-[0.92rem] font-medium text-left cursor-pointer hover:bg-s2 transition-colors gap-4">
+                        <span>Vad händer om boten svarar fel?</span>
+                        <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="faq-a">
+                        <div class="px-5 pb-5 text-[0.88rem] text-t2 leading-[1.75] font-light">Boten svarar bara på det
+                            ni har gett oss. Den hittar inte på information och spekulerar inte utanför era svar. Om en
+                            fråga inte täcks av er information säger den det tydligt och uppmanar kunden att höra av sig
+                            direkt till er. Vill ni justera något — mejla oss så fixar vi det.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-bg border border-white/[0.06] rounded-[10px] overflow-hidden">
+                    <button
+                        class="faq-q w-full px-5 py-[18px] flex items-center justify-between bg-transparent border-none text-t1 font-[inherit] text-[0.92rem] font-medium text-left cursor-pointer hover:bg-s2 transition-colors gap-4">
+                        <span>Hur uppdaterar jag informationen i boten?</span>
+                        <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="faq-a">
+                        <div class="px-5 pb-5 text-[0.88rem] text-t2 leading-[1.75] font-light">Mejla oss de ändrade
+                            uppgifterna — nya priser, nya tjänster, ändrade öppettider — så uppdaterar vi inom 24
+                            timmar. På Pro-planen är detta obegränsat och ingår i priset. På Start ingår vanliga
+                            uppdateringar.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-bg border border-white/[0.06] rounded-[10px] overflow-hidden">
+                    <button
+                        class="faq-q w-full px-5 py-[18px] flex items-center justify-between bg-transparent border-none text-t1 font-[inherit] text-[0.92rem] font-medium text-left cursor-pointer hover:bg-s2 transition-colors gap-4">
+                        <span>Lagras kundernas konversationer?</span>
+                        <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="faq-a">
+                        <div class="px-5 pb-5 text-[0.88rem] text-t2 leading-[1.75] font-light">Nej. Vi lagrar inga
+                            konversationer och inga personuppgifter. Vi sparar enbart er företagsinformation (priser,
+                            tjänster osv.) som ni skickat oss. Det finns inga kunddata att hantera, läcka eller
+                            rapportera. Det är inte mer komplicerat än så.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-bg border border-white/[0.06] rounded-[10px] overflow-hidden">
+                    <button
+                        class="faq-q w-full px-5 py-[18px] flex items-center justify-between bg-transparent border-none text-t1 font-[inherit] text-[0.92rem] font-medium text-left cursor-pointer hover:bg-s2 transition-colors gap-4">
+                        <span>Vad kostar setup och vad ingår i det?</span>
+                        <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="faq-a">
+                        <div class="px-5 pb-5 text-[0.88rem] text-t2 leading-[1.75] font-light">990 kr engångsavgift
+                            täcker att vi läser igenom er information, konfigurerar boten, lägger in er logga och
+                            färger, testar att allt svarar korrekt och levererar koden ni behöver. Det är ett fast pris
+                            — inga timmar, inga överraskningar.</div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-section" id="contact">
-        <div class="cta-inner">
-            <div class="cta-box reveal">
-                <h2>Redo att testa?</h2>
-                <p>Lämna er e-post så hör vi av oss inom 24 timmar med ett demo anpassat för just er bransch.</p>
-                <div class="cta-form">
-                    <input type="email" class="cta-input" placeholder="hej@ertforetag.se" />
-                    <button class="cta-submit">Skicka →</button>
+    <!-- ═══════════════════════════════════ CTA ═══════════════════════════════════ -->
+    <section class="py-16 sm:py-24 px-5 sm:px-8" id="contact">
+        <div class="max-w-[1100px] mx-auto">
+            <div
+                class="fade-up bg-s1 border border-white/10 rounded-[20px] px-6 sm:px-16 lg:px-20 py-14 sm:py-20 text-center relative overflow-hidden cta-line">
+                <div
+                    class="absolute -top-24 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-[radial-gradient(ellipse,rgba(127,255,95,0.07)_0%,transparent_65%)] pointer-events-none">
                 </div>
+
+                <div
+                    class="inline-flex items-center gap-2 bg-[rgba(127,255,95,0.1)] border border-[rgba(127,255,95,0.2)] text-green font-mono text-[0.68rem] font-medium tracking-[0.08em] uppercase px-3.5 py-1.5 rounded-full mb-6">
+                    <span class="pill-dot w-1.5 h-1.5 rounded-full bg-green shadow-[0_0_8px_#7fff5f]"></span>
+                    30 dagar gratis — ingen betalning krävs
+                </div>
+
+                <h2 class="text-[clamp(1.7rem,4vw,2.8rem)] font-extrabold tracking-[-0.04em] mb-4">Testa Orbixa på er
+                    hemsida.</h2>
+                <p class="text-base text-t2 font-light leading-[1.8] max-w-[460px] mx-auto mb-8">
+                    Lämna er e-post — vi hör av oss inom 24 timmar, ställer ett par frågor om er verksamhet, och sätter
+                    igång. Ni behöver inte göra något mer.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-3 max-w-[440px] mx-auto mb-4">
+                    <input type="email" id="cta-email"
+                        class="flex-1 bg-s2 border border-white/10 rounded-lg px-4 py-3.5 font-[inherit] text-[0.9rem] text-t1 outline-none focus:border-green transition-colors placeholder:text-t3"
+                        placeholder="hej@ertforetag.se" />
+                    <button onclick="submitCTA()"
+                        class="bg-green text-black border-none rounded-lg px-6 py-3.5 font-[inherit] text-[0.9rem] font-semibold cursor-pointer whitespace-nowrap hover:opacity-85 transition-opacity">
+                        Boka demo →
+                    </button>
+                </div>
+
+                <p class="font-mono text-[0.68rem] text-t3 tracking-[0.04em]">
+                    Inga kortuppgifter &nbsp;·&nbsp; Avsluta när som helst &nbsp;·&nbsp; Svar inom 24 timmar
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-logo">Orbi<span>xa</span></div>
-        <p>© 2026 Orbixa. Alla rättigheter förbehållna.</p>
-        <a href="mailto:hej@orbixa.se" class="footer-link">hej@orbixa.se</a>
+    <!-- ══════════════════════════════════ FOOTER ════════════════════════════════ -->
+    <footer class="border-t border-white/[0.06] py-8 px-5 sm:px-8">
+        <div
+            class="max-w-[1100px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                <a href="#" class="block flex-shrink-0">
+                    <span style="font-weight:700;color:#585868">Orbi<span style="color:#7fff5f">xa</span></span>
+                </a>
+                <span class="text-[0.8rem] text-t3">© 2026 Orbixa. Alla rättigheter förbehållna.</span>
+            </div>
+            <a href="mailto:hej@orbixa.se"
+                class="text-[0.8rem] text-t3 no-underline hover:text-t2 transition-colors">hej@orbixa.se</a>
+        </div>
     </footer>
+
+    <!-- ════════════════════════ STICKY MOBILE CTA ═══════════════════════════════ -->
+    <div id="sticky-cta"
+        class="sm:hidden fixed bottom-0 left-0 right-0 bg-[rgba(6,6,8,0.97)] backdrop-blur-xl border-t border-white/[0.06] px-4 py-3 z-[999]"
+        style="padding-bottom: max(12px, env(safe-area-inset-bottom));">
+        <a href="#contact"
+            class="flex items-center justify-center gap-2 bg-green text-black font-semibold text-[0.95rem] px-6 py-3.5 rounded-lg no-underline w-full shadow-[0_0_20px_rgba(127,255,95,0.2)]">
+            Starta gratis — 30 dagar →
+        </a>
+    </div>
 
     <script>
         // Scroll reveal
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(el => {
-                if (el.isIntersecting) {
-                    el.target.classList.add('visible');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-q').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                const isActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if (!isActive) item.classList.add('active');
+            });
+        });
+
+        // CTA submit
+        function submitCTA() {
+            const inp = document.getElementById('cta-email');
+            const btn = document.querySelector('[onclick="submitCTA()"]');
+            if (inp.value.includes('@')) {
+                btn.textContent = '✓ Skickat!';
+                btn.style.opacity = '0.7';
+                btn.disabled = true;
+                inp.value = '';
+                inp.placeholder = 'Vi hör av oss inom 24 timmar!';
+                inp.style.borderColor = '#7fff5f';
+            } else {
+                inp.style.borderColor = '#ff5f57';
+                inp.focus();
+                setTimeout(() => inp.style.borderColor = '', 1500);
+            }
+        }
+        document.getElementById('cta-email').addEventListener('keydown', e => {
+            if (e.key === 'Enter') submitCTA();
+        });
+
+        // Smooth scroll — offset for fixed nav
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const href = a.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const t = document.querySelector(href);
+                if (t) {
+                    const navH = document.querySelector('nav').offsetHeight;
+                    const top = t.getBoundingClientRect().top + window.scrollY - navH - 16;
+                    window.scrollTo({ top, behavior: 'smooth' });
                 }
             });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        // CTA form
-        document.querySelector('.cta-submit').addEventListener('click', () => {
-            const input = document.querySelector('.cta-input');
-            if (input.value.includes('@')) {
-                input.value = '';
-                input.placeholder = '✓ Vi hör av oss snart!';
-                input.style.borderColor = 'var(--accent)';
-            }
         });
+
+        // Hide sticky CTA when contact section is in view
+        const contactSection = document.getElementById('contact');
+        const stickyCta = document.getElementById('sticky-cta');
+        const ctaObserver = new IntersectionObserver(entries => {
+            stickyCta.style.transform = entries[0].isIntersecting ? 'translateY(120%)' : 'translateY(0)';
+            stickyCta.style.transition = 'transform 0.3s ease';
+        }, { threshold: 0.1 });
+        ctaObserver.observe(contactSection);
     </script>
 </body>
 
