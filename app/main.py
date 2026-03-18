@@ -86,12 +86,7 @@ def embed():
 def widget():
     """Serve the embeddable widget script."""
     return FileResponse("static/widget.js", media_type="application/javascript")
-@app.get("/debug-static")
-def debug_static():
-    import os
-    static_dir = os.path.abspath("static")
-    files = os.listdir(static_dir)
-    return {"static_dir": static_dir, "files": files}
+
 
 @app.get("/config")
 def get_config(request: Request):
