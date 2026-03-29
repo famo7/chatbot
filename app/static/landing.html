@@ -290,6 +290,10 @@
                     opacity: 0.3;
                 }
             }
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
 
             .hero h1 {
                 font-size: clamp(3rem, 6vw, 5.5rem);
@@ -1924,7 +1928,7 @@
             </div>
         </section>
 
-        <!-- ── CTA ── -->
+        <!-- ── CONTACT ── -->
         <section class="cta-sec" id="kontakt">
             <div class="wrap">
                 <div class="cta-box r">
@@ -1933,17 +1937,25 @@
                         Boka ett kostnadsfritt samtal. Vi berättar vad som
                         passar ditt företag — utan förpliktelser.
                     </p>
-                    <a
-                        href="mailto:hej@orbixa.se"
-                        class="btn btn-primary"
-                        style="font-size: 0.95rem; padding: 14px 32px"
-                    >
-                        Kontakta oss
-                        <i
-                            data-lucide="arrow-right"
-                            style="width: 16px; height: 16px"
-                        ></i>
-                    </a>
+                    <form id="contactForm" style="max-width: 420px; margin: 0 auto; text-align: left;">
+                        <div id="formStatus" style="display: none; padding: 12px 16px; border-radius: var(--r-sm); margin-bottom: 16px; font-size: 0.85rem;"></div>
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; font-size: 0.8rem; color: var(--text-2); margin-bottom: 6px;">Namn</label>
+                            <input type="text" id="contactName" required placeholder="Ditt namn" style="width: 100%; padding: 12px 16px; border-radius: var(--r-sm); border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text); font-family: inherit; font-size: 0.9rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--line-2)'">
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; font-size: 0.8rem; color: var(--text-2); margin-bottom: 6px;">E-post</label>
+                            <input type="email" id="contactEmail" required placeholder="din@email.se" style="width: 100%; padding: 12px 16px; border-radius: var(--r-sm); border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text); font-family: inherit; font-size: 0.9rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--line-2)'">
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <label style="display: block; font-size: 0.8rem; color: var(--text-2); margin-bottom: 6px;">Meddelande</label>
+                            <textarea id="contactMessage" required placeholder="Berätta vad du behöver hjälp med..." rows="4" style="width: 100%; padding: 12px 16px; border-radius: var(--r-sm); border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text); font-family: inherit; font-size: 0.9rem; outline: none; resize: vertical; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--line-2)'"></textarea>
+                        </div>
+                        <button type="submit" id="contactSubmit" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.95rem; padding: 14px 32px">
+                            Skicka meddelande
+                            <i data-lucide="send" style="width: 16px; height: 16px"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </section>
@@ -2026,6 +2038,14 @@
                     img: "/static/images/portfolio/restaurant.jpg",
                     color: "#f59e0b",
                 },
+                {
+                    name: "Korai",
+                    desc: "Indisk restaurang",
+                    cat: "Restaurang",
+                    url: "https://korai.se",
+                    img: "/static/images/portfolio/korai.jpg",
+                    color: "#ea580c",
+                },
             ];
 
             function renderPortfolio() {
@@ -2092,6 +2112,50 @@
             lucide.createIcons();
             renderPortfolio();
             observe();
+
+            // ── CONTACT FORM ──
+            document.getElementById("contactForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById("contactSubmit");
+                const status = document.getElementById("formStatus");
+                const name = document.getElementById("contactName").value.trim();
+                const email = document.getElementById("contactEmail").value.trim();
+                const message = document.getElementById("contactMessage").value.trim();
+
+                btn.disabled = true;
+                btn.innerHTML = 'Skickar... <i data-lucide="loader-2" style="width:16px;height:16px;animation:spin 1s linear infinite"></i>';
+                lucide.createIcons();
+
+                try {
+                    const res = await fetch("/contact", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ name, email, message })
+                    });
+                    const data = await res.json();
+
+                    if (res.ok) {
+                        status.style.display = "block";
+                        status.style.background = "rgba(22, 163, 74, 0.15)";
+                        status.style.border = "1px solid rgba(22, 163, 74, 0.3)";
+                        status.style.color = "#4ade80";
+                        status.textContent = "Tack! Vi återkommer inom 24 timmar.";
+                        document.getElementById("contactForm").reset();
+                    } else {
+                        throw new Error(data.detail || "Något gick fel");
+                    }
+                } catch (err) {
+                    status.style.display = "block";
+                    status.style.background = "rgba(239, 68, 68, 0.15)";
+                    status.style.border = "1px solid rgba(239, 68, 68, 0.3)";
+                    status.style.color = "#f87171";
+                    status.textContent = "Kunde inte skicka. Försök igen eller maila hej@orbixa.se";
+                }
+
+                btn.disabled = false;
+                btn.innerHTML = 'Skicka meddelande <i data-lucide="send" style="width:16px;height:16px"></i>';
+                lucide.createIcons();
+            });
         </script>
     </body>
 </html>

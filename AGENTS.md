@@ -117,6 +117,7 @@ Create `app/.env`:
 ```
 OPENROUTER_API_KEY=your_key_here
 OPENROUTER_MODEL=deepseek/deepseek-v3.2
+RESEND_API_KEY=re_your_key_here
 ```
 
 ## Rate Limiting

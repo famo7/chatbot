@@ -1,48 +1,54 @@
+import json
+import os
+
+import httpx
+import resend
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-import os
-import json
-import httpx
-from dotenv import load_dotenv
+from slowapi.util import get_remote_address
 
 load_dotenv()
+resend.api_key = os.getenv("RESEND_API_KEY")
 
-BASE_TENANTS_DIR = os.path.join(os.path.dirname(__file__), 'tenants')
+BASE_TENANTS_DIR = os.path.join(os.path.dirname(__file__), "tenants")
 DEFAULT_TENANT = "stadfirma"
+
 
 def load_tenant_data(tenant_name):
     """Load tenant configuration and data from JSON files."""
     tenant_dir = os.path.join(BASE_TENANTS_DIR, tenant_name)
-    
+
     if not os.path.exists(tenant_dir):
         tenant_dir = os.path.join(BASE_TENANTS_DIR, DEFAULT_TENANT)
         tenant_name = DEFAULT_TENANT
-    
-    with open(os.path.join(tenant_dir, 'data.json'), 'r', encoding='utf-8') as f:
+
+    with open(os.path.join(tenant_dir, "data.json"), "r", encoding="utf-8") as f:
         data = json.load(f)
-    with open(os.path.join(tenant_dir, 'config.json'), 'r', encoding='utf-8') as f:
+    with open(os.path.join(tenant_dir, "config.json"), "r", encoding="utf-8") as f:
         config = json.load(f)
-    
+
     return data, config, tenant_dir
+
 
 def get_tenant_from_request(request: Request):
     """Extract tenant from subdomain and validate against existing folders."""
-    host = request.headers.get('Host', '')
+    host = request.headers.get("Host", "")
     # "comp1.orbixa.se" → "comp1"
     subdomain = host.split(".")[0]
-    
+
     # Validate that the subdomain is an actual tenant folder
     tenant_dir = os.path.join(BASE_TENANTS_DIR, subdomain)
     if not os.path.isdir(tenant_dir):
         subdomain = DEFAULT_TENANT
-    
+
     return subdomain
+
 
 limiter = Limiter(key_func=get_remote_address)
 
@@ -64,12 +70,22 @@ class ChatRequest(BaseModel):
     history: list = []
 
 
+class ContactRequest(BaseModel):
+    name: str
+    email: str
+    message: str
+
+
 MAX_HISTORY = 10
 
 
 @app.get("/")
-def root():
-    return FileResponse("static/landing.html")
+def root(request: Request):
+    host = request.headers.get("Host", "")
+    subdomain = host.split(".")[0]
+    if subdomain in ["orbixa", "www", ""]:
+        return FileResponse("static/landing.html")
+    return FileResponse("static/index.html")
 
 
 @app.get("/chat-ui")
@@ -100,7 +116,7 @@ def get_logo(request: Request):
     tenant = get_tenant_from_request(request)
     _, _, tenant_dir = load_tenant_data(tenant)
     logo_path = os.path.join(tenant_dir, "logo.png")
-    
+
     if os.path.exists(logo_path):
         return FileResponse(logo_path, media_type="image/png")
     return {"error": "Logo not found"}, 404
@@ -111,7 +127,7 @@ def get_logo(request: Request):
 async def chat(request: Request, body: ChatRequest):
     tenant = get_tenant_from_request(request)
     company_data, company_config, _ = load_tenant_data(tenant)
-    
+
     trimmed_history = body.history[-MAX_HISTORY:]
 
     system_prompt = (
@@ -149,3 +165,35 @@ async def chat(request: Request, body: ChatRequest):
     except Exception as e:
         print("EXCEPTION:", e)
         return {"response": "Något gick fel, försök igen."}
+
+
+@app.post("/contact")
+@limiter.limit("5/minute")
+async def contact(request: Request, body: ContactRequest):
+    if not body.name or len(body.name) > 100:
+        return {"error": "Ogiltigt namn"}
+    if not body.email or "@" not in body.email or len(body.email) > 200:
+        return {"error": "Ogiltig e-post"}
+    if not body.message or len(body.message) > 5000:
+        return {"error": "Ogiltigt meddelande"}
+
+    try:
+        resend.Emails.send(
+            {
+                "from": "Orbixa <kontakt@mail.orbixa.se>",
+                "to": ["hej@orbixa.se"],
+                "reply_to": body.email,
+                "subject": f"Ny förfrågan från {body.name}",
+                "html": f"""
+                <h2>Ny förfrågan från Orbixa.se</h2>
+                <p><strong>Namn:</strong> {body.name}</p>
+                <p><strong>E-post:</strong> {body.email}</p>
+                <p><strong>Meddelande:</strong></p>
+                <p>{body.message}</p>
+            """,
+            }
+        )
+        return {"success": True}
+    except Exception as e:
+        print("RESEND ERROR:", e)
+        return {"error": "Kunde inte skicka e-post"}
