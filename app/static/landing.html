@@ -1,2150 +1,1480 @@
 <!doctype html>
 <html lang="sv">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Orbixa — Hemsidor & AI för Svenska Företag</title>
-        <meta
-            name="description"
-            content="Orbixa bygger professionella hemsidor och AI-chatbots för svenska småföretag. Fast pris, inga överraskningar."
-        />
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Orbixa — Hemsidor för Svenska Småföretag</title>
+  <meta name="description" content="Orbixa bygger hemsidor och AI-chatbots för svenska småföretag. Du äger allt. Fast pris. Levererat på en dag."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    :root {
+      --black: #080808;
+      --off-black: #0f0f0f;
+      --surface: #141414;
+      --surface-2: #1a1a1a;
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(255,255,255,0.14);
+      --text: #f0ede8;
+      --text-2: #7a7570;
+      --text-3: #3d3a37;
+      --accent: #e8d5b0;
+      --accent-2: #c9a96e;
+      --accent-glow: rgba(200,165,100,0.12);
+      --white: #faf8f5;
+      --r: 4px;
+      --r-lg: 8px;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--black);
+      color: var(--text);
+      overflow-x: hidden;
+      font-size: 16px;
+      line-height: 1.6;
+      cursor: none;
+    }
+    a { text-decoration:none; color:inherit; }
+    img { display:block; max-width:100%; }
 
-        <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="/static/favicons/favicon.ico">
-        <link rel="icon" type="image/png" sizes="32x32" href="/static/favicons/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/static/favicons/favicon-16x16.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="/static/favicons/apple-touch-icon.png">
-        <link rel="manifest" href="/static/favicons/site.webmanifest">
+    /* ── CURSOR ── */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease, opacity 0.15s;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(232,213,176,0.35);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), width 0.3s, height 0.3s, border-color 0.3s;
+      transform: translate(-50%, -50%);
+    }
+    body:has(a:hover) .cursor-ring,
+    body:has(button:hover) .cursor-ring {
+      width: 56px; height: 56px;
+      border-color: rgba(232,213,176,0.6);
+    }
+    @media (hover: none) { .cursor, .cursor-ring { display: none; } body { cursor: auto; } }
 
-        <!-- Open Graph / Social Media -->
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://orbixa.se/">
-        <meta property="og:title" content="Orbixa — Hemsidor & AI för Svenska Företag">
-        <meta property="og:description" content="Orbixa bygger professionella hemsidor och AI-chatbots för svenska småföretag. Fast pris, inga överraskningar.">
-        <meta property="og:image" content="https://orbixa.se/static/images/og-image.png">
-        <meta property="og:image:width" content="1200">
-        <meta property="og:image:height" content="630">
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Orbixa — Hemsidor & AI för Svenska Företag">
-        <meta name="twitter:description" content="Orbixa bygger professionella hemsidor och AI-chatbots för svenska småföretag.">
-        <meta name="twitter:image" content="https://orbixa.se/static/images/og-image.png">
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.45;
+      pointer-events: none;
+      z-index: 100;
+    }
 
-        <!-- Clash Display (premium agency font) -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&display=swap"
-            rel="stylesheet"
-        />
-        <!-- Geist as body font -->
-        <style>
-            @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap");
-        </style>
-        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 24px 0;
+      transition: padding 0.3s, background 0.3s, border-color 0.3s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      padding: 16px 0;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(20px);
+      border-color: var(--border);
+    }
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-btn {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--accent);
+      padding: 10px 22px;
+      border-radius: var(--r);
+      transition: background 0.2s, transform 0.2s;
+      cursor: none;
+    }
+    .nav-btn:hover { background: var(--white); transform: translateY(-1px); }
+    .nav-ham {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: none;
+      padding: 4px;
+    }
+    .mob-nav {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 490;
+      background: var(--black);
+      padding: 100px 40px 40px;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .mob-nav.open { display: flex; }
+    .mob-nav a {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-2);
+      transition: color 0.2s;
+    }
+    .mob-nav a:hover { color: var(--text); }
 
-        <style>
-            /* ─── TOKENS ─────────────────────────────────────── */
-            :root {
-                --bg: #05080f;
-                --bg-1: #080d18;
-                --bg-2: #0c1422;
-                --bg-3: #101b2c;
-                --line: rgba(255, 255, 255, 0.06);
-                --line-2: rgba(255, 255, 255, 0.1);
-                --line-3: rgba(255, 255, 255, 0.16);
-                --text: #eef2ff;
-                --text-2: #7e96b8;
-                --text-3: #3d5575;
-                --blue: #2563eb;
-                --blue-2: #1d4ed8;
-                --sky: #38bdf8;
-                --sky-2: #0ea5e9;
-                --b-glow: rgba(37, 99, 235, 0.22);
-                --s-glow: rgba(56, 189, 248, 0.15);
-                --grad: linear-gradient(135deg, #2563eb, #38bdf8);
-                --grad-r: linear-gradient(135deg, #38bdf8, #2563eb);
-                --grad-t: linear-gradient(90deg, #60a5fa, #38bdf8);
-                --r-sm: 8px;
-                --r-md: 14px;
-                --r-lg: 20px;
-                --r-xl: 28px;
-            }
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 120% 60% at 50% 100%, rgba(200,165,100,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(200,165,100,0.03) 0%, transparent 50%);
+    }
+    .hero-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 100% 80% at 50% 100%, black 30%, transparent 80%);
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 32px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px; height: 1px;
+      background: var(--accent-2);
+    }
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3.6rem, 8vw, 9rem);
+      font-weight: 800;
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      margin-bottom: 48px;
+    }
+    h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .hero-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--text-2);
+      line-height: 1.8;
+      max-width: 360px;
+      font-weight: 300;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .btn-gold {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--accent);
+      padding: 14px 28px;
+      border-radius: var(--r);
+      transition: background 0.2s, transform 0.2s;
+      cursor: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+    }
+    .btn-gold:hover { background: var(--white); transform: translateY(-2px); }
+    .btn-ghost {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--text-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: none;
+      transition: color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--text); }
 
-            /* ─── RESET ──────────────────────────────────────── */
-            *,
-            *::before,
-            *::after {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-            html {
-                scroll-behavior: smooth;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-            }
-            body {
-                font-family: "Outfit", sans-serif;
-                background: var(--bg);
-                color: var(--text);
-                overflow-x: hidden;
-                line-height: 1.6;
-                font-size: 16px;
-            }
-            img {
-                display: block;
-                max-width: 100%;
-            }
-            a {
-                text-decoration: none;
-            }
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+      overflow: hidden;
+      background: var(--off-black);
+    }
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      animation: marquee 28s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 24px;
+      padding: 0 32px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+    .marquee-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      flex-shrink: 0;
+    }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-            /* ─── TYPOGRAPHY ─────────────────────────────────── */
-            h1,
-            h2,
-            h3,
-            h4,
-            h5 {
-                font-family: "Clash Display", sans-serif;
-                font-weight: 600;
-                line-height: 1.1;
-                letter-spacing: -0.03em;
-                color: var(--text);
-            }
-            .grad-text {
-                background: var(--grad-t);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-            }
+    /* ── SECTION BASE ── */
+    section { position: relative; }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .sec-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 20px;
+    }
+    .sec-label::before {
+      content: '';
+      width: 16px; height: 1px;
+      background: var(--text-3);
+    }
 
-            /* ─── LAYOUT ─────────────────────────────────────── */
-            .wrap {
-                max-width: 1160px;
-                margin: 0 auto;
-                padding: 0 28px;
-            }
+    /* ── NUMBERS ── */
+    .numbers-sec {
+      padding: 100px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .numbers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .num-cell {
+      background: var(--black);
+      padding: 56px 48px;
+      transition: background 0.3s;
+    }
+    .num-cell:hover { background: var(--off-black); }
+    .num-value {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .num-value span { color: var(--accent); }
+    .num-label {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      font-weight: 400;
+      line-height: 1.5;
+      max-width: 200px;
+    }
 
-            /* ─── AMBIENT BG ─────────────────────────────────── */
-            .ambient {
-                position: fixed;
-                inset: 0;
-                z-index: 0;
-                pointer-events: none;
-                background:
-                    radial-gradient(
-                        ellipse 900px 600px at 50% -80px,
-                        rgba(37, 99, 235, 0.16),
-                        transparent
-                    ),
-                    radial-gradient(
-                        ellipse 600px 400px at 100% 100%,
-                        rgba(56, 189, 248, 0.06),
-                        transparent
-                    ),
-                    radial-gradient(
-                        ellipse 500px 300px at 0% 60%,
-                        rgba(37, 99, 235, 0.04),
-                        transparent
-                    );
-            }
-            /* subtle grid */
-            .ambient::after {
-                content: "";
-                position: absolute;
-                inset: 0;
-                background-image:
-                    linear-gradient(var(--line) 1px, transparent 1px),
-                    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-                background-size: 48px 48px;
-                mask-image: radial-gradient(
-                    ellipse 80% 60% at 50% 0%,
-                    black 30%,
-                    transparent 80%
-                );
-            }
+    /* ── SERVICES ── */
+    .services-sec {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 80px;
+      gap: 40px;
+    }
+    .services-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      max-width: 480px;
+    }
+    .services-title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .services-desc {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      line-height: 1.9;
+      max-width: 320px;
+      font-weight: 300;
+    }
+    .service-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--border);
+    }
+    .svc {
+      background: var(--off-black);
+      padding: 56px 52px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .svc::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-2), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .svc:hover { background: var(--surface); }
+    .svc:hover::after { opacity: 1; }
+    .svc-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--text-3);
+      margin-bottom: 40px;
+    }
+    .svc-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .svc-price-tag {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .svc-price-tag small {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--text-3);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .svc-body {
+      font-size: 0.85rem;
+      color: var(--text-2);
+      line-height: 1.85;
+      font-weight: 300;
+      margin-bottom: 40px;
+      flex: 1;
+    }
+    .svc-features {
+      list-style: none;
+      margin-bottom: 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .svc-features li {
+      font-size: 0.82rem;
+      color: var(--text-2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .svc-features li::before {
+      content: '';
+      width: 16px; height: 1px;
+      background: var(--accent-2);
+      flex-shrink: 0;
+    }
+    .svc-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      cursor: none;
+      transition: gap 0.25s, color 0.2s;
+    }
+    .svc-cta:hover { gap: 16px; color: var(--white); }
 
-            /* ─── NAV ────────────────────────────────────────── */
-            .nav {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                z-index: 200;
-                background: rgba(5, 8, 15, 0.75);
-                backdrop-filter: blur(24px) saturate(180%);
-                -webkit-backdrop-filter: blur(24px) saturate(180%);
-                border-bottom: 1px solid var(--line);
-            }
-            .nav-inner {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                height: 64px;
-            }
-            .nav-logo {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-            .nav-logo img {
-                height: 36px;
-                width: auto;
-                opacity: 0.92;
-            }
-            .nav-logo-text {
-                font-family: "Clash Display", sans-serif;
-                font-size: 1.2rem;
-                font-weight: 600;
-                color: var(--text);
-                letter-spacing: -0.04em;
-            }
-            .nav-links {
-                display: flex;
-                align-items: center;
-                gap: 32px;
-                list-style: none;
-            }
-            .nav-links a {
-                color: var(--text-2);
-                font-size: 0.85rem;
-                font-weight: 500;
-                letter-spacing: 0.01em;
-                transition: color 0.18s;
-            }
-            .nav-links a:hover {
-                color: var(--text);
-            }
-            .nav-cta {
-                display: inline-flex;
-                align-items: center;
-                gap: 7px;
-                background: var(--blue);
-                color: #fff;
-                padding: 9px 18px;
-                border-radius: var(--r-sm);
-                font-size: 0.85rem;
-                font-weight: 600;
-                transition: all 0.2s;
-                box-shadow: 0 0 20px var(--b-glow);
-            }
-            .nav-cta:hover {
-                background: var(--blue-2);
-                box-shadow: 0 0 32px var(--b-glow);
-                transform: translateY(-1px);
-            }
-            .nav-ham {
-                display: none;
-                background: none;
-                border: none;
-                color: var(--text);
-                cursor: pointer;
-                padding: 4px;
-            }
-            .mob-nav {
-                display: none;
-                position: fixed;
-                top: 64px;
-                left: 0;
-                right: 0;
-                z-index: 199;
-                background: rgba(8, 13, 24, 0.97);
-                border-bottom: 1px solid var(--line);
-                padding: 16px 28px 24px;
-            }
-            .mob-nav.open {
-                display: block;
-            }
-            .mob-nav a {
-                display: block;
-                color: var(--text-2);
-                font-weight: 500;
-                padding: 13px 0;
-                border-bottom: 1px solid var(--line);
-                font-size: 0.95rem;
-            }
-            .mob-nav a:last-child {
-                border-bottom: none;
-                color: var(--sky);
-            }
+    /* ── COMPARISON ── */
+    .compare-sec {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+    .compare-sub {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      margin-bottom: 64px;
+      max-width: 480px;
+      font-weight: 300;
+    }
+    .compare-table {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-collapse: collapse;
+    }
+    .compare-table th {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 20px 32px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      background: var(--off-black);
+    }
+    .compare-table th:first-child { color: var(--text-2); }
+    .compare-table th.col-orbixa { color: var(--accent); }
+    .compare-table th.col-other { color: var(--text-3); }
+    .compare-table td {
+      padding: 18px 32px;
+      font-size: 0.85rem;
+      color: var(--text-2);
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:nth-child(2) {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .compare-table td.yes { color: var(--accent-2); }
+    .compare-table td.no { color: var(--text-3); }
+    .compare-table tr:hover td { background: rgba(255,255,255,0.01); }
 
-            /* ─── HERO ───────────────────────────────────────── */
-            .hero {
-                padding: 160px 0 96px;
-                position: relative;
-                z-index: 1;
-                text-align: center;
-            }
-            .hero-inner {
-                max-width: 860px;
-                margin: 0 auto;
-            }
+    /* ── PROCESS ── */
+    .process-sec {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .process-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 80px;
+      gap: 40px;
+    }
+    .process-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      line-height: 1;
+    }
+    .process-note {
+      font-size: 0.85rem;
+      color: var(--text-2);
+      max-width: 280px;
+      font-weight: 300;
+      line-height: 1.8;
+      padding-top: 8px;
+    }
+    .steps-list {
+      counter-reset: step;
+    }
+    .step-item {
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      counter-increment: step;
+    }
+    .step-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-3);
+      padding-top: 4px;
+    }
+    .step-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+    .step-desc {
+      font-size: 0.85rem;
+      color: var(--text-2);
+      line-height: 1.85;
+      font-weight: 300;
+    }
 
-            .pill {
-                display: inline-flex;
-                align-items: center;
-                gap: 7px;
-                border: 1px solid rgba(56, 189, 248, 0.2);
-                background: rgba(56, 189, 248, 0.05);
-                color: var(--sky);
-                font-size: 0.72rem;
-                font-weight: 600;
-                letter-spacing: 0.12em;
-                text-transform: uppercase;
-                padding: 6px 16px;
-                border-radius: 100px;
-                margin-bottom: 40px;
-            }
-            .pill-dot {
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background: var(--sky);
-                animation: blink 2s ease infinite;
-            }
-            @keyframes blink {
-                0%,
-                100% {
-                    opacity: 1;
-                }
-                50% {
-                    opacity: 0.3;
-                }
-            }
-            @keyframes spin {
-                from { transform: rotate(0deg); }
-                to { transform: rotate(360deg); }
-            }
+    /* ── PORTFOLIO ── */
+    .portfolio-sec {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .portfolio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 60px;
+    }
+    .portfolio-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      line-height: 1;
+    }
+    .portfolio-count {
+      font-size: 0.78rem;
+      color: var(--text-3);
+      letter-spacing: 0.08em;
+    }
+    .port-items { display: flex; flex-direction: column; gap: 2px; }
+    .port-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 32px;
+      align-items: center;
+      padding: 24px 28px;
+      background: var(--off-black);
+      border: 1px solid transparent;
+      transition: all 0.25s;
+      cursor: none;
+    }
+    .port-item:hover {
+      background: var(--surface);
+      border-color: var(--border-hover);
+    }
+    .port-cat {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+    .port-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+    .port-city {
+      font-size: 0.78rem;
+      color: var(--text-3);
+      margin-top: 2px;
+    }
+    .port-arrow {
+      color: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .port-item:hover .port-arrow { opacity: 1; transform: translateX(4px); }
 
-            .hero h1 {
-                font-size: clamp(3rem, 6vw, 5.5rem);
-                font-weight: 700;
-                line-height: 1;
-                letter-spacing: -0.04em;
-                margin-bottom: 28px;
-                color: var(--text);
-            }
-            .hero-sub {
-                font-size: clamp(1rem, 1.8vw, 1.18rem);
-                color: var(--text-2);
-                font-weight: 400;
-                line-height: 1.8;
-                max-width: 580px;
-                margin: 0 auto 48px;
-            }
-            .hero-actions {
-                display: flex;
-                gap: 12px;
-                justify-content: center;
-                flex-wrap: wrap;
-                margin-bottom: 64px;
-            }
-            .btn {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                padding: 13px 26px;
-                border-radius: var(--r-sm);
-                font-size: 0.9rem;
-                font-weight: 600;
-                transition: all 0.22s;
-                font-family: "Outfit", sans-serif;
-                cursor: pointer;
-                border: none;
-            }
-            .btn-primary {
-                background: var(--grad);
-                color: #fff;
-                box-shadow: 0 4px 28px var(--b-glow);
-            }
-            .btn-primary:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 36px var(--b-glow);
-            }
-            .btn-outline {
-                background: transparent;
-                border: 1px solid var(--line-3);
-                color: var(--text);
-            }
-            .btn-outline:hover {
-                background: rgba(255, 255, 255, 0.05);
-                border-color: var(--line-3);
-            }
+    /* ── TESTIMONIALS ── */
+    .testi-sec {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .testi-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 80px;
+    }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+    }
+    .testi-card {
+      background: var(--off-black);
+      padding: 48px 40px;
+      transition: background 0.25s;
+    }
+    .testi-card:hover { background: var(--surface); }
+    .testi-q {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.85;
+      font-weight: 300;
+      font-style: italic;
+      margin-bottom: 36px;
+    }
+    .testi-q::before { content: '"'; color: var(--accent-2); }
+    .testi-q::after { content: '"'; color: var(--accent-2); }
+    .testi-rule {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 24px;
+    }
+    .testi-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .testi-role {
+      font-size: 0.75rem;
+      color: var(--text-3);
+      letter-spacing: 0.04em;
+    }
 
-            .hero-trust {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 24px;
-                flex-wrap: wrap;
-            }
-            .trust-item {
-                display: flex;
-                align-items: center;
-                gap: 7px;
-                color: var(--text-3);
-                font-size: 0.78rem;
-                font-weight: 500;
-                letter-spacing: 0.04em;
-            }
-            .trust-item i {
-                color: var(--blue);
-                opacity: 0.8;
-            }
+    /* ── PRICING ── */
+    .pricing-sec {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pricing-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .pricing-sub {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      margin-bottom: 72px;
+      font-weight: 300;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--border);
+    }
+    .price-card {
+      background: var(--off-black);
+      padding: 56px 52px;
+      transition: background 0.3s;
+    }
+    .price-card:hover { background: var(--surface); }
+    .price-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 32px;
+    }
+    .price-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .price-amount {
+      font-family: 'Syne', sans-serif;
+      font-size: 3.6rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .price-amount small {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-3);
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0;
+    }
+    .price-note {
+      font-size: 0.8rem;
+      color: var(--text-3);
+      margin-bottom: 40px;
+    }
+    .price-divider { height: 1px; background: var(--border); margin-bottom: 32px; }
+    .price-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 44px;
+    }
+    .price-list li {
+      font-size: 0.85rem;
+      color: var(--text-2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 300;
+    }
+    .price-list li::before {
+      content: '';
+      width: 20px; height: 1px;
+      background: var(--accent-2);
+      flex-shrink: 0;
+    }
 
-            /* ─── STAT BAR ───────────────────────────────────── */
-            .stat-bar {
-                position: relative;
-                z-index: 1;
-                margin-top: 72px;
-            }
-            .stat-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                border: 1px solid var(--line-2);
-                border-radius: var(--r-lg);
-                overflow: hidden;
-                background: var(--line);
-                gap: 1px;
-            }
-            .stat-cell {
-                background: var(--bg-1);
-                padding: 28px 20px;
-                text-align: center;
-                transition: background 0.2s;
-            }
-            .stat-cell:hover {
-                background: var(--bg-2);
-            }
-            .stat-n {
-                font-family: "Clash Display", sans-serif;
-                font-size: 2rem;
-                font-weight: 700;
-                color: var(--text);
-                margin-bottom: 4px;
-                letter-spacing: -0.03em;
-            }
-            .stat-l {
-                font-size: 0.72rem;
-                color: var(--text-3);
-                font-weight: 500;
-                letter-spacing: 0.08em;
-                text-transform: uppercase;
-            }
+    /* ── FAQ ── */
+    .faq-sec {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 72px;
+    }
+    .faq-list { max-width: 760px; }
+    .faq-item { border-top: 1px solid var(--border); }
+    .faq-item:last-child { border-bottom: 1px solid var(--border); }
+    .faq-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0;
+      cursor: none;
+      gap: 20px;
+    }
+    .faq-q {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      text-align: left;
+    }
+    .faq-icon {
+      color: var(--text-3);
+      flex-shrink: 0;
+      transition: transform 0.3s, color 0.2s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
+    .faq-a {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease;
+    }
+    .faq-item.open .faq-a { max-height: 300px; }
+    .faq-a p {
+      font-size: 0.88rem;
+      color: var(--text-2);
+      line-height: 1.85;
+      font-weight: 300;
+      padding-bottom: 28px;
+    }
 
-            /* ─── SECTION COMMONS ────────────────────────────── */
-            .sec {
-                padding: 96px 0;
-                position: relative;
-                z-index: 1;
-            }
-            .sec-tag {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                font-size: 0.7rem;
-                font-weight: 700;
-                letter-spacing: 0.14em;
-                text-transform: uppercase;
-                color: var(--sky);
-                margin-bottom: 16px;
-            }
-            .sec-tag::before {
-                content: "";
-                width: 18px;
-                height: 1px;
-                background: var(--sky);
-            }
-            .sec-title {
-                font-size: clamp(2rem, 4vw, 3rem);
-                margin-bottom: 16px;
-                color: var(--text);
-            }
-            .sec-sub {
-                font-size: 0.98rem;
-                color: var(--text-2);
-                line-height: 1.8;
-                max-width: 540px;
-            }
-            .tc {
-                text-align: center;
-            }
-            .tc .sec-tag {
-                justify-content: center;
-            }
-            .tc .sec-tag::before {
-                display: none;
-            }
-            .tc .sec-sub {
-                margin: 0 auto;
-            }
-            .rule {
-                height: 1px;
-                background: linear-gradient(
-                    90deg,
-                    transparent,
-                    var(--line-2),
-                    transparent
-                );
-            }
+    /* ── CTA ── */
+    .cta-sec {
+      padding: 160px 0;
+    }
+    .cta-inner {
+      text-align: center;
+    }
+    .cta-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 6vw, 7rem);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: var(--white);
+      line-height: 0.92;
+      margin-bottom: 32px;
+    }
+    .cta-title em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .cta-sub {
+      font-size: 1rem;
+      color: var(--text-2);
+      margin-bottom: 52px;
+      font-weight: 300;
+    }
 
-            /* ─── PROBLEM ────────────────────────────────────── */
-            .prob-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 1px;
-                background: var(--line);
-                border: 1px solid var(--line);
-                border-radius: var(--r-lg);
-                overflow: hidden;
-                margin-top: 56px;
-            }
-            .prob-card {
-                background: var(--bg-1);
-                padding: 40px 32px;
-                transition: background 0.22s;
-            }
-            .prob-card:hover {
-                background: var(--bg-2);
-            }
-            .prob-ico {
-                width: 46px;
-                height: 46px;
-                border-radius: 12px;
-                background: rgba(239, 68, 68, 0.08);
-                border: 1px solid rgba(239, 68, 68, 0.14);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #ef4444;
-                margin-bottom: 20px;
-            }
-            .prob-card h3 {
-                font-size: 1.05rem;
-                margin-bottom: 10px;
-            }
-            .prob-card p {
-                font-size: 0.875rem;
-                color: var(--text-2);
-                line-height: 1.75;
-            }
+    /* ── CONTACT FORM ── */
+    .contact-form {
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .form-row { margin-bottom: 16px; }
+    .form-label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 8px;
+    }
+    .form-input, .form-textarea {
+      width: 100%;
+      background: var(--off-black);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      cursor: none;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: var(--accent-2); }
+    .form-textarea { resize: vertical; min-height: 120px; }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--text-3); }
+    #formMsg {
+      display: none;
+      padding: 14px 18px;
+      border-radius: var(--r);
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
 
-            /* ─── SERVICES ───────────────────────────────────── */
-            .svc-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-                margin-top: 56px;
-            }
-            .svc-card {
-                background: var(--bg-1);
-                border: 1px solid var(--line-2);
-                border-radius: var(--r-xl);
-                padding: 44px 40px;
-                position: relative;
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                transition: all 0.3s;
-            }
-            .svc-card::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 1px;
-                background: var(--grad);
-                opacity: 0;
-                transition: opacity 0.3s;
-            }
-            .svc-card:hover {
-                border-color: rgba(37, 99, 235, 0.35);
-                box-shadow: 0 0 80px rgba(37, 99, 235, 0.08);
-                transform: translateY(-4px);
-            }
-            .svc-card:hover::before {
-                opacity: 1;
-            }
-            .svc-ico {
-                width: 52px;
-                height: 52px;
-                border-radius: 13px;
-                background: rgba(37, 99, 235, 0.1);
-                border: 1px solid rgba(37, 99, 235, 0.18);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--sky);
-                margin-bottom: 28px;
-            }
-            .svc-card h3 {
-                font-size: 1.6rem;
-                margin-bottom: 8px;
-            }
-            .svc-desc {
-                font-size: 0.875rem;
-                color: var(--text-2);
-                margin-top: 8px;
-                margin-bottom: 0;
-            }
-            .svc-price {
-                font-family: "Clash Display", sans-serif;
-                font-size: 2.4rem;
-                font-weight: 700;
-                letter-spacing: -0.03em;
-                margin: 20px 0 28px;
-            }
-            .svc-price small {
-                font-size: 0.9rem;
-                color: var(--text-3);
-                font-weight: 400;
-                font-family: "Outfit", sans-serif;
-            }
-            .svc-list {
-                list-style: none;
-                flex: 1;
-                margin-bottom: 32px;
-            }
-            .svc-list li {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                padding: 9px 0;
-                font-size: 0.875rem;
-                color: var(--text-2);
-                border-bottom: 1px solid var(--line);
-            }
-            .svc-list li:last-child {
-                border-bottom: none;
-            }
-            .svc-list li i {
-                color: var(--sky);
-                flex-shrink: 0;
-            }
-            .svc-link {
-                display: inline-flex;
-                align-items: center;
-                gap: 7px;
-                color: var(--sky);
-                font-weight: 600;
-                font-size: 0.875rem;
-                transition: gap 0.2s;
-                width: fit-content;
-            }
-            .svc-link:hover {
-                gap: 12px;
-            }
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 60px 0;
+    }
+    .foot-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .foot-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+    .foot-logo span { color: var(--accent); }
+    .foot-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .foot-links a {
+      font-size: 0.78rem;
+      color: var(--text-3);
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+    .foot-links a:hover { color: var(--text); }
+    .foot-copy {
+      font-size: 0.75rem;
+      color: var(--text-3);
+      letter-spacing: 0.04em;
+    }
 
-            /* ─── PROCESS ────────────────────────────────────── */
-            .steps {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 20px;
-                margin-top: 56px;
-                position: relative;
-            }
-            .steps::before {
-                content: "";
-                position: absolute;
-                top: 25px;
-                left: calc(16.666% + 16px);
-                right: calc(16.666% + 16px);
-                height: 1px;
-                background: linear-gradient(90deg, var(--blue), var(--sky));
-                opacity: 0.18;
-                z-index: 0;
-            }
-            .step {
-                text-align: center;
-                position: relative;
-                z-index: 1;
-            }
-            .step-n {
-                width: 52px;
-                height: 52px;
-                border-radius: 50%;
-                background: var(--grad);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 0 auto 24px;
-                font-family: "Clash Display", sans-serif;
-                font-size: 1.2rem;
-                font-weight: 700;
-                color: #fff;
-                box-shadow: 0 0 28px var(--b-glow);
-            }
-            .step h3 {
-                font-size: 1.05rem;
-                margin-bottom: 8px;
-            }
-            .step p {
-                font-size: 0.85rem;
-                color: var(--text-2);
-                line-height: 1.75;
-                max-width: 210px;
-                margin: 0 auto;
-            }
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.d1 { transition-delay: 0.1s; }
+    .reveal.d2 { transition-delay: 0.2s; }
+    .reveal.d3 { transition-delay: 0.3s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-            /* ─── PORTFOLIO ──────────────────────────────────── */
-            .port-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-                margin-top: 56px;
-            }
-            .port-card {
-                background: var(--bg-1);
-                border: 1px solid var(--line-2);
-                border-radius: var(--r-lg);
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
-                transition: all 0.3s;
-            }
-            .port-card:hover {
-                border-color: rgba(37, 99, 235, 0.3);
-                transform: translateY(-5px);
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            }
-            .port-thumb {
-                height: 220px;
-                position: relative;
-                overflow: hidden;
-                background: var(--bg-2);
-            }
-            .port-thumb img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: top;
-                transition: transform 0.5s ease;
-            }
-            .port-card:hover .port-thumb img {
-                transform: scale(1.04);
-            }
-            .port-thumb-fallback {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .port-thumb-fallback i {
-                opacity: 0.2;
-            }
-            .port-body {
-                padding: 24px 28px;
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-            }
-            .port-tag {
-                display: inline-block;
-                font-size: 0.68rem;
-                font-weight: 700;
-                letter-spacing: 0.1em;
-                text-transform: uppercase;
-                color: var(--sky);
-                background: rgba(56, 189, 248, 0.08);
-                border: 1px solid rgba(56, 189, 248, 0.18);
-                padding: 3px 10px;
-                border-radius: 4px;
-                margin-bottom: 12px;
-            }
-            .port-card h3 {
-                font-size: 1.1rem;
-                margin-bottom: 4px;
-            }
-            .port-card p {
-                font-size: 0.85rem;
-                color: var(--text-2);
-                flex: 1;
-                margin-bottom: 18px;
-            }
-            .port-link {
-                display: inline-flex;
-                align-items: center;
-                gap: 6px;
-                color: var(--sky);
-                font-size: 0.85rem;
-                font-weight: 600;
-                transition: gap 0.2s;
-            }
-            .port-link:hover {
-                gap: 10px;
-            }
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      .nav-links, .nav-btn { display: none; }
+      .nav-ham { display: block; }
+      h1 { font-size: clamp(2.8rem, 11vw, 5rem); }
+      .hero-bottom { flex-direction: column; align-items: flex-start; }
+      .numbers-grid, .service-cards, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
+      .services-header, .process-header { flex-direction: column; }
+      .step-item { grid-template-columns: 48px 1fr; }
+      .step-desc { display: none; }
+      .portfolio-header { flex-direction: column; align-items: flex-start; }
+      .port-item { grid-template-columns: 60px 1fr auto; }
+      .compare-table { display: none; }
+      .container { padding: 0 20px; }
+      .nav-inner { padding: 0 20px; }
+      .cta-title { font-size: clamp(2.4rem, 10vw, 4rem); }
+    }
+  </style>
+</head>
+<body>
 
-            /* ─── TESTIMONIALS ───────────────────────────────── */
-            .testi-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 18px;
-                margin-top: 56px;
-            }
-            .testi-card {
-                background: var(--bg-1);
-                border: 1px solid var(--line-2);
-                border-radius: var(--r-lg);
-                padding: 32px;
-                transition: all 0.22s;
-            }
-            .testi-card:hover {
-                border-color: var(--line-3);
-                transform: translateY(-4px);
-            }
-            .testi-stars {
-                display: flex;
-                gap: 3px;
-                margin-bottom: 18px;
-                color: #f59e0b;
-            }
-            .testi-q {
-                font-size: 0.9rem;
-                color: var(--text-2);
-                line-height: 1.8;
-                margin-bottom: 24px;
-                font-style: italic;
-            }
-            .testi-author {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-            }
-            .testi-av {
-                width: 38px;
-                height: 38px;
-                border-radius: 50%;
-                background: var(--grad);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-family: "Clash Display", sans-serif;
-                font-weight: 600;
-                font-size: 0.8rem;
-                color: #fff;
-                flex-shrink: 0;
-            }
-            .testi-name {
-                font-size: 0.88rem;
-                font-weight: 600;
-                color: var(--text);
-            }
-            .testi-role {
-                font-size: 0.75rem;
-                color: var(--text-3);
-            }
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-            /* ─── PRICING ────────────────────────────────────── */
-            .price-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-                max-width: 880px;
-                margin: 56px auto 0;
-            }
-            .price-card {
-                background: var(--bg-1);
-                border: 1px solid var(--line-2);
-                border-radius: var(--r-xl);
-                padding: 40px;
-                transition: all 0.3s;
-            }
-            .price-card:hover {
-                border-color: rgba(37, 99, 235, 0.35);
-                box-shadow: 0 0 60px rgba(37, 99, 235, 0.08);
-            }
-            .price-card h3 {
-                font-size: 1.2rem;
-                margin-bottom: 6px;
-            }
-            .price-sub {
-                font-size: 0.82rem;
-                color: var(--text-3);
-                margin-bottom: 24px;
-            }
-            .price-amt {
-                font-family: "Clash Display", sans-serif;
-                font-size: 3rem;
-                font-weight: 700;
-                letter-spacing: -0.04em;
-                color: var(--text);
-            }
-            .price-amt small {
-                font-size: 0.95rem;
-                color: var(--text-3);
-                font-weight: 400;
-                font-family: "Outfit", sans-serif;
-            }
-            .price-rule {
-                height: 1px;
-                background: var(--line);
-                margin: 28px 0;
-            }
-            .tier-label {
-                font-size: 0.68rem;
-                font-weight: 700;
-                letter-spacing: 0.12em;
-                text-transform: uppercase;
-                color: var(--sky);
-                margin-bottom: 12px;
-            }
-            .price-list {
-                list-style: none;
-                margin-bottom: 20px;
-            }
-            .price-list li {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                padding: 8px 0;
-                font-size: 0.855rem;
-                color: var(--text-2);
-                border-bottom: 1px solid var(--line);
-            }
-            .price-list li:last-child {
-                border-bottom: none;
-            }
-            .price-list li i {
-                color: var(--blue);
-                flex-shrink: 0;
-            }
-            .price-note {
-                display: flex;
-                align-items: center;
-                gap: 7px;
-                font-size: 0.78rem;
-                color: var(--text-3);
-                margin-bottom: 28px;
-            }
+<!-- ── NAV ── -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Orbixa<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#tjanster">Tjänster</a></li>
+      <li><a href="#projekt">Projekt</a></li>
+      <li><a href="#priser">Priser</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="#kontakt" class="nav-btn">Kom igång <i data-lucide="arrow-right" style="width:13px;height:13px"></i></a>
+    <button class="nav-ham" id="navHam" aria-label="Meny">
+      <i data-lucide="menu" style="width:22px;height:22px"></i>
+    </button>
+  </div>
+</nav>
 
-            /* ─── FAQ ────────────────────────────────────────── */
-            .faq-wrap {
-                max-width: 700px;
-                margin: 56px auto 0;
-            }
-            .faq-item {
-                border-bottom: 1px solid var(--line);
-            }
-            .faq-q {
-                width: 100%;
-                background: none;
-                border: none;
-                color: var(--text);
-                font-family: "Clash Display", sans-serif;
-                font-size: 0.98rem;
-                font-weight: 600;
-                letter-spacing: -0.01em;
-                padding: 22px 0;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                cursor: pointer;
-                text-align: left;
-                gap: 16px;
-                transition: color 0.18s;
-            }
-            .faq-q:hover {
-                color: var(--sky);
-            }
-            .faq-q i {
-                color: var(--blue);
-                transition: transform 0.28s;
-                flex-shrink: 0;
-            }
-            .faq-item.open .faq-q i {
-                transform: rotate(180deg);
-            }
-            .faq-a {
-                max-height: 0;
-                overflow: hidden;
-                transition:
-                    max-height 0.3s ease,
-                    padding 0.3s;
-            }
-            .faq-item.open .faq-a {
-                max-height: 200px;
-                padding-bottom: 20px;
-            }
-            .faq-a p {
-                font-size: 0.875rem;
-                color: var(--text-2);
-                line-height: 1.8;
-            }
+<div class="mob-nav" id="mobNav">
+  <a href="#tjanster" onclick="closeMob()">Tjänster</a>
+  <a href="#projekt" onclick="closeMob()">Projekt</a>
+  <a href="#priser" onclick="closeMob()">Priser</a>
+  <a href="#faq" onclick="closeMob()">FAQ</a>
+  <a href="#kontakt" onclick="closeMob()">Kom igång →</a>
+</div>
 
-            /* ─── CTA ────────────────────────────────────────── */
-            .cta-sec {
-                padding: 96px 0;
-                position: relative;
-                z-index: 1;
-            }
-            .cta-box {
-                background: linear-gradient(
-                    135deg,
-                    rgba(37, 99, 235, 0.1),
-                    rgba(56, 189, 248, 0.05)
-                );
-                border: 1px solid rgba(37, 99, 235, 0.22);
-                border-radius: var(--r-xl);
-                padding: 80px 48px;
-                text-align: center;
-                position: relative;
-                overflow: hidden;
-            }
-            .cta-box::before {
-                content: "";
-                position: absolute;
-                top: -120px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 700px;
-                height: 400px;
-                background: radial-gradient(
-                    ellipse,
-                    rgba(37, 99, 235, 0.14),
-                    transparent 70%
-                );
-                pointer-events: none;
-            }
-            .cta-box h2 {
-                font-size: clamp(2rem, 4vw, 3.2rem);
-                margin-bottom: 16px;
-                position: relative;
-            }
-            .cta-box p {
-                font-size: 1rem;
-                color: var(--text-2);
-                max-width: 500px;
-                margin: 0 auto 36px;
-                position: relative;
-            }
-
-            /* ─── FOOTER ─────────────────────────────────────── */
-            footer {
-                border-top: 1px solid var(--line);
-                padding: 56px 0 28px;
-                position: relative;
-                z-index: 1;
-            }
-            .foot-grid {
-                display: grid;
-                grid-template-columns: 2fr 1fr 1fr;
-                gap: 56px;
-                margin-bottom: 44px;
-            }
-            .foot-brand p {
-                font-size: 0.84rem;
-                color: var(--text-3);
-                line-height: 1.8;
-                margin-top: 14px;
-                max-width: 240px;
-            }
-            .foot-col h4 {
-                font-size: 0.68rem;
-                font-weight: 700;
-                letter-spacing: 0.14em;
-                text-transform: uppercase;
-                color: var(--text-3);
-                margin-bottom: 18px;
-            }
-            .foot-links {
-                list-style: none;
-            }
-            .foot-links li {
-                margin-bottom: 10px;
-            }
-            .foot-links a {
-                color: var(--text-2);
-                font-size: 0.84rem;
-                transition: color 0.18s;
-            }
-            .foot-links a:hover {
-                color: var(--sky);
-            }
-            .foot-bottom {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding-top: 24px;
-                border-top: 1px solid var(--line);
-            }
-            .foot-bottom p {
-                font-size: 0.76rem;
-                color: var(--text-3);
-            }
-
-            /* ─── REVEAL ─────────────────────────────────────── */
-            .r {
-                opacity: 0;
-                transform: translateY(24px);
-                transition:
-                    opacity 0.65s ease,
-                    transform 0.65s ease;
-            }
-            .r.in {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            .r.d1 {
-                transition-delay: 0.08s;
-            }
-            .r.d2 {
-                transition-delay: 0.16s;
-            }
-            .r.d3 {
-                transition-delay: 0.24s;
-            }
-
-            /* ─── RESPONSIVE ─────────────────────────────────── */
-            @media (max-width: 1024px) {
-                .port-grid {
-                    grid-template-columns: 1fr;
-                }
-                .testi-grid {
-                    grid-template-columns: 1fr 1fr;
-                }
-            }
-            @media (max-width: 768px) {
-                .wrap {
-                    padding: 0 18px;
-                }
-                .nav-links,
-                .nav-cta {
-                    display: none;
-                }
-                .nav-ham {
-                    display: block;
-                }
-                .hero {
-                    padding: 120px 0 60px;
-                }
-                .stat-grid,
-                .prob-grid {
-                    grid-template-columns: 1fr;
-                }
-                .svc-grid,
-                .steps,
-                .testi-grid,
-                .price-grid,
-                .port-grid {
-                    grid-template-columns: 1fr;
-                }
-                .steps::before {
-                    display: none;
-                }
-                .foot-grid {
-                    grid-template-columns: 1fr;
-                    gap: 32px;
-                }
-                .foot-bottom {
-                    flex-direction: column;
-                    gap: 10px;
-                    text-align: center;
-                }
-                .cta-box {
-                    padding: 48px 20px;
-                }
-                .sec {
-                    padding: 60px 0;
-                }
-                .hero-actions .btn {
-                    width: 100%;
-                    max-width: 320px;
-                    justify-content: center;
-                }
-                .hero-actions {
-                    flex-direction: column;
-                    align-items: center;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <div class="ambient"></div>
-
-        <!-- ── NAV ── -->
-        <nav class="nav">
-            <div class="wrap">
-                <div class="nav-inner">
-                    <a href="#" class="nav-logo">
-                        <img
-                            src="/static/orbixa.png"
-                            alt="Orbixa"
-                            style="height: 60px"
-                            onerror="this.style.display = 'none'"
-                        />
-                    </a>
-                    <ul class="nav-links">
-                        <li><a href="#tjanster">Tjänster</a></li>
-                        <li><a href="#projekt">Projekt</a></li>
-                        <li><a href="#priser">Priser</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                    </ul>
-                    <a href="#kontakt" class="nav-cta">
-                        Kom igång
-                        <i
-                            data-lucide="arrow-right"
-                            style="width: 14px; height: 14px"
-                        ></i>
-                    </a>
-                    <button class="nav-ham" onclick="toggleNav()">
-                        <i
-                            data-lucide="menu"
-                            style="width: 22px; height: 22px"
-                        ></i>
-                    </button>
-                </div>
-            </div>
-        </nav>
-
-        <div class="mob-nav" id="mobNav">
-            <a href="#tjanster" onclick="toggleNav()">Tjänster</a>
-            <a href="#projekt" onclick="toggleNav()">Projekt</a>
-            <a href="#priser" onclick="toggleNav()">Priser</a>
-            <a href="#faq" onclick="toggleNav()">FAQ</a>
-            <a href="#kontakt" onclick="toggleNav()">Kom igång</a>
-        </div>
-
-        <!-- ── HERO ── -->
-        <section class="hero">
-            <div class="wrap">
-                <div class="hero-inner">
-                    <div class="pill">
-                        <span class="pill-dot"></span>
-                        Specialiserade på svenska småföretag
-                    </div>
-                    <h1>
-                        Ditt företag online.<br />
-                        <span class="grad-text">Professionellt.</span>
-                    </h1>
-                    <p class="hero-sub">
-                        Professionella hemsidor och AI-chatbots för svenska
-                        småföretag. Fast pris, ingen bindningstid, inga
-                        överraskningar.
-                    </p>
-                    <div class="hero-actions">
-                        <a href="#kontakt" class="btn btn-primary">
-                            Boka kostnadsfritt samtal
-                            <i
-                                data-lucide="arrow-right"
-                                style="width: 16px; height: 16px"
-                            ></i>
-                        </a>
-                        <a href="#tjanster" class="btn btn-outline">
-                            Se våra tjänster
-                            <i
-                                data-lucide="chevron-down"
-                                style="width: 16px; height: 16px"
-                            ></i>
-                        </a>
-                    </div>
-                    <div class="hero-trust">
-                        <div class="trust-item">
-                            <i
-                                data-lucide="zap"
-                                style="width: 14px; height: 14px"
-                            ></i>
-                            Snabb leverans
-                        </div>
-                        <div class="trust-item">
-                            <i
-                                data-lucide="shield-check"
-                                style="width: 14px; height: 14px"
-                            ></i>
-                            GDPR-kompatibel
-                        </div>
-                        <div class="trust-item">
-                            <i
-                                data-lucide="map-pin"
-                                style="width: 14px; height: 14px"
-                            ></i>
-                            Baserade i Sverige
-                        </div>
-                        <div class="trust-item">
-                            <i
-                                data-lucide="tag"
-                                style="width: 14px; height: 14px"
-                            ></i>
-                            Fast pris
-                        </div>
-                    </div>
-                    <div class="stat-bar r">
-                        <div class="stat-grid">
-                            <div class="stat-cell">
-                                <div class="stat-n">100%</div>
-                                <div class="stat-l">Nöjda kunder</div>
-                            </div>
-                            <div class="stat-cell">
-                                <div class="stat-n">24/7</div>
-                                <div class="stat-l">AI-support för kunder</div>
-                            </div>
-                            <div class="stat-cell">
-                                <div class="stat-n">Fast pris</div>
-                                <div class="stat-l">Inga dolda avgifter</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="rule"></div>
-
-        <!-- ── PROBLEM ── -->
-        <section class="sec" id="problem">
-            <div class="wrap">
-                <div class="tc r">
-                    <div class="sec-tag">Utmaningen</div>
-                    <h2 class="sec-title">
-                        De flesta småföretag förlorar<br />kunder varje dag
-                    </h2>
-                    <p class="sec-sub">
-                        För att de saknar en professionell närvaro online — där
-                        kunderna faktiskt söker.
-                    </p>
-                </div>
-                <div class="prob-grid">
-                    <div class="prob-card r">
-                        <div class="prob-ico">
-                            <i
-                                data-lucide="search-x"
-                                style="width: 20px; height: 20px"
-                            ></i>
-                        </div>
-                        <h3>Osynliga på Google</h3>
-                        <p>
-                            70% av kunderna googlar ett företag innan de
-                            kontaktar det. Utan hemsida förlorar du dem direkt
-                            till konkurrenten.
-                        </p>
-                    </div>
-                    <div class="prob-card r d1">
-                        <div class="prob-ico">
-                            <i
-                                data-lucide="phone-missed"
-                                style="width: 20px; height: 20px"
-                            ></i>
-                        </div>
-                        <h3>Missade förfrågningar</h3>
-                        <p>
-                            Du kan inte vara tillgänglig dygnet runt. Men din
-                            hemsida och AI-chatbot kan — och svarar på frågor
-                            medan du jobbar.
-                        </p>
-                    </div>
-                    <div class="prob-card r d2">
-                        <div class="prob-ico">
-                            <i
-                                data-lucide="alert-triangle"
-                                style="width: 20px; height: 20px"
-                            ></i>
-                        </div>
-                        <h3>Oproffsigt intryck</h3>
-                        <p>
-                            En föråldrad hemsida signalerar bristande
-                            seriositet. Första intrycket avgör om kunden stannar
-                            kvar.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="rule"></div>
-
-        <!-- ── SERVICES ── -->
-        <section class="sec" id="tjanster">
-            <div class="wrap">
-                <div class="r">
-                    <div class="sec-tag">Tjänster</div>
-                    <h2 class="sec-title">
-                        Allt du behöver för att<br />växa online
-                    </h2>
-                    <p class="sec-sub">
-                        Två produkter som fungerar fristående — eller ännu
-                        starkare tillsammans.
-                    </p>
-                </div>
-                <div class="svc-grid">
-                    <div class="svc-card r">
-                        <div class="svc-ico">
-                            <i
-                                data-lucide="layout-template"
-                                style="width: 24px; height: 24px"
-                            ></i>
-                        </div>
-                        <h3>Professionell hemsida</h3>
-                        <p class="svc-desc">
-                            Skräddarsydd för din bransch. Mobilanpassad och snabb.
-                        </p>
-                        <div class="svc-price grad-text">8 000 kr</div>
-                        <ul class="svc-list">
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >Mobilanpassad & snabb
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >SEO-grundoptimerad
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >Kontaktformulär & karta
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >SSL-certifikat inkluderat
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="plus"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >Underhåll 500 kr/mån (valfritt)
-                            </li>
-                        </ul>
-                        <a href="#kontakt" class="svc-link"
-                            >Beställ hemsida
-                            <i
-                                data-lucide="arrow-right"
-                                style="width: 15px; height: 15px"
-                            ></i
-                        ></a>
-                    </div>
-                    <div class="svc-card r d1">
-                        <div class="svc-ico">
-                            <i
-                                data-lucide="message-square-dot"
-                                style="width: 24px; height: 24px"
-                            ></i>
-                        </div>
-                        <h3>Orbixa Chat AI</h3>
-                        <p class="svc-desc">
-                            AI-chatbot som svarar på kundernas frågor dygnet
-                            runt.
-                        </p>
-                        <div class="svc-price grad-text">
-                            från 699 kr <small>/mån</small>
-                        </div>
-                        <ul class="svc-list">
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >Installation med en rad kod
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >Tränad på ditt företag
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >Svarar på frågor 24/7
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >White-label — inga logotyper
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >GDPR-kompatibel (EU-servrar)
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="plus"
-                                    style="width: 15px; height: 15px"
-                                ></i
-                                >Uppsättning 990 kr (engångs)
-                            </li>
-                        </ul>
-                        <a href="#kontakt" class="svc-link"
-                            >Kom igång med Chat AI
-                            <i
-                                data-lucide="arrow-right"
-                                style="width: 15px; height: 15px"
-                            ></i
-                        ></a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="rule"></div>
-
-        <!-- ── PROCESS ── -->
-        <section class="sec">
-            <div class="wrap">
-                <div class="tc r">
-                    <div class="sec-tag">Processen</div>
-                    <h2 class="sec-title">Tre steg. Klart.</h2>
-                    <p class="sec-sub">
-                        Du fokuserar på din verksamhet — vi levererar allt
-                        digitalt.
-                    </p>
-                </div>
-                <div class="steps">
-                    <div class="step r">
-                        <div class="step-n">1</div>
-                        <h3>Vi bygger</h3>
-                        <p>
-                            Vi tar fram din hemsida eller sätter upp
-                            AI-chatboten baserat på information om ditt företag.
-                        </p>
-                    </div>
-                    <div class="step r d1">
-                        <div class="step-n">2</div>
-                        <h3>Du godkänner</h3>
-                        <p>
-                            Du granskar resultatet och begär justeringar. Inget
-                            publiceras utan ditt godkännande.
-                        </p>
-                    </div>
-                    <div class="step r d2">
-                        <div class="step-n">3</div>
-                        <h3>Du syns online</h3>
-                        <p>
-                            Vi lanserar och dina kunder hittar dig — dygnet
-                            runt, oavsett om du jobbar eller sover.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="rule"></div>
-
-        <!-- ── PORTFOLIO ── -->
-        <section class="sec" id="projekt">
-            <div class="wrap">
-                <div class="r">
-                    <div class="sec-tag">Portfolio</div>
-                    <h2 class="sec-title">Projekt vi byggt</h2>
-                    <p class="sec-sub">
-                        Verkliga hemsidor för svenska småföretag.
-                    </p>
-                </div>
-                <div class="port-grid" id="portGrid"></div>
-            </div>
-        </section>
-
-        <div class="rule"></div>
-
-        <!-- ── TESTIMONIALS ── -->
-        <section class="sec">
-            <div class="wrap">
-                <div class="tc r">
-                    <div class="sec-tag">Omdömen</div>
-                    <h2 class="sec-title">Vad kunderna säger</h2>
-                </div>
-                <div class="testi-grid">
-                    <div class="testi-card r">
-                        <div class="testi-stars">
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                        </div>
-                        <p class="testi-q">
-                            "Jag hade ingen hemsida alls. Fick en professionell
-                            sida som ser ut att kosta tio gånger så mycket. Redan
-                            första veckan kom tre nya kunder via Google."
-                        </p>
-                        <div class="testi-author">
-                            <div class="testi-av">EP</div>
-                            <div>
-                                <div class="testi-name">Erik Persson</div>
-                                <div class="testi-role">
-                                    Ägare, lokal rörmokare
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testi-card r d1">
-                        <div class="testi-stars">
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                        </div>
-                        <p class="testi-q">
-                            "AI-chatboten svarar på kundernas frågor medan vi
-                            jobbar. Vi sparar timmar varje vecka och missar inte
-                            längre en enda förfrågan."
-                        </p>
-                        <div class="testi-author">
-                            <div class="testi-av">LH</div>
-                            <div>
-                                <div class="testi-name">Linda Holm</div>
-                                <div class="testi-role">
-                                    Grundare, lokal städfirma
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testi-card r d2">
-                        <div class="testi-stars">
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                            <i
-                                data-lucide="star"
-                                style="width: 15px; height: 15px; fill: #f59e0b"
-                            ></i>
-                        </div>
-                        <p class="testi-q">
-                            "Fast pris, inga konstigheter. Hemsidan är snabb och
-                            fungerar perfekt på mobilen. Exakt vad vi behövde —
-                            utan att behöva förstå teknik."
-                        </p>
-                        <div class="testi-author">
-                            <div class="testi-av">KB</div>
-                            <div>
-                                <div class="testi-name">Klas Bengtsson</div>
-                                <div class="testi-role">
-                                    Ägare, lokal bilverkstad
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="rule"></div>
-
-        <!-- ── PRICING ── -->
-        <section class="sec" id="priser">
-            <div class="wrap">
-                <div class="tc r">
-                    <div class="sec-tag">Priser</div>
-                    <h2 class="sec-title">Transparenta priser</h2>
-                    <p class="sec-sub">
-                        Det du ser är det du betalar. Inga dolda avgifter.
-                    </p>
-                </div>
-                <div class="price-grid">
-                    <div class="price-card r">
-                        <h3>Hemsida</h3>
-                        <p class="price-sub">
-                            Komplett hemsida med professionell design
-                        </p>
-                        <div class="price-amt">8 000 kr</div>
-                        <div class="price-rule"></div>
-                        <ul class="price-list">
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 14px; height: 14px"
-                                ></i
-                                >Design anpassad för din bransch
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 14px; height: 14px"
-                                ></i
-                                >Mobilanpassad & SEO-grundoptimerad
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 14px; height: 14px"
-                                ></i
-                                >Kontaktformulär + Google Maps
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 14px; height: 14px"
-                                ></i
-                                >SSL-certifikat (HTTPS)
-                            </li>
-                        </ul>
-                        <div class="tier-label">Underhåll (valfritt)</div>
-                        <ul class="price-list" style="margin-bottom: 28px">
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 14px; height: 14px"
-                                ></i
-                                >500 kr/mån — hosting, support & uppdateringar
-                            </li>
-                        </ul>
-                        <a
-                            href="#kontakt"
-                            class="btn btn-primary"
-                            style="width: 100%; justify-content: center"
-                        >
-                            Beställ nu
-                            <i
-                                data-lucide="arrow-right"
-                                style="width: 15px; height: 15px"
-                            ></i>
-                        </a>
-                    </div>
-                    <div class="price-card r d1">
-                        <h3>Orbixa Chat AI</h3>
-                        <p class="price-sub">
-                            AI-driven kundtjänst dygnet runt
-                        </p>
-                        <div class="price-amt">699 kr <small>/mån</small></div>
-                        <div class="price-rule"></div>
-                        <div class="tier-label">Start — 699 kr/mån</div>
-                        <ul class="price-list">
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 14px; height: 14px"
-                                ></i
-                                >Tränad på ditt företags info
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 14px; height: 14px"
-                                ></i
-                                >Installation med en kodrad
-                            </li>
-                        </ul>
-                        <div class="tier-label">Pro — 999 kr/mån</div>
-                        <ul class="price-list">
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 14px; height: 14px"
-                                ></i
-                                >Obegränsade konversationer
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 14px; height: 14px"
-                                ></i
-                                >Avancerad anpassning & branding
-                            </li>
-                            <li>
-                                <i
-                                    data-lucide="check"
-                                    style="width: 14px; height: 14px"
-                                ></i
-                                >Prioriterad support
-                            </li>
-                        </ul>
-                        <div class="price-note">
-                            <i
-                                data-lucide="info"
-                                style="width: 13px; height: 13px"
-                            ></i>
-                            Engångsavgift för uppsättning: 990 kr
-                        </div>
-                        <a
-                            href="#kontakt"
-                            class="btn btn-primary"
-                            style="width: 100%; justify-content: center"
-                        >
-                            Kom igång
-                            <i
-                                data-lucide="arrow-right"
-                                style="width: 15px; height: 15px"
-                            ></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="rule"></div>
-
-        <!-- ── FAQ ── -->
-        <section class="sec" id="faq">
-            <div class="wrap">
-                <div class="tc r">
-                    <div class="sec-tag">FAQ</div>
-                    <h2 class="sec-title">Vanliga frågor</h2>
-                </div>
-                <div class="faq-wrap">
-                    <div class="faq-item r">
-                        <button class="faq-q" onclick="toggleFaq(this)">
-                            Hur lång tid tar det att få en hemsida?
-                            <i
-                                data-lucide="chevron-down"
-                                style="width: 17px; height: 17px"
-                            ></i>
-                        </button>
-                        <div class="faq-a">
-                            <p>
-                                Vi levererar snabbt efter att vi fått all information.
-                                Du granskar resultatet och begär justeringar — inget
-                                publiceras utan ditt godkännande.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="faq-item r">
-                        <button class="faq-q" onclick="toggleFaq(this)">
-                            Vad händer om jag inte är nöjd?
-                            <i
-                                data-lucide="chevron-down"
-                                style="width: 17px; height: 17px"
-                            ></i>
-                        </button>
-                        <div class="faq-a">
-                            <p>
-                                Vi gör justeringar tills du är nöjd. Inget
-                                publiceras utan ditt godkännande. Din nöjdhet är
-                                vår prioritet.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="faq-item r">
-                        <button class="faq-q" onclick="toggleFaq(this)">
-                            Kan jag ha både hemsida och chatbot?
-                            <i
-                                data-lucide="chevron-down"
-                                style="width: 17px; height: 17px"
-                            ></i>
-                        </button>
-                        <div class="faq-a">
-                            <p>
-                                Absolut — kombinationen ger mest effekt.
-                                Hemsidan bygger förtroende, chatboten fångar
-                                leads och svarar på frågor dygnet runt.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="faq-item r">
-                        <button class="faq-q" onclick="toggleFaq(this)">
-                            Är chatboten GDPR-säker?
-                            <i
-                                data-lucide="chevron-down"
-                                style="width: 17px; height: 17px"
-                            ></i>
-                        </button>
-                        <div class="faq-a">
-                            <p>
-                                Ja. All data lagras på servrar inom EU och vi
-                                följer GDPR fullt ut. Inga uppgifter skickas
-                                utanför Europa.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="faq-item r">
-                        <button class="faq-q" onclick="toggleFaq(this)">
-                            Vad kostar underhållet?
-                            <i
-                                data-lucide="chevron-down"
-                                style="width: 17px; height: 17px"
-                            ></i>
-                        </button>
-                        <div class="faq-a">
-                            <p>
-                                500 kr/mån — valfritt. Inkluderar webbhotell,
-                                säkerhetsuppdateringar, backup och teknisk
-                                support.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ── CONTACT ── -->
-        <section class="cta-sec" id="kontakt">
-            <div class="wrap">
-                <div class="cta-box r">
-                    <h2>Redo att synas online?</h2>
-                    <p>
-                        Boka ett kostnadsfritt samtal. Vi berättar vad som
-                        passar ditt företag — utan förpliktelser.
-                    </p>
-                    <form id="contactForm" style="max-width: 420px; margin: 0 auto; text-align: left;">
-                        <div id="formStatus" style="display: none; padding: 12px 16px; border-radius: var(--r-sm); margin-bottom: 16px; font-size: 0.85rem;"></div>
-                        <div style="margin-bottom: 16px;">
-                            <label style="display: block; font-size: 0.8rem; color: var(--text-2); margin-bottom: 6px;">Namn</label>
-                            <input type="text" id="contactName" required placeholder="Ditt namn" style="width: 100%; padding: 12px 16px; border-radius: var(--r-sm); border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text); font-family: inherit; font-size: 0.9rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--line-2)'">
-                        </div>
-                        <div style="margin-bottom: 16px;">
-                            <label style="display: block; font-size: 0.8rem; color: var(--text-2); margin-bottom: 6px;">E-post</label>
-                            <input type="email" id="contactEmail" required placeholder="din@email.se" style="width: 100%; padding: 12px 16px; border-radius: var(--r-sm); border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text); font-family: inherit; font-size: 0.9rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--line-2)'">
-                        </div>
-                        <div style="margin-bottom: 24px;">
-                            <label style="display: block; font-size: 0.8rem; color: var(--text-2); margin-bottom: 6px;">Meddelande</label>
-                            <textarea id="contactMessage" required placeholder="Berätta vad du behöver hjälp med..." rows="4" style="width: 100%; padding: 12px 16px; border-radius: var(--r-sm); border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text); font-family: inherit; font-size: 0.9rem; outline: none; resize: vertical; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--line-2)'"></textarea>
-                        </div>
-                        <button type="submit" id="contactSubmit" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 0.95rem; padding: 14px 32px">
-                            Skicka meddelande
-                            <i data-lucide="send" style="width: 16px; height: 16px"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- ── FOOTER ── -->
-        <footer>
-            <div class="wrap">
-                <div class="foot-grid">
-                    <div class="foot-brand">
-                        <a href="#" class="nav-logo">
-                            <img
-                                src="/static/orbixa.png"
-                                alt="Orbixa"
-                                style="height: 50px"
-                                onerror="this.style.display = 'none'"
-                            />
-                        </a>
-                        <p>
-                            Vi hjälper svenska småföretag att synas online och
-                            växa med AI — utan krångel.
-                        </p>
-                    </div>
-                    <div class="foot-col">
-                        <h4>Tjänster</h4>
-                        <ul class="foot-links">
-                            <li><a href="#tjanster">Hemsidor</a></li>
-                            <li><a href="#tjanster">AI Chatbot</a></li>
-                            <li><a href="#priser">Priser</a></li>
-                        </ul>
-                    </div>
-                    <div class="foot-col">
-                        <h4>Kontakt</h4>
-                        <ul class="foot-links">
-                            <li>
-                                <a href="mailto:hej@orbixa.se">hej@orbixa.se</a>
-                            </li>
-                            <li><a href="#kontakt">Boka samtal</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="foot-bottom">
-                    <p>&copy; 2026 Orbixa. Alla rättigheter förbehållna.</p>
-                    <p>Byggt i Sverige</p>
-                </div>
-            </div>
-        </footer>
-
-        <script>
-            // ── PROJECTS ──
-            const projects = [
-                {
-                    name: "Torquetech",
-                    desc: "Bilverkstad i Borås",
-                    cat: "Bilverkstad",
-                    url: "https://torquetech.netlify.app",
-                    img: "/static/images/portfolio/torquetech.jpg",
-                    color: "#dc2626",
-                },
-                {
-                    name: "Nordic Fade",
-                    desc: "Barbershop & frisörsalong",
-                    cat: "Frisör",
-                    url: "https://nordicfade.netlify.app",
-                    img: "/static/images/portfolio/nordicfade.jpg",
-                    color: "#8b5cf6",
-                },
-                {
-                    name: "Städfirma",
-                    desc: "Städfirma i Stockholm",
-                    cat: "Städfirma",
-                    url: "https://stadfirma.netlify.app",
-                    img: "/static/images/portfolio/stadfirma.jpg",
-                    color: "#16a34a",
-                },
-                {
-                    name: "Restaurant",
-                    desc: "Restaurang & matservering",
-                    cat: "Restaurang",
-                    url: "https://leafy-praline-53cdbd.netlify.app",
-                    img: "/static/images/portfolio/restaurant.jpg",
-                    color: "#f59e0b",
-                },
-                {
-                    name: "Korai",
-                    desc: "Indisk restaurang",
-                    cat: "Restaurang",
-                    url: "https://korai.se",
-                    img: "/static/images/portfolio/korai.jpg",
-                    color: "#ea580c",
-                },
-            ];
-
-            function renderPortfolio() {
-                document.getElementById("portGrid").innerHTML = projects
-                    .map(
-                        (p) => `
-    <div class="port-card r">
-      <div class="port-thumb">
-        <img src="${p.img}" alt="${p.name}"
-             onerror="this.parentElement.innerHTML='<div class=port-thumb-fallback style=background:linear-gradient(135deg,${p.color}20,${p.color}08)><i data-lucide=monitor style=width:52px;height:52px;color:${p.color}></i></div>'">
-      </div>
-      <div class="port-body">
-        <span class="port-tag">${p.cat}</span>
-        <h3>${p.name}</h3>
-        <p>${p.desc}</p>
-        <a href="${p.url}" target="_blank" rel="noopener" class="port-link">
-          Besök sidan <i data-lucide="arrow-right" style="width:13px;height:13px"></i>
-        </a>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow reveal">Hemsidor för svenska småföretag</p>
+    <h1 class="reveal d1">
+      Byggd.<br/>
+      <em>Klar. Din.</em>
+    </h1>
+    <div class="hero-bottom reveal d2">
+      <p class="hero-desc">Vi bygger hemsidan innan vi ens ringer dig. Du ser resultatet direkt — betalar bara om du gillar det.</p>
+      <div class="hero-actions">
+        <a href="#kontakt" class="btn-gold">Kom igång idag <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
+        <a href="#tjanster" class="btn-ghost">Hur det fungerar <i data-lucide="chevron-down" style="width:14px;height:14px"></i></a>
       </div>
     </div>
-  `,
-                    )
-                    .join("");
-                lucide.createIcons();
-                observe();
-            }
+  </div>
+</section>
 
-            // ── NAV ──
-            function toggleNav() {
-                document.getElementById("mobNav").classList.toggle("open");
-            }
-            window.addEventListener("scroll", () => {
-                if (window.scrollY > 80)
-                    document.getElementById("mobNav").classList.remove("open");
-            });
+<!-- ── MARQUEE ── -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marquee"></div>
+</div>
 
-            // ── FAQ ──
-            function toggleFaq(btn) {
-                const item = btn.parentElement;
-                const open = item.classList.contains("open");
-                document
-                    .querySelectorAll(".faq-item")
-                    .forEach((i) => i.classList.remove("open"));
-                if (!open) item.classList.add("open");
-                lucide.createIcons();
-            }
+<!-- ── NUMBERS ── -->
+<div class="numbers-sec">
+  <div class="container">
+    <div class="numbers-grid">
+      <div class="num-cell reveal">
+        <div class="num-value">8<span>k</span></div>
+        <p class="num-label">Engångspris. Ingen bindningstid. Du äger sidan för alltid.</p>
+      </div>
+      <div class="num-cell reveal d1">
+        <div class="num-value">1<span>dag</span></div>
+        <p class="num-label">Från tomt till färdig demo — anpassad för just ditt företag.</p>
+      </div>
+      <div class="num-cell reveal d2">
+        <div class="num-value">24<span>/7</span></div>
+        <p class="num-label">Din hemsida och chatbot jobbar medan du inte gör det.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-            // ── REVEAL ──
-            function observe() {
-                const io = new IntersectionObserver(
-                    (entries) => {
-                        entries.forEach((e) => {
-                            if (e.isIntersecting) {
-                                e.target.classList.add("in");
-                                io.unobserve(e.target);
-                            }
-                        });
-                    },
-                    { threshold: 0.08, rootMargin: "0px 0px -36px 0px" },
-                );
-                document.querySelectorAll(".r").forEach((el) => io.observe(el));
-            }
+<!-- ── SERVICES ── -->
+<section class="services-sec" id="tjanster">
+  <div class="container">
+    <div class="services-header">
+      <div>
+        <p class="sec-label reveal">Tjänster</p>
+        <h2 class="services-title reveal d1">Två produkter.<br/><em>Ett beslut.</em></h2>
+      </div>
+      <p class="services-desc reveal d2">Hemsidan sätter dig på kartan. Chatboten ser till att ingen fråga går obesvarad. Fungerar var för sig — men är starkare ihop.</p>
+    </div>
+    <div class="service-cards">
+      <div class="svc reveal">
+        <p class="svc-num">01 — Hemsida</p>
+        <h3 class="svc-title">Professionell<br/>hemsida</h3>
+        <p class="svc-price-tag">8 000 kr <small>engångspris</small></p>
+        <p class="svc-body">Skräddarsydd för din bransch. Vi bygger den, du godkänner den — sedan är den din. Domänen, koden, allt. För alltid.</p>
+        <ul class="svc-features">
+          <li>Mobilanpassad & blixtsnabb</li>
+          <li>SEO-grundoptimerad från dag ett</li>
+          <li>Kontaktformulär & Google Maps</li>
+          <li>SSL-certifikat inkluderat</li>
+          <li>Du äger domänen och sidan</li>
+          <li>Underhåll 500 kr/mån (valfritt)</li>
+        </ul>
+        <a href="#kontakt" class="svc-cta">Beställ hemsida <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
+      </div>
+      <div class="svc reveal d1">
+        <p class="svc-num">02 — AI-Chatbot</p>
+        <h3 class="svc-title">Orbixa Chat<br/>AI</h3>
+        <p class="svc-price-tag">från 699 kr <small>/mån</small></p>
+        <p class="svc-body">Tränad på ditt företag. Svarar på kundernas frågor kl 02 på natten lika bra som kl 10 på morgonen. Du missar inga leads mer.</p>
+        <ul class="svc-features">
+          <li>Tränad på just ert företag</li>
+          <li>Installation med en rad kod</li>
+          <li>Svarar på frågor 24/7</li>
+          <li>White-label — inga logotyper</li>
+          <li>GDPR-kompatibel (EU-servrar)</li>
+          <li>Uppsättning 990 kr (engångs)</li>
+        </ul>
+        <a href="#kontakt" class="svc-cta">Kom igång <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
 
-            lucide.createIcons();
-            renderPortfolio();
-            observe();
+<!-- ── OWNERSHIP ── -->
+<section class="compare-sec">
+  <div class="container">
+    <div class="reveal">
+      <p class="sec-label">Ägarskap</p>
+      <h2 class="compare-title">Din hemsida.<br/>Inte din hyresrätt.</h2>
+      <p class="compare-sub">De flesta webbtjänster låser in dig. Du betalar varje månad — och om du slutar betala försvinner allt. Inte hos oss.</p>
+    </div>
+    <div class="numbers-grid reveal d1" style="margin-top:0">
+      <div class="num-cell">
+        <div class="num-value" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:16px">Ingen inlåsning</div>
+        <p class="num-label">Domänen och koden tillhör dig från dag ett. Byt leverantör när du vill — vi håller dig inte kvar.</p>
+      </div>
+      <div class="num-cell">
+        <div class="num-value" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:16px">Inga månadsavgifter</div>
+        <p class="num-label">8 000 kr en gång. Underhåll på 500 kr/mån är helt valfritt — inte ett krav för att sidan ska fungera.</p>
+      </div>
+      <div class="num-cell">
+        <div class="num-value" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:16px">Alltid online</div>
+        <p class="num-label">Om du aldrig betalar oss en krona till — är sidan fortfarande din och fortfarande live.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            // ── CONTACT FORM ──
-            document.getElementById("contactForm").addEventListener("submit", async (e) => {
-                e.preventDefault();
-                const btn = document.getElementById("contactSubmit");
-                const status = document.getElementById("formStatus");
-                const name = document.getElementById("contactName").value.trim();
-                const email = document.getElementById("contactEmail").value.trim();
-                const message = document.getElementById("contactMessage").value.trim();
+<!-- ── PROCESS ── -->
+<section class="process-sec">
+  <div class="container">
+    <div class="process-header">
+      <div>
+        <p class="sec-label reveal">Processen</p>
+        <h2 class="process-title reveal d1">Tre steg.<br/>Klart.</h2>
+      </div>
+      <p class="process-note reveal d2">Du behöver inte förbereda något. Vi tar första steget — du tar det sista.</p>
+    </div>
+    <div class="steps-list">
+      <div class="step-item reveal">
+        <p class="step-num">01</p>
+        <p class="step-name">Vi bygger först</p>
+        <p class="step-desc">Vi hittar ditt företag, bygger en hemsida och skickar länken. Inget möte. Ingen brief. Inga förpliktelser.</p>
+      </div>
+      <div class="step-item reveal">
+        <p class="step-num">02</p>
+        <p class="step-name">Du bestämmer</p>
+        <p class="step-desc">Gillar du det? Perfekt — vi kör vidare. Vill du ha ändringar? Inga problem. Vill du inte ha den? Den försvinner.</p>
+      </div>
+      <div class="step-item reveal">
+        <p class="step-num">03</p>
+        <p class="step-name">Online på en dag</p>
+        <p class="step-desc">När du godkänner publicerar vi. Ditt företag syns på Google, kunderna hittar dig och du slipper tänka på det mer.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-                btn.disabled = true;
-                btn.innerHTML = 'Skickar... <i data-lucide="loader-2" style="width:16px;height:16px;animation:spin 1s linear infinite"></i>';
-                lucide.createIcons();
+<!-- ── PORTFOLIO ── -->
+<section class="portfolio-sec" id="projekt">
+  <div class="container">
+    <div class="portfolio-header reveal">
+      <h2 class="portfolio-title">Byggt av Orbixa</h2>
+      <span class="portfolio-count">5 projekt</span>
+    </div>
+    <div class="port-items" id="portItems"></div>
+  </div>
+</section>
 
-                try {
-                    const res = await fetch("/contact", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ name, email, message })
-                    });
-                    const data = await res.json();
+<!-- ── TESTIMONIALS ── -->
+<section class="testi-sec">
+  <div class="container">
+    <p class="sec-label reveal">Vad kunderna säger</p>
+    <h2 class="testi-title reveal d1">Vad som<br/>händer sen.</h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <p class="testi-q">Ingen hemsida på tio år. Fick en på en dag. Tre nya kunder via Google redan första veckan — det hade inte hänt annars.</p>
+        <div class="testi-rule"></div>
+        <p class="testi-name">Erik Persson</p>
+        <p class="testi-role">Rörmokare, Göteborg</p>
+      </div>
+      <div class="testi-card reveal d1">
+        <p class="testi-q">Chatboten svarar på frågor kl 23 när jag har stängt. Förra månaden fick jag tre bokningar som jag annars hade missat helt.</p>
+        <div class="testi-rule"></div>
+        <p class="testi-name">Linda Holm</p>
+        <p class="testi-role">Städfirma, Stockholm</p>
+      </div>
+      <div class="testi-card reveal d2">
+        <p class="testi-q">Visste inte vad jag behövde. De byggde något, skickade länken — och det såg exakt rätt ut. Snabbt, enkelt, inga konstigheter.</p>
+        <div class="testi-rule"></div>
+        <p class="testi-name">Klas Bengtsson</p>
+        <p class="testi-role">Bilverkstad, Borås</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-                    if (res.ok) {
-                        status.style.display = "block";
-                        status.style.background = "rgba(22, 163, 74, 0.15)";
-                        status.style.border = "1px solid rgba(22, 163, 74, 0.3)";
-                        status.style.color = "#4ade80";
-                        status.textContent = "Tack! Vi återkommer inom 24 timmar.";
-                        document.getElementById("contactForm").reset();
-                    } else {
-                        throw new Error(data.detail || "Något gick fel");
-                    }
-                } catch (err) {
-                    status.style.display = "block";
-                    status.style.background = "rgba(239, 68, 68, 0.15)";
-                    status.style.border = "1px solid rgba(239, 68, 68, 0.3)";
-                    status.style.color = "#f87171";
-                    status.textContent = "Kunde inte skicka. Försök igen eller maila hej@orbixa.se";
-                }
+<!-- ── PRICING ── -->
+<section class="pricing-sec" id="priser">
+  <div class="container">
+    <p class="sec-label reveal">Priser</p>
+    <h2 class="pricing-title reveal d1">Pris utan<br/>överraskningar.</h2>
+    <p class="pricing-sub reveal d2">Vad du ser är vad du betalar. Inget mer.</p>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <p class="price-label">01 — Hemsida</p>
+        <h3 class="price-name">Professionell hemsida</h3>
+        <div class="price-amount">8 000 kr</div>
+        <p class="price-note">Betalar du en gång. Äger för alltid.</p>
+        <div class="price-divider"></div>
+        <ul class="price-list">
+          <li>Design anpassad för din bransch</li>
+          <li>Mobilanpassad & SEO-grundoptimerad</li>
+          <li>Kontaktformulär + Google Maps</li>
+          <li>SSL-certifikat & snabb hosting</li>
+          <li>Du äger domänen och sidan</li>
+          <li>Underhåll 500 kr/mån (valfritt)</li>
+        </ul>
+        <a href="#kontakt" class="btn-gold" style="width:100%;justify-content:center">Beställ nu <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
+      </div>
+      <div class="price-card reveal d1">
+        <p class="price-label">02 — AI-Chatbot</p>
+        <h3 class="price-name">Orbixa Chat AI</h3>
+        <div class="price-amount">699 kr <small>/mån</small></div>
+        <p class="price-note">Engångsavgift för uppsättning: 990 kr</p>
+        <div class="price-divider"></div>
+        <p style="font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px">Start — 699 kr/mån</p>
+        <ul class="price-list" style="margin-bottom:24px">
+          <li>Tränad på ditt företags info</li>
+          <li>Installation med en kodrad</li>
+          <li>Svarar på frågor 24/7</li>
+          <li>GDPR-kompatibel (EU-servrar)</li>
+        </ul>
+        <p style="font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px">Pro — 999 kr/mån</p>
+        <ul class="price-list">
+          <li>Obegränsade konversationer</li>
+          <li>Avancerad anpassning & branding</li>
+          <li>Prioriterad support</li>
+        </ul>
+        <a href="#kontakt" class="btn-gold" style="width:100%;justify-content:center;margin-top:44px">Kom igång <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
 
-                btn.disabled = false;
-                btn.innerHTML = 'Skicka meddelande <i data-lucide="send" style="width:16px;height:16px"></i>';
-                lucide.createIcons();
-            });
-        </script>
-    </body>
+<!-- ── FAQ ── -->
+<section class="faq-sec" id="faq">
+  <div class="container">
+    <p class="sec-label reveal">FAQ</p>
+    <h2 class="faq-title reveal d1">Vanliga frågor.</h2>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-sec" id="kontakt">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <h2 class="cta-title">Vill du<br/><em>se din?</em></h2>
+      <p class="cta-sub">Lämna ditt namn och nummer. Vi bygger en demo och hör av oss.</p>
+      <div class="contact-form">
+        <div id="formMsg"></div>
+        <div class="form-row">
+          <label class="form-label" for="name">Namn</label>
+          <input class="form-input" type="text" id="name" placeholder="Ditt namn" required/>
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="email">E-post</label>
+          <input class="form-input" type="email" id="email" placeholder="din@email.se" required/>
+        </div>
+        <div class="form-row" style="margin-bottom:24px">
+          <label class="form-label" for="msg">Meddelande</label>
+          <textarea class="form-textarea" id="msg" placeholder="Ditt företag, vad du gör, var ni finns..." required></textarea>
+        </div>
+        <button class="btn-gold" id="submitBtn" type="button" onclick="submitForm()" style="width:100%;justify-content:center;font-size:0.85rem;padding:16px 28px">
+          Skicka meddelande <i data-lucide="send" style="width:14px;height:14px"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="foot-inner">
+      <span class="foot-logo">Orbixa<span>.</span></span>
+      <ul class="foot-links">
+        <li><a href="#tjanster">Tjänster</a></li>
+        <li><a href="#projekt">Projekt</a></li>
+        <li><a href="#priser">Priser</a></li>
+        <li><a href="mailto:hej@orbixa.se">hej@orbixa.se</a></li>
+      </ul>
+      <p class="foot-copy">© 2026 Orbixa — Byggt i Sverige</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+// ── NAV ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+document.getElementById('navHam').addEventListener('click', () => {
+  document.getElementById('mobNav').classList.toggle('open');
+});
+function closeMob() { document.getElementById('mobNav').classList.remove('open'); }
+
+// ── MARQUEE ──
+const items = ['Hemsidor', 'AI-Chatbot', 'Bilverkstäder', 'Städfirmor', 'Restauranger', 'Fasta priser', 'Ingen bindningstid', 'Du äger allt', 'Snabb leverans', 'GDPR-kompatibel', 'Baserade i Sverige'];
+let html = '';
+for(let i=0;i<4;i++) items.forEach(t => { html += `<span class="marquee-item"><span class="marquee-dot"></span>${t}</span>`; });
+document.getElementById('marquee').innerHTML = html;
+
+// ── PORTFOLIO ──
+const projects = [
+  { cat: 'Bilverkstad', name: 'Torquetech', city: 'Borås', url: 'https://torquetech.netlify.app' },
+  { cat: 'Frisör', name: 'Nordic Fade', city: 'Stockholm', url: 'https://nordicfade.netlify.app' },
+  { cat: 'Städfirma', name: 'Stockholm Städ & Hem', city: 'Stockholm', url: 'https://stadfirma.netlify.app' },
+  { cat: 'Restaurang', name: 'Korai Indian', city: 'Stockholm', url: 'https://korai.se' },
+];
+document.getElementById('portItems').innerHTML = projects.map((p,i) => `
+  <a href="${p.url}" target="_blank" rel="noopener" class="port-item reveal${i>0?' d'+(i>3?3:i):''}">
+    <span class="port-cat">${p.cat}</span>
+    <div>
+      <p class="port-name">${p.name}</p>
+      <p class="port-city">${p.city}</p>
+    </div>
+    <i data-lucide="arrow-up-right" style="width:18px;height:18px" class="port-arrow"></i>
+  </a>
+`).join('');
+
+// ── FAQ ──
+const faqs = [
+  { q: 'Hur funkar det — behöver jag göra något?', a: 'Ingenting. Vi hittar ditt företag, bygger en demo och skickar länken. Du tittar, säger vad du tänker — och vi fixar resten.' },
+  { q: 'Vad händer om jag inte är nöjd med demon?', a: 'Vi ändrar tills det stämmer. Inget publiceras utan ditt godkännande. Vill du inte ha den? Den försvinner. Inga konstigheter.' },
+  { q: 'Äger jag verkligen hemsidan?', a: 'Ja — helt och fullt. Domänen, koden och innehållet tillhör dig från dag ett. Inte oss. Inte någon plattform. Dig.' },
+  { q: 'Är chatboten GDPR-säker?', a: 'Ja. All data stannar inom EU. Vi följer GDPR fullt ut — inget skickas utanför Europa.' },
+  { q: 'Kan jag ha både hemsida och chatbot?', a: 'Absolut. De flesta som får mest ut av det kombinerar båda. Hemsidan syns, chatboten konverterar.' },
+];
+document.getElementById('faqList').innerHTML = faqs.map((f, i) => `
+  <div class="faq-item reveal${i>0?' d'+(i>3?3:i):''}">
+    <button class="faq-btn" onclick="toggleFaq(this)">
+      <span class="faq-q">${f.q}</span>
+      <i data-lucide="plus" style="width:16px;height:16px" class="faq-icon"></i>
+    </button>
+    <div class="faq-a"><p>${f.a}</p></div>
+  </div>
+`).join('');
+
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+  lucide.createIcons();
+}
+
+// ── FORM ──
+async function submitForm() {
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('formMsg');
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const body = document.getElementById('msg').value.trim();
+  if (!name || !email || !body) return;
+  btn.disabled = true;
+  btn.innerHTML = 'Skickar...';
+  try {
+    const res = await fetch('/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, message: body })
+    });
+    if (res.ok) {
+      msg.style.display = 'block';
+      msg.style.background = 'rgba(200,165,100,0.08)';
+      msg.style.border = '1px solid rgba(200,165,100,0.2)';
+      msg.style.color = 'var(--accent)';
+      msg.textContent = 'Tack! Vi återkommer inom 24 timmar.';
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('msg').value = '';
+    } else { throw new Error(); }
+  } catch {
+    msg.style.display = 'block';
+    msg.style.background = 'rgba(239,68,68,0.08)';
+    msg.style.border = '1px solid rgba(239,68,68,0.2)';
+    msg.style.color = '#f87171';
+    msg.textContent = 'Kunde inte skicka. Maila gärna hej@orbixa.se';
+  }
+  btn.disabled = false;
+  btn.innerHTML = 'Skicka meddelande <i data-lucide="send" style="width:14px;height:14px"></i>';
+  lucide.createIcons();
+}
+
+// ── REVEAL ──
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.06, rootMargin: '0px 0px -32px 0px' });
+function observe() { document.querySelectorAll('.reveal').forEach(el => io.observe(el)); }
+
+lucide.createIcons();
+observe();
+</script>
+</body>
 </html>
