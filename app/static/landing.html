@@ -1,1397 +1,2426 @@
 <!doctype html>
 <html lang="sv">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Orbixa — Hemsidor för Svenska Småföretag</title>
-  <meta name="description" content="Orbixa bygger hemsidor och AI-chatbots för svenska småföretag. Du äger allt. Fast pris. Levererat på en dag."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <style>
-    :root {
-      --black: #080808;
-      --off-black: #0f0f0f;
-      --surface: #141414;
-      --surface-2: #1a1a1a;
-      --border: rgba(255,255,255,0.07);
-      --border-hover: rgba(255,255,255,0.14);
-      --text: #f0ede8;
-      --text-2: #7a7570;
-      --text-3: #3d3a37;
-      --accent: #e8d5b0;
-      --accent-2: #c9a96e;
-      --accent-glow: rgba(200,165,100,0.12);
-      --white: #faf8f5;
-      --r: 4px;
-      --r-lg: 8px;
-    }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--black);
-      color: var(--text);
-      overflow-x: hidden;
-      font-size: 16px;
-      line-height: 1.6;
-      cursor: none;
-    }
-    a { text-decoration:none; color:inherit; }
-    img { display:block; max-width:100%; }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Orbixa — Hemsidor för Svenska Småföretag</title>
+        <meta
+            name="description"
+            content="Orbixa bygger hemsidor och AI-chatbots för svenska småföretag. Du äger allt. Fast pris. Levererat på en dag."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+            rel="stylesheet"
+        />
+        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+        <style>
+            :root {
+                --black: #080808;
+                --off-black: #0f0f0f;
+                --surface: #141414;
+                --surface-2: #1a1a1a;
+                --border: rgba(255, 255, 255, 0.07);
+                --border-hover: rgba(255, 255, 255, 0.14);
+                --text: #f0ede8;
+                --text-2: #7a7570;
+                --text-3: #3d3a37;
+                --accent: #e8d5b0;
+                --accent-2: #c9a96e;
+                --accent-glow: rgba(200, 165, 100, 0.12);
+                --white: #faf8f5;
+                --r: 4px;
+                --r-lg: 8px;
+            }
+            *,
+            *::before,
+            *::after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+                -webkit-font-smoothing: antialiased;
+            }
+            body {
+                font-family: "DM Sans", sans-serif;
+                background: var(--black);
+                color: var(--text);
+                overflow-x: hidden;
+                font-size: clamp(14px, 1.1vw, 17px);
+                line-height: 1.65;
+                cursor: none;
+            }
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+            img {
+                display: block;
+                max-width: 100%;
+            }
 
-    /* ── CURSOR ── */
-    .cursor {
-      position: fixed;
-      width: 8px; height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s ease, opacity 0.15s;
-      transform: translate(-50%, -50%);
-    }
-    .cursor-ring {
-      position: fixed;
-      width: 36px; height: 36px;
-      border: 1px solid rgba(232,213,176,0.35);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), width 0.3s, height 0.3s, border-color 0.3s;
-      transform: translate(-50%, -50%);
-    }
-    body:has(a:hover) .cursor-ring,
-    body:has(button:hover) .cursor-ring {
-      width: 56px; height: 56px;
-      border-color: rgba(232,213,176,0.6);
-    }
-    @media (hover: none) { .cursor, .cursor-ring { display: none; } body { cursor: auto; } }
+            /* ── CURSOR ── */
+            .cursor {
+                position: fixed;
+                width: 8px;
+                height: 8px;
+                background: var(--accent);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9999;
+                transition:
+                    transform 0.15s ease,
+                    opacity 0.15s;
+                transform: translate(-50%, -50%);
+            }
+            .cursor-ring {
+                position: fixed;
+                width: 36px;
+                height: 36px;
+                border: 1px solid rgba(232, 213, 176, 0.35);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 9998;
+                transition:
+                    transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                    width 0.3s,
+                    height 0.3s,
+                    border-color 0.3s;
+                transform: translate(-50%, -50%);
+            }
+            body:has(a:hover) .cursor-ring,
+            body:has(button:hover) .cursor-ring {
+                width: 56px;
+                height: 56px;
+                border-color: rgba(232, 213, 176, 0.6);
+            }
+            @media (hover: none) {
+                .cursor,
+                .cursor-ring {
+                    display: none;
+                }
+                body {
+                    cursor: auto;
+                }
+            }
 
-    /* ── NOISE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.45;
-      pointer-events: none;
-      z-index: 100;
-    }
+            /* ── NOISE OVERLAY ── */
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+                opacity: 0.45;
+                pointer-events: none;
+                z-index: 100;
+            }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 500;
-      padding: 24px 0;
-      transition: padding 0.3s, background 0.3s, border-color 0.3s;
-      border-bottom: 1px solid transparent;
-    }
-    nav.scrolled {
-      padding: 16px 0;
-      background: rgba(8,8,8,0.92);
-      backdrop-filter: blur(20px);
-      border-color: var(--border);
-    }
-    .nav-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--white);
-    }
-    .nav-logo span { color: var(--accent); }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-      list-style: none;
-    }
-    .nav-links a {
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-2);
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--text); }
-    .nav-btn {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--black);
-      background: var(--accent);
-      padding: 10px 22px;
-      border-radius: var(--r);
-      transition: background 0.2s, transform 0.2s;
-      cursor: none;
-    }
-    .nav-btn:hover { background: var(--white); transform: translateY(-1px); }
-    .nav-ham {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text);
-      cursor: none;
-      padding: 4px;
-    }
-    .mob-nav {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      z-index: 490;
-      background: var(--black);
-      padding: 100px 40px 40px;
-      flex-direction: column;
-      gap: 32px;
-    }
-    .mob-nav.open { display: flex; }
-    .mob-nav a {
-      font-family: 'Syne', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--text-2);
-      transition: color 0.2s;
-    }
-    .mob-nav a:hover { color: var(--text); }
+            /* ── NAV ── */
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 500;
+                padding: 24px 0;
+                transition:
+                    padding 0.3s,
+                    background 0.3s,
+                    border-color 0.3s;
+                border-bottom: 1px solid transparent;
+            }
+            nav.scrolled {
+                padding: 16px 0;
+                background: rgba(8, 8, 8, 0.92);
+                backdrop-filter: blur(20px);
+                border-color: var(--border);
+            }
+            .nav-inner {
+                max-width: 1280px;
+                margin: 0 auto;
+                padding: 0 40px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .nav-logo {
+                font-family: "Syne", sans-serif;
+                font-size: 1.1rem;
+                font-weight: 800;
+                letter-spacing: -0.02em;
+                color: var(--white);
+            }
+            .nav-logo span {
+                color: var(--accent);
+            }
+            .nav-links {
+                display: flex;
+                align-items: center;
+                gap: 36px;
+                list-style: none;
+            }
+            .nav-links a {
+                font-size: 0.8rem;
+                font-weight: 500;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: var(--text-2);
+                transition: color 0.2s;
+            }
+            .nav-links a:hover {
+                color: var(--text);
+            }
+            .nav-btn {
+                font-family: "Syne", sans-serif;
+                font-size: 0.78rem;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--black);
+                background: var(--accent);
+                padding: 12px 24px;
+                border-radius: var(--r);
+                transition:
+                    background 0.2s,
+                    transform 0.2s;
+                cursor: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                min-height: 44px;
+            }
+            .nav-btn:hover {
+                background: var(--white);
+                transform: translateY(-1px);
+            }
+            .nav-ham {
+                display: none;
+                background: none;
+                border: none;
+                color: var(--text);
+                cursor: none;
+                padding: 4px;
+            }
+            .mob-nav {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 490;
+                background: var(--black);
+                padding: 100px 40px 40px;
+                flex-direction: column;
+                gap: 32px;
+            }
+            .mob-nav.open {
+                display: flex;
+            }
+            .mob-nav a {
+                font-family: "Syne", sans-serif;
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--text-2);
+                transition: color 0.2s;
+            }
+            .mob-nav a:hover {
+                color: var(--text);
+            }
 
-    /* ── HERO ── */
-    .hero {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 0 80px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 120% 60% at 50% 100%, rgba(200,165,100,0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(200,165,100,0.03) 0%, transparent 50%);
-    }
-    .hero-lines {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 80px 80px;
-      mask-image: radial-gradient(ellipse 100% 80% at 50% 100%, black 30%, transparent 80%);
-    }
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent-2);
-      margin-bottom: 32px;
-    }
-    .hero-eyebrow::before {
-      content: '';
-      display: block;
-      width: 24px; height: 1px;
-      background: var(--accent-2);
-    }
-    .hero-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 40px;
-      position: relative;
-      z-index: 1;
-    }
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(3.6rem, 8vw, 9rem);
-      font-weight: 800;
-      line-height: 0.92;
-      letter-spacing: -0.04em;
-      color: var(--white);
-      margin-bottom: 48px;
-    }
-    h1 em {
-      font-style: italic;
-      font-weight: 400;
-      color: var(--accent);
-      font-family: 'DM Sans', sans-serif;
-    }
-    .hero-bottom {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-    .hero-desc {
-      font-size: 1rem;
-      color: var(--text-2);
-      line-height: 1.8;
-      max-width: 360px;
-      font-weight: 300;
-    }
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .btn-gold {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--black);
-      background: var(--accent);
-      padding: 14px 28px;
-      border-radius: var(--r);
-      transition: background 0.2s, transform 0.2s;
-      cursor: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: none;
-    }
-    .btn-gold:hover { background: var(--white); transform: translateY(-2px); }
-    .btn-ghost {
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      color: var(--text-2);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: none;
-      transition: color 0.2s;
-    }
-    .btn-ghost:hover { color: var(--text); }
+            /* ── HERO ── */
+            .hero {
+                min-height: 100svh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 120px 0 80px;
+                position: relative;
+                overflow: hidden;
+            }
+            .hero-bg {
+                position: absolute;
+                inset: 0;
+                background:
+                    radial-gradient(
+                        ellipse 120% 60% at 50% 100%,
+                        rgba(200, 165, 100, 0.06) 0%,
+                        transparent 60%
+                    ),
+                    radial-gradient(
+                        ellipse 60% 80% at 80% 20%,
+                        rgba(200, 165, 100, 0.03) 0%,
+                        transparent 50%
+                    );
+            }
+            .hero-lines {
+                position: absolute;
+                inset: 0;
+                background-image:
+                    linear-gradient(var(--border) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+                background-size: 80px 80px;
+                mask-image: radial-gradient(
+                    ellipse 100% 80% at 50% 100%,
+                    black 30%,
+                    transparent 80%
+                );
+            }
+            .hero-eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 0.72rem;
+                font-weight: 500;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                color: var(--accent-2);
+                margin-bottom: 32px;
+            }
+            .hero-eyebrow::before {
+                content: "";
+                display: block;
+                width: 24px;
+                height: 1px;
+                background: var(--accent-2);
+            }
+            .hero-inner {
+                max-width: 1280px;
+                margin: 0 auto;
+                padding: 0 40px;
+                position: relative;
+                z-index: 1;
+            }
+            h1 {
+                font-family: "Syne", sans-serif;
+                font-size: clamp(3.6rem, 8vw, 9rem);
+                font-weight: 800;
+                line-height: 0.92;
+                letter-spacing: -0.04em;
+                color: var(--white);
+                margin-bottom: 48px;
+            }
+            h1 em {
+                font-style: italic;
+                font-weight: 400;
+                color: var(--accent);
+                font-family: "DM Sans", sans-serif;
+            }
+            .hero-bottom {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                gap: 40px;
+                flex-wrap: wrap;
+            }
+            .hero-desc {
+                font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+                color: var(--text-2);
+                line-height: 1.8;
+                max-width: 380px;
+                font-weight: 300;
+            }
+            .hero-actions {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+            .btn-gold {
+                font-family: "Syne", sans-serif;
+                font-size: 0.8rem;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--black);
+                background: var(--accent);
+                padding: 14px 28px;
+                border-radius: var(--r);
+                transition:
+                    background 0.2s,
+                    transform 0.2s;
+                cursor: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                border: none;
+            }
+            .btn-gold:hover {
+                background: var(--white);
+                transform: translateY(-2px);
+            }
+            .btn-ghost {
+                font-size: 0.8rem;
+                font-weight: 500;
+                letter-spacing: 0.04em;
+                color: var(--text-2);
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                cursor: none;
+                transition: color 0.2s;
+            }
+            .btn-ghost:hover {
+                color: var(--text);
+            }
 
-    /* ── MARQUEE ── */
-    .marquee-wrap {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 16px 0;
-      overflow: hidden;
-      background: var(--off-black);
-    }
-    .marquee-track {
-      display: flex;
-      gap: 0;
-      animation: marquee 28s linear infinite;
-      white-space: nowrap;
-    }
-    .marquee-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 24px;
-      padding: 0 32px;
-      font-family: 'Syne', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-3);
-    }
-    .marquee-dot {
-      width: 4px; height: 4px;
-      border-radius: 50%;
-      background: var(--accent-2);
-      flex-shrink: 0;
-    }
-    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+            /* ── MARQUEE ── */
+            .marquee-wrap {
+                border-top: 1px solid var(--border);
+                border-bottom: 1px solid var(--border);
+                padding: 16px 0;
+                overflow: hidden;
+                background: var(--off-black);
+            }
+            .marquee-track {
+                display: flex;
+                gap: 0;
+                animation: marquee 28s linear infinite;
+                white-space: nowrap;
+            }
+            .marquee-item {
+                display: inline-flex;
+                align-items: center;
+                gap: 24px;
+                padding: 0 32px;
+                font-family: "Syne", sans-serif;
+                font-size: 0.72rem;
+                font-weight: 600;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                color: var(--text-3);
+            }
+            .marquee-dot {
+                width: 4px;
+                height: 4px;
+                border-radius: 50%;
+                background: var(--accent-2);
+                flex-shrink: 0;
+            }
+            @keyframes marquee {
+                from {
+                    transform: translateX(0);
+                }
+                to {
+                    transform: translateX(-50%);
+                }
+            }
 
-    /* ── SECTION BASE ── */
-    section { position: relative; }
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 40px;
-    }
-    .sec-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      margin-bottom: 20px;
-    }
-    .sec-label::before {
-      content: '';
-      width: 16px; height: 1px;
-      background: var(--text-3);
-    }
+            /* ── SECTION BASE ── */
+            section {
+                position: relative;
+            }
+            .container {
+                max-width: 1280px;
+                margin: 0 auto;
+                padding: 0 40px;
+            }
+            .sec-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 0.68rem;
+                font-weight: 600;
+                letter-spacing: 0.16em;
+                text-transform: uppercase;
+                color: var(--text-3);
+                margin-bottom: 20px;
+            }
+            .sec-label::before {
+                content: "";
+                width: 16px;
+                height: 1px;
+                background: var(--text-3);
+            }
 
-    /* ── NUMBERS ── */
-    .numbers-sec {
-      padding: 100px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .numbers-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-    .num-cell {
-      background: var(--black);
-      padding: 56px 48px;
-      transition: background 0.3s;
-    }
-    .num-cell:hover { background: var(--off-black); }
-    .num-value {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(3rem, 5vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: -0.05em;
-      color: var(--white);
-      margin-bottom: 12px;
-    }
-    .num-value span { color: var(--accent); }
-    .num-label {
-      font-size: 0.82rem;
-      color: var(--text-2);
-      font-weight: 400;
-      line-height: 1.5;
-      max-width: 200px;
-    }
+            /* ── NUMBERS ── */
+            .numbers-sec {
+                padding: 100px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .numbers-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1px;
+                background: var(--border);
+                border: 1px solid var(--border);
+            }
+            .num-cell {
+                background: var(--black);
+                padding: 56px 48px;
+                transition: background 0.3s;
+            }
+            .num-cell:hover {
+                background: var(--off-black);
+            }
+            .num-value {
+                font-family: "Syne", sans-serif;
+                font-size: clamp(3rem, 5vw, 5.5rem);
+                font-weight: 800;
+                line-height: 1;
+                letter-spacing: -0.05em;
+                color: var(--white);
+                margin-bottom: 12px;
+            }
+            .num-value span {
+                color: var(--accent);
+            }
+            .num-label {
+                font-size: clamp(0.8rem, 1vw, 0.9rem);
+                color: var(--text-2);
+                font-weight: 400;
+                line-height: 1.6;
+                max-width: 220px;
+            }
 
-    /* ── SERVICES ── */
-    .services-sec {
-      padding: 120px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .services-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 80px;
-      gap: 40px;
-    }
-    .services-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: -0.04em;
-      color: var(--white);
-      max-width: 480px;
-    }
-    .services-title em {
-      font-style: italic;
-      font-weight: 400;
-      color: var(--accent);
-      font-family: 'DM Sans', sans-serif;
-    }
-    .services-desc {
-      font-size: 0.9rem;
-      color: var(--text-2);
-      line-height: 1.9;
-      max-width: 320px;
-      font-weight: 300;
-    }
-    .service-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      background: var(--border);
-    }
-    .svc {
-      background: var(--off-black);
-      padding: 56px 52px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      transition: background 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .svc::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent-2), transparent);
-      opacity: 0;
-      transition: opacity 0.4s;
-    }
-    .svc:hover { background: var(--surface); }
-    .svc:hover::after { opacity: 1; }
-    .svc-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      color: var(--text-3);
-      margin-bottom: 40px;
-    }
-    .svc-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      color: var(--white);
-      line-height: 1.1;
-      margin-bottom: 16px;
-    }
-    .svc-price-tag {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--accent);
-      margin-bottom: 24px;
-    }
-    .svc-price-tag small {
-      font-size: 0.9rem;
-      font-weight: 400;
-      color: var(--text-3);
-      font-family: 'DM Sans', sans-serif;
-    }
-    .svc-body {
-      font-size: 0.85rem;
-      color: var(--text-2);
-      line-height: 1.85;
-      font-weight: 300;
-      margin-bottom: 40px;
-      flex: 1;
-    }
-    .svc-features {
-      list-style: none;
-      margin-bottom: 44px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .svc-features li {
-      font-size: 0.82rem;
-      color: var(--text-2);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .svc-features li::before {
-      content: '';
-      width: 16px; height: 1px;
-      background: var(--accent-2);
-      flex-shrink: 0;
-    }
-    .svc-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: 'Syne', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-      cursor: none;
-      transition: gap 0.25s, color 0.2s;
-    }
-    .svc-cta:hover { gap: 16px; color: var(--white); }
+            /* ── SERVICES ── */
+            .services-sec {
+                padding: 120px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .services-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 80px;
+                gap: 40px;
+            }
+            .services-title {
+                font-family: "Syne", sans-serif;
+                font-size: clamp(2.4rem, 4vw, 4rem);
+                font-weight: 800;
+                line-height: 1;
+                letter-spacing: -0.04em;
+                color: var(--white);
+                max-width: 480px;
+            }
+            .services-title em {
+                font-style: italic;
+                font-weight: 400;
+                color: var(--accent);
+                font-family: "DM Sans", sans-serif;
+            }
+            .services-desc {
+                font-size: clamp(0.92rem, 1.1vw, 1rem);
+                color: var(--text-2);
+                line-height: 1.85;
+                max-width: 340px;
+                font-weight: 300;
+            }
+            .service-cards {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2px;
+                background: var(--border);
+            }
+            .svc {
+                background: var(--off-black);
+                padding: 56px 52px;
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                transition: background 0.3s;
+                position: relative;
+                overflow: hidden;
+            }
+            .svc::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--accent-2),
+                    transparent
+                );
+                opacity: 0;
+                transition: opacity 0.4s;
+            }
+            .svc:hover {
+                background: var(--surface);
+            }
+            .svc:hover::after {
+                opacity: 1;
+            }
+            .svc-num {
+                font-family: "Syne", sans-serif;
+                font-size: 0.68rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                color: var(--text-3);
+                margin-bottom: 40px;
+            }
+            .svc-title {
+                font-family: "Syne", sans-serif;
+                font-size: 2rem;
+                font-weight: 700;
+                letter-spacing: -0.03em;
+                color: var(--white);
+                line-height: 1.1;
+                margin-bottom: 16px;
+            }
+            .svc-price-tag {
+                font-family: "Syne", sans-serif;
+                font-size: 1.8rem;
+                font-weight: 800;
+                letter-spacing: -0.04em;
+                color: var(--accent);
+                margin-bottom: 24px;
+            }
+            .svc-price-tag small {
+                font-size: 0.9rem;
+                font-weight: 400;
+                color: var(--text-3);
+                font-family: "DM Sans", sans-serif;
+            }
+            .svc-body {
+                font-size: 0.85rem;
+                color: var(--text-2);
+                line-height: 1.85;
+                font-weight: 300;
+                margin-bottom: 40px;
+                flex: 1;
+            }
+            .svc-features {
+                list-style: none;
+                margin-bottom: 44px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .svc-features li {
+                font-size: 0.82rem;
+                color: var(--text-2);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .svc-features li::before {
+                content: "";
+                width: 16px;
+                height: 1px;
+                background: var(--accent-2);
+                flex-shrink: 0;
+            }
+            .svc-cta {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                font-family: "Syne", sans-serif;
+                font-size: 0.78rem;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--accent);
+                cursor: none;
+                transition:
+                    gap 0.25s,
+                    color 0.2s;
+            }
+            .svc-cta:hover {
+                gap: 16px;
+                color: var(--white);
+            }
 
-    /* ── COMPARISON ── */
-    .compare-sec {
-      padding: 120px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .compare-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2rem, 3.5vw, 3.2rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--white);
-      margin-bottom: 16px;
-      line-height: 1;
-    }
-    .compare-sub {
-      font-size: 0.9rem;
-      color: var(--text-2);
-      margin-bottom: 64px;
-      max-width: 480px;
-      font-weight: 300;
-    }
-    .compare-table {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-collapse: collapse;
-    }
-    .compare-table th {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 20px 32px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-      background: var(--off-black);
-    }
-    .compare-table th:first-child { color: var(--text-2); }
-    .compare-table th.col-orbixa { color: var(--accent); }
-    .compare-table th.col-other { color: var(--text-3); }
-    .compare-table td {
-      padding: 18px 32px;
-      font-size: 0.85rem;
-      color: var(--text-2);
-      border-bottom: 1px solid var(--border);
-    }
-    .compare-table tr:last-child td { border-bottom: none; }
-    .compare-table td:nth-child(2) {
-      color: var(--text);
-      font-weight: 500;
-    }
-    .compare-table td.yes { color: var(--accent-2); }
-    .compare-table td.no { color: var(--text-3); }
-    .compare-table tr:hover td { background: rgba(255,255,255,0.01); }
+            /* ── COMPARISON ── */
+            .compare-sec {
+                padding: 120px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .compare-title {
+                font-family: "Syne", sans-serif;
+                font-size: clamp(2rem, 3.5vw, 3.2rem);
+                font-weight: 800;
+                letter-spacing: -0.04em;
+                color: var(--white);
+                margin-bottom: 16px;
+                line-height: 1;
+            }
+            .compare-sub {
+                font-size: 0.9rem;
+                color: var(--text-2);
+                margin-bottom: 64px;
+                max-width: 480px;
+                font-weight: 300;
+            }
+            .compare-table {
+                width: 100%;
+                border: 1px solid var(--border);
+                border-collapse: collapse;
+            }
+            .compare-table th {
+                font-family: "Syne", sans-serif;
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                padding: 20px 32px;
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+                background: var(--off-black);
+            }
+            .compare-table th:first-child {
+                color: var(--text-2);
+            }
+            .compare-table th.col-orbixa {
+                color: var(--accent);
+            }
+            .compare-table th.col-other {
+                color: var(--text-3);
+            }
+            .compare-table td {
+                padding: 18px 32px;
+                font-size: 0.85rem;
+                color: var(--text-2);
+                border-bottom: 1px solid var(--border);
+            }
+            .compare-table tr:last-child td {
+                border-bottom: none;
+            }
+            .compare-table td:nth-child(2) {
+                color: var(--text);
+                font-weight: 500;
+            }
+            .compare-table td.yes {
+                color: var(--accent-2);
+            }
+            .compare-table td.no {
+                color: var(--text-3);
+            }
+            .compare-table tr:hover td {
+                background: rgba(255, 255, 255, 0.01);
+            }
 
-    /* ── PROCESS ── */
-    .process-sec {
-      padding: 120px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .process-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 80px;
-      gap: 40px;
-    }
-    .process-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--white);
-      line-height: 1;
-    }
-    .process-note {
-      font-size: 0.85rem;
-      color: var(--text-2);
-      max-width: 280px;
-      font-weight: 300;
-      line-height: 1.8;
-      padding-top: 8px;
-    }
-    .steps-list {
-      counter-reset: step;
-    }
-    .step-item {
-      display: grid;
-      grid-template-columns: 80px 1fr 1fr;
-      gap: 40px;
-      align-items: start;
-      padding: 40px 0;
-      border-top: 1px solid var(--border);
-      counter-increment: step;
-    }
-    .step-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: var(--text-3);
-      padding-top: 4px;
-    }
-    .step-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--white);
-    }
-    .step-desc {
-      font-size: 0.85rem;
-      color: var(--text-2);
-      line-height: 1.85;
-      font-weight: 300;
-    }
+            /* ── PROCESS ── */
+            .process-sec {
+                padding: 120px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .process-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 80px;
+                gap: 40px;
+            }
+            .process-title {
+                font-family: "Syne", sans-serif;
+                font-size: clamp(2.4rem, 4vw, 4rem);
+                font-weight: 800;
+                letter-spacing: -0.04em;
+                color: var(--white);
+                line-height: 1;
+            }
+            .process-note {
+                font-size: 0.85rem;
+                color: var(--text-2);
+                max-width: 280px;
+                font-weight: 300;
+                line-height: 1.8;
+                padding-top: 8px;
+            }
+            .steps-list {
+                counter-reset: step;
+            }
+            .step-item {
+                display: grid;
+                grid-template-columns: 80px 1fr 1fr;
+                gap: 40px;
+                align-items: start;
+                padding: 40px 0;
+                border-top: 1px solid var(--border);
+                counter-increment: step;
+            }
+            .step-num {
+                font-family: "Syne", sans-serif;
+                font-size: 0.72rem;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                color: var(--text-3);
+                padding-top: 4px;
+            }
+            .step-name {
+                font-family: "Syne", sans-serif;
+                font-size: 1.4rem;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+                color: var(--white);
+            }
+            .step-desc {
+                font-size: 0.85rem;
+                color: var(--text-2);
+                line-height: 1.85;
+                font-weight: 300;
+            }
 
-    /* ── PORTFOLIO ── */
-    .portfolio-sec {
-      padding: 120px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .portfolio-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 60px;
-    }
-    .portfolio-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--white);
-      line-height: 1;
-    }
-    .portfolio-count {
-      font-size: 0.78rem;
-      color: var(--text-3);
-      letter-spacing: 0.08em;
-    }
-    .port-items { display: flex; flex-direction: column; gap: 2px; }
-    .port-item {
-      display: grid;
-      grid-template-columns: 80px 1fr auto;
-      gap: 32px;
-      align-items: center;
-      padding: 24px 28px;
-      background: var(--off-black);
-      border: 1px solid transparent;
-      transition: all 0.25s;
-      cursor: none;
-    }
-    .port-item:hover {
-      background: var(--surface);
-      border-color: var(--border-hover);
-    }
-    .port-cat {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-3);
-    }
-    .port-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--white);
-    }
-    .port-city {
-      font-size: 0.78rem;
-      color: var(--text-3);
-      margin-top: 2px;
-    }
-    .port-arrow {
-      color: var(--accent);
-      opacity: 0;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .port-item:hover .port-arrow { opacity: 1; transform: translateX(4px); }
+            /* ── PORTFOLIO ── */
+            .portfolio-sec {
+                padding: 120px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .portfolio-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                margin-bottom: 60px;
+            }
+            .portfolio-title {
+                font-family: "Syne", sans-serif;
+                font-size: clamp(2.4rem, 4vw, 4rem);
+                font-weight: 800;
+                letter-spacing: -0.04em;
+                color: var(--white);
+                line-height: 1;
+            }
+            .portfolio-count {
+                font-size: 0.78rem;
+                color: var(--text-3);
+                letter-spacing: 0.08em;
+            }
+            .port-items {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .port-item {
+                display: grid;
+                grid-template-columns: 80px 1fr auto;
+                gap: 32px;
+                align-items: center;
+                padding: 24px 28px;
+                background: var(--off-black);
+                border: 1px solid transparent;
+                transition: all 0.25s;
+                cursor: none;
+            }
+            .port-item:hover {
+                background: var(--surface);
+                border-color: var(--border-hover);
+            }
+            .port-cat {
+                font-size: 0.68rem;
+                font-weight: 600;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--text-3);
+            }
+            .port-name {
+                font-family: "Syne", sans-serif;
+                font-size: 1.1rem;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+                color: var(--white);
+            }
+            .port-city {
+                font-size: 0.78rem;
+                color: var(--text-3);
+                margin-top: 2px;
+            }
+            .port-arrow {
+                color: var(--accent);
+                opacity: 0;
+                transition:
+                    opacity 0.2s,
+                    transform 0.2s;
+            }
+            .port-item:hover .port-arrow {
+                opacity: 1;
+                transform: translateX(4px);
+            }
 
-    /* ── TESTIMONIALS ── */
-    .testi-sec {
-      padding: 120px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .testi-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--white);
-      line-height: 1;
-      margin-bottom: 80px;
-    }
-    .testi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      background: var(--border);
-    }
-    .testi-card {
-      background: var(--off-black);
-      padding: 48px 40px;
-      transition: background 0.25s;
-    }
-    .testi-card:hover { background: var(--surface); }
-    .testi-q {
-      font-size: 0.95rem;
-      color: var(--text);
-      line-height: 1.85;
-      font-weight: 300;
-      font-style: italic;
-      margin-bottom: 36px;
-    }
-    .testi-q::before { content: '"'; color: var(--accent-2); }
-    .testi-q::after { content: '"'; color: var(--accent-2); }
-    .testi-rule {
-      height: 1px;
-      background: var(--border);
-      margin-bottom: 24px;
-    }
-    .testi-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 2px;
-    }
-    .testi-role {
-      font-size: 0.75rem;
-      color: var(--text-3);
-      letter-spacing: 0.04em;
-    }
+            /* ── TESTIMONIALS ── */
+            .testi-sec {
+                padding: 120px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .testi-title {
+                font-family: "Syne", sans-serif;
+                font-size: clamp(2.4rem, 4vw, 4rem);
+                font-weight: 800;
+                letter-spacing: -0.04em;
+                color: var(--white);
+                line-height: 1;
+                margin-bottom: 80px;
+            }
+            .testi-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2px;
+                background: var(--border);
+            }
+            .testi-card {
+                background: var(--off-black);
+                padding: 48px 40px;
+                transition: background 0.25s;
+            }
+            .testi-card:hover {
+                background: var(--surface);
+            }
+            .testi-q {
+                font-size: 0.95rem;
+                color: var(--text);
+                line-height: 1.85;
+                font-weight: 300;
+                font-style: italic;
+                margin-bottom: 36px;
+            }
+            .testi-q::before {
+                content: '"';
+                color: var(--accent-2);
+            }
+            .testi-q::after {
+                content: '"';
+                color: var(--accent-2);
+            }
+            .testi-rule {
+                height: 1px;
+                background: var(--border);
+                margin-bottom: 24px;
+            }
+            .testi-name {
+                font-family: "Syne", sans-serif;
+                font-size: 0.88rem;
+                font-weight: 700;
+                color: var(--text);
+                margin-bottom: 2px;
+            }
+            .testi-role {
+                font-size: 0.75rem;
+                color: var(--text-3);
+                letter-spacing: 0.04em;
+            }
 
-    /* ── PRICING ── */
-    .pricing-sec {
-      padding: 120px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .pricing-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--white);
-      line-height: 1;
-      margin-bottom: 16px;
-    }
-    .pricing-sub {
-      font-size: 0.9rem;
-      color: var(--text-2);
-      margin-bottom: 72px;
-      font-weight: 300;
-    }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      background: var(--border);
-    }
-    .price-card {
-      background: var(--off-black);
-      padding: 56px 52px;
-      transition: background 0.3s;
-    }
-    .price-card:hover { background: var(--surface); }
-    .price-label {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      margin-bottom: 32px;
-    }
-    .price-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
-    .price-amount {
-      font-family: 'Syne', sans-serif;
-      font-size: 3.6rem;
-      font-weight: 800;
-      letter-spacing: -0.05em;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .price-amount small {
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--text-3);
-      font-family: 'DM Sans', sans-serif;
-      letter-spacing: 0;
-    }
-    .price-note {
-      font-size: 0.8rem;
-      color: var(--text-3);
-      margin-bottom: 40px;
-    }
-    .price-divider { height: 1px; background: var(--border); margin-bottom: 32px; }
-    .price-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 44px;
-    }
-    .price-list li {
-      font-size: 0.85rem;
-      color: var(--text-2);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 300;
-    }
-    .price-list li::before {
-      content: '';
-      width: 20px; height: 1px;
-      background: var(--accent-2);
-      flex-shrink: 0;
-    }
+            /* ── PRICING ── */
+            .pricing-sec {
+                padding: 120px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .pricing-title {
+                font-family: "Syne", sans-serif;
+                font-size: clamp(2.4rem, 4vw, 4rem);
+                font-weight: 800;
+                letter-spacing: -0.04em;
+                color: var(--white);
+                line-height: 1;
+                margin-bottom: 16px;
+            }
+            .pricing-sub {
+                font-size: 0.9rem;
+                color: var(--text-2);
+                margin-bottom: 72px;
+                font-weight: 300;
+            }
+            .pricing-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2px;
+                background: var(--border);
+            }
+            .price-card {
+                background: var(--off-black);
+                padding: 56px 52px;
+                transition: background 0.3s;
+            }
+            .price-card:hover {
+                background: var(--surface);
+            }
+            .price-label {
+                font-family: "Syne", sans-serif;
+                font-size: 0.68rem;
+                font-weight: 700;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                color: var(--text-3);
+                margin-bottom: 32px;
+            }
+            .price-name {
+                font-family: "Syne", sans-serif;
+                font-size: 1.6rem;
+                font-weight: 800;
+                letter-spacing: -0.03em;
+                color: var(--white);
+                margin-bottom: 8px;
+            }
+            .price-amount {
+                font-family: "Syne", sans-serif;
+                font-size: 3.6rem;
+                font-weight: 800;
+                letter-spacing: -0.05em;
+                color: var(--accent);
+                line-height: 1;
+                margin-bottom: 4px;
+            }
+            .price-amount small {
+                font-size: 1rem;
+                font-weight: 400;
+                color: var(--text-3);
+                font-family: "DM Sans", sans-serif;
+                letter-spacing: 0;
+            }
+            .price-note {
+                font-size: 0.8rem;
+                color: var(--text-3);
+                margin-bottom: 40px;
+            }
+            .price-divider {
+                height: 1px;
+                background: var(--border);
+                margin-bottom: 32px;
+            }
+            .price-list {
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 44px;
+            }
+            .price-list li {
+                font-size: 0.85rem;
+                color: var(--text-2);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                font-weight: 300;
+            }
+            .price-list li::before {
+                content: "";
+                width: 20px;
+                height: 1px;
+                background: var(--accent-2);
+                flex-shrink: 0;
+            }
 
-    /* ── FAQ ── */
-    .faq-sec {
-      padding: 120px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .faq-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      color: var(--white);
-      line-height: 1;
-      margin-bottom: 72px;
-    }
-    .faq-list { max-width: 760px; }
-    .faq-item { border-top: 1px solid var(--border); }
-    .faq-item:last-child { border-bottom: 1px solid var(--border); }
-    .faq-btn {
-      width: 100%;
-      background: none;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 28px 0;
-      cursor: none;
-      gap: 20px;
-    }
-    .faq-q {
-      font-family: 'Syne', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--text);
-      text-align: left;
-    }
-    .faq-icon {
-      color: var(--text-3);
-      flex-shrink: 0;
-      transition: transform 0.3s, color 0.2s;
-    }
-    .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
-    .faq-a {
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.35s ease;
-    }
-    .faq-item.open .faq-a { max-height: 300px; }
-    .faq-a p {
-      font-size: 0.88rem;
-      color: var(--text-2);
-      line-height: 1.85;
-      font-weight: 300;
-      padding-bottom: 28px;
-    }
+            /* ── FAQ ── */
+            .faq-sec {
+                padding: 120px 0;
+                border-bottom: 1px solid var(--border);
+            }
+            .faq-title {
+                font-family: "Syne", sans-serif;
+                font-size: clamp(2.4rem, 4vw, 4rem);
+                font-weight: 800;
+                letter-spacing: -0.04em;
+                color: var(--white);
+                line-height: 1;
+                margin-bottom: 72px;
+            }
+            .faq-list {
+                max-width: 760px;
+            }
+            .faq-item {
+                border-top: 1px solid var(--border);
+            }
+            .faq-item:last-child {
+                border-bottom: 1px solid var(--border);
+            }
+            .faq-btn {
+                width: 100%;
+                background: none;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 28px 0;
+                cursor: none;
+                gap: 20px;
+            }
+            .faq-q {
+                font-family: "Syne", sans-serif;
+                font-size: 1rem;
+                font-weight: 600;
+                letter-spacing: -0.01em;
+                color: var(--text);
+                text-align: left;
+            }
+            .faq-icon {
+                color: var(--text-3);
+                flex-shrink: 0;
+                transition:
+                    transform 0.3s,
+                    color 0.2s;
+            }
+            .faq-item.open .faq-icon {
+                transform: rotate(45deg);
+                color: var(--accent);
+            }
+            .faq-a {
+                overflow: hidden;
+                max-height: 0;
+                transition: max-height 0.35s ease;
+            }
+            .faq-item.open .faq-a {
+                max-height: 300px;
+            }
+            .faq-a p {
+                font-size: 0.88rem;
+                color: var(--text-2);
+                line-height: 1.85;
+                font-weight: 300;
+                padding-bottom: 28px;
+            }
 
-    /* ── CTA ── */
-    .cta-sec {
-      padding: 160px 0;
-    }
-    .cta-inner {
-      text-align: center;
-    }
-    .cta-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(3rem, 6vw, 7rem);
-      font-weight: 800;
-      letter-spacing: -0.05em;
-      color: var(--white);
-      line-height: 0.92;
-      margin-bottom: 32px;
-    }
-    .cta-title em {
-      font-style: italic;
-      font-weight: 400;
-      color: var(--accent);
-      font-family: 'DM Sans', sans-serif;
-    }
-    .cta-sub {
-      font-size: 1rem;
-      color: var(--text-2);
-      margin-bottom: 52px;
-      font-weight: 300;
-    }
+            /* ── CTA ── */
+            .cta-sec {
+                padding: 160px 0;
+            }
+            .cta-inner {
+                text-align: center;
+            }
+            .cta-title {
+                font-family: "Syne", sans-serif;
+                font-size: clamp(3rem, 6vw, 7rem);
+                font-weight: 800;
+                letter-spacing: -0.05em;
+                color: var(--white);
+                line-height: 0.92;
+                margin-bottom: 32px;
+            }
+            .cta-title em {
+                font-style: italic;
+                font-weight: 400;
+                color: var(--accent);
+                font-family: "DM Sans", sans-serif;
+            }
+            .cta-sub {
+                font-size: 1rem;
+                color: var(--text-2);
+                margin-bottom: 52px;
+                font-weight: 300;
+            }
 
-    /* ── CONTACT FORM ── */
-    .contact-form {
-      max-width: 480px;
-      margin: 0 auto;
-      text-align: left;
-    }
-    .form-row { margin-bottom: 16px; }
-    .form-label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-3);
-      margin-bottom: 8px;
-    }
-    .form-input, .form-textarea {
-      width: 100%;
-      background: var(--off-black);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 14px 18px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s;
-      cursor: none;
-    }
-    .form-input:focus, .form-textarea:focus { border-color: var(--accent-2); }
-    .form-textarea { resize: vertical; min-height: 120px; }
-    .form-input::placeholder, .form-textarea::placeholder { color: var(--text-3); }
-    #formMsg {
-      display: none;
-      padding: 14px 18px;
-      border-radius: var(--r);
-      font-size: 0.85rem;
-      margin-bottom: 16px;
-    }
+            /* ── CONTACT FORM ── */
+            .contact-form {
+                max-width: 480px;
+                margin: 0 auto;
+                text-align: left;
+            }
+            .form-row {
+                margin-bottom: 16px;
+            }
+            .form-label {
+                display: block;
+                font-size: 0.72rem;
+                font-weight: 600;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--text-3);
+                margin-bottom: 8px;
+            }
+            .form-input,
+            .form-textarea {
+                width: 100%;
+                background: var(--off-black);
+                border: 1px solid var(--border);
+                border-radius: var(--r);
+                padding: 14px 18px;
+                font-family: "DM Sans", sans-serif;
+                font-size: 0.9rem;
+                color: var(--text);
+                outline: none;
+                transition: border-color 0.2s;
+                cursor: none;
+            }
+            .form-input:focus,
+            .form-textarea:focus {
+                border-color: var(--accent-2);
+            }
+            .form-textarea {
+                resize: vertical;
+                min-height: 120px;
+            }
+            .form-input::placeholder,
+            .form-textarea::placeholder {
+                color: var(--text-3);
+            }
+            #formMsg {
+                display: none;
+                padding: 14px 18px;
+                border-radius: var(--r);
+                font-size: 0.85rem;
+                margin-bottom: 16px;
+            }
 
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 60px 0;
-    }
-    .foot-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-    .foot-logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--white);
-      letter-spacing: -0.02em;
-    }
-    .foot-logo span { color: var(--accent); }
-    .foot-links {
-      display: flex;
-      gap: 32px;
-      list-style: none;
-    }
-    .foot-links a {
-      font-size: 0.78rem;
-      color: var(--text-3);
-      letter-spacing: 0.06em;
-      transition: color 0.2s;
-    }
-    .foot-links a:hover { color: var(--text); }
-    .foot-copy {
-      font-size: 0.75rem;
-      color: var(--text-3);
-      letter-spacing: 0.04em;
-    }
+            /* ── FOOTER ── */
+            footer {
+                border-top: 1px solid var(--border);
+                padding: 60px 0;
+            }
+            .foot-inner {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 24px;
+            }
+            .foot-logo {
+                font-family: "Syne", sans-serif;
+                font-size: 1rem;
+                font-weight: 800;
+                color: var(--white);
+                letter-spacing: -0.02em;
+            }
+            .foot-logo span {
+                color: var(--accent);
+            }
+            .foot-links {
+                display: flex;
+                gap: 32px;
+                list-style: none;
+            }
+            .foot-links a {
+                font-size: 0.78rem;
+                color: var(--text-3);
+                letter-spacing: 0.06em;
+                transition: color 0.2s;
+            }
+            .foot-links a:hover {
+                color: var(--text);
+            }
+            .foot-copy {
+                font-size: 0.75rem;
+                color: var(--text-3);
+                letter-spacing: 0.04em;
+            }
 
-    /* ── REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
-    }
-    .reveal.d1 { transition-delay: 0.1s; }
-    .reveal.d2 { transition-delay: 0.2s; }
-    .reveal.d3 { transition-delay: 0.3s; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+            /* ── REVEAL ── */
+            .reveal {
+                opacity: 0;
+                transform: translateY(32px);
+                transition:
+                    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .reveal.d1 {
+                transition-delay: 0.1s;
+            }
+            .reveal.d2 {
+                transition-delay: 0.2s;
+            }
+            .reveal.d3 {
+                transition-delay: 0.3s;
+            }
+            .reveal.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
 
-    /* ── MOBILE ── */
-    @media (max-width: 900px) {
-      .nav-links, .nav-btn { display: none; }
-      .nav-ham { display: block; }
-      h1 { font-size: clamp(2.8rem, 11vw, 5rem); }
-      .hero-bottom { flex-direction: column; align-items: flex-start; }
-      .numbers-grid, .service-cards, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
-      .services-header, .process-header { flex-direction: column; }
-      .step-item { grid-template-columns: 48px 1fr; }
-      .step-desc { display: none; }
-      .portfolio-header { flex-direction: column; align-items: flex-start; }
-      .port-item { grid-template-columns: 60px 1fr auto; }
-      .compare-table { display: none; }
-      .container { padding: 0 20px; }
-      .nav-inner { padding: 0 20px; }
-      .cta-title { font-size: clamp(2.4rem, 10vw, 4rem); }
-    }
-  </style>
-</head>
-<body>
+            /* ── TABLET ── */
+            @media (max-width: 1024px) {
+                .numbers-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                .num-cell {
+                    padding: 40px 32px;
+                }
+                .service-cards,
+                .pricing-grid {
+                    grid-template-columns: 1fr;
+                }
+                .svc {
+                    padding: 44px 36px;
+                }
+                .price-card {
+                    padding: 44px 36px;
+                }
+                .testi-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                .testi-card {
+                    padding: 36px 28px;
+                }
+                .step-item {
+                    gap: 28px;
+                }
+            }
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+            /* ── MOBILE ── */
+            @media (max-width: 768px) {
+                body {
+                    font-size: 15px;
+                }
+                .nav-links,
+                .nav-btn {
+                    display: none;
+                }
+                .nav-ham {
+                    display: block;
+                }
+                .nav-inner {
+                    padding: 0 20px;
+                }
+                .container {
+                    padding: 0 20px;
+                }
+                .hero-inner {
+                    padding: 0 20px;
+                }
 
-<!-- ── NAV ── -->
-<nav id="nav">
-  <div class="nav-inner">
-    <a href="#" class="nav-logo">Orbixa<span>.</span></a>
-    <ul class="nav-links">
-      <li><a href="#tjanster">Tjänster</a></li>
-      <li><a href="#projekt">Projekt</a></li>
-      <li><a href="#priser">Priser</a></li>
-      <li><a href="#faq">FAQ</a></li>
-    </ul>
-    <a href="#kontakt" class="nav-btn">Kom igång <i data-lucide="arrow-right" style="width:13px;height:13px"></i></a>
-    <button class="nav-ham" id="navHam" aria-label="Meny">
-      <i data-lucide="menu" style="width:22px;height:22px"></i>
-    </button>
-  </div>
-</nav>
+                h1 {
+                    font-size: clamp(2.2rem, 11vw, 3.5rem);
+                    margin-bottom: 28px;
+                    line-height: 0.95;
+                }
+                .hero {
+                    padding: 100px 0 60px;
+                    min-height: 100svh;
+                    justify-content: center;
+                }
+                .hero-eyebrow {
+                    margin-bottom: 20px;
+                    font-size: 0.68rem;
+                    letter-spacing: 0.12em;
+                }
+                .hero-bottom {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 24px;
+                }
+                .hero-desc {
+                    font-size: 1rem;
+                    line-height: 1.7;
+                    max-width: 100%;
+                }
 
-<div class="mob-nav" id="mobNav">
-  <a href="#tjanster" onclick="closeMob()">Tjänster</a>
-  <a href="#projekt" onclick="closeMob()">Projekt</a>
-  <a href="#priser" onclick="closeMob()">Priser</a>
-  <a href="#faq" onclick="closeMob()">FAQ</a>
-  <a href="#kontakt" onclick="closeMob()">Kom igång →</a>
-</div>
+                .btn-gold {
+                    padding: 14px 24px;
+                    font-size: 0.82rem;
+                    min-height: 48px;
+                }
+                .btn-ghost {
+                    font-size: 0.82rem;
+                    min-height: 48px;
+                }
 
-<!-- ── HERO ── -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-lines"></div>
-  <div class="hero-inner">
-    <p class="hero-eyebrow reveal">Hemsidor för svenska småföretag</p>
-    <h1 class="reveal d1">
-      Byggd.<br/>
-      <em>Klar. Din.</em>
-    </h1>
-    <div class="hero-bottom reveal d2">
-      <p class="hero-desc">Vi bygger hemsidan innan vi ens ringer dig. Du ser resultatet direkt — betalar bara om du gillar det.</p>
-      <div class="hero-actions">
-        <a href="#kontakt" class="btn-gold">Kom igång idag <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
-        <a href="#tjanster" class="btn-ghost">Hur det fungerar <i data-lucide="chevron-down" style="width:14px;height:14px"></i></a>
-      </div>
-    </div>
-  </div>
-</section>
+                .numbers-grid,
+                .service-cards,
+                .pricing-grid,
+                .testi-grid {
+                    grid-template-columns: 1fr;
+                }
+                .numbers-sec {
+                    padding: 60px 0;
+                }
+                .num-cell {
+                    padding: 32px 24px;
+                }
+                .num-value {
+                    font-size: clamp(2.6rem, 9vw, 4rem);
+                    margin-bottom: 10px;
+                }
+                .num-label {
+                    font-size: 0.9rem;
+                    line-height: 1.6;
+                }
 
-<!-- ── MARQUEE ── -->
-<div class="marquee-wrap">
-  <div class="marquee-track" id="marquee"></div>
-</div>
+                .services-sec {
+                    padding: 72px 0;
+                }
+                .services-header {
+                    flex-direction: column;
+                    margin-bottom: 44px;
+                    gap: 20px;
+                }
+                .services-title {
+                    font-size: clamp(2rem, 7vw, 3rem);
+                }
+                .services-desc {
+                    font-size: 0.95rem;
+                    max-width: 100%;
+                }
+                .svc {
+                    padding: 32px 24px;
+                }
+                .svc-num {
+                    margin-bottom: 28px;
+                    font-size: 0.7rem;
+                }
+                .svc-title {
+                    font-size: 1.8rem;
+                    margin-bottom: 12px;
+                }
+                .svc-price-tag {
+                    font-size: 1.6rem;
+                    margin-bottom: 20px;
+                }
+                .svc-price-tag small {
+                    font-size: 0.95rem;
+                }
+                .svc-body {
+                    font-size: 0.92rem;
+                    margin-bottom: 24px;
+                    line-height: 1.7;
+                }
+                .svc-features {
+                    margin-bottom: 28px;
+                    gap: 12px;
+                }
+                .svc-features li {
+                    font-size: 0.88rem;
+                }
+                .svc-cta {
+                    font-size: 0.82rem;
+                    min-height: 44px;
+                }
 
-<!-- ── NUMBERS ── -->
-<div class="numbers-sec">
-  <div class="container">
-    <div class="numbers-grid">
-      <div class="num-cell reveal">
-        <div class="num-value">8<span>k</span></div>
-        <p class="num-label">Engångspris. Ingen bindningstid. Du äger sidan för alltid.</p>
-      </div>
-      <div class="num-cell reveal d1">
-        <div class="num-value">1<span>dag</span></div>
-        <p class="num-label">Från tomt till färdig demo — anpassad för just ditt företag.</p>
-      </div>
-      <div class="num-cell reveal d2">
-        <div class="num-value">24<span>/7</span></div>
-        <p class="num-label">Din hemsida och chatbot jobbar medan du inte gör det.</p>
-      </div>
-    </div>
-  </div>
-</div>
+                .compare-sec {
+                    padding: 72px 0;
+                }
+                .compare-title {
+                    font-size: clamp(1.9rem, 6.5vw, 2.8rem);
+                }
+                .compare-sub {
+                    font-size: 0.95rem;
+                    margin-bottom: 36px;
+                }
+                .compare-table {
+                    display: none;
+                }
 
-<!-- ── SERVICES ── -->
-<section class="services-sec" id="tjanster">
-  <div class="container">
-    <div class="services-header">
-      <div>
-        <p class="sec-label reveal">Tjänster</p>
-        <h2 class="services-title reveal d1">Två produkter.<br/><em>Ett beslut.</em></h2>
-      </div>
-      <p class="services-desc reveal d2">Hemsidan sätter dig på kartan. Chatboten ser till att ingen fråga går obesvarad. Fungerar var för sig — men är starkare ihop.</p>
-    </div>
-    <div class="service-cards">
-      <div class="svc reveal">
-        <p class="svc-num">01 — Hemsida</p>
-        <h3 class="svc-title">Professionell<br/>hemsida</h3>
-        <p class="svc-price-tag">8 000 kr <small>engångspris</small></p>
-        <p class="svc-body">Skräddarsydd för din bransch. Vi bygger den, du godkänner den — sedan är den din. Domänen, koden, allt. För alltid.</p>
-        <ul class="svc-features">
-          <li>Mobilanpassad & blixtsnabb</li>
-          <li>SEO-grundoptimerad från dag ett</li>
-          <li>Kontaktformulär & Google Maps</li>
-          <li>SSL-certifikat inkluderat</li>
-          <li>Du äger domänen och sidan</li>
-          <li>Underhåll 500 kr/mån (valfritt)</li>
-        </ul>
-        <a href="#kontakt" class="svc-cta">Beställ hemsida <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
-      </div>
-      <div class="svc reveal d1">
-        <p class="svc-num">02 — AI-Chatbot</p>
-        <h3 class="svc-title">Orbixa Chat<br/>AI</h3>
-        <p class="svc-price-tag">från 699 kr <small>/mån</small></p>
-        <p class="svc-body">Tränad på ditt företag. Svarar på kundernas frågor kl 02 på natten lika bra som kl 10 på morgonen. Du missar inga leads mer.</p>
-        <ul class="svc-features">
-          <li>Tränad på just ert företag</li>
-          <li>Installation med en rad kod</li>
-          <li>Svarar på frågor 24/7</li>
-          <li>White-label — inga logotyper</li>
-          <li>GDPR-kompatibel (EU-servrar)</li>
-          <li>Uppsättning 990 kr (engångs)</li>
-        </ul>
-        <a href="#kontakt" class="svc-cta">Kom igång <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
-      </div>
-    </div>
-  </div>
-</section>
+                .process-sec {
+                    padding: 72px 0;
+                }
+                .process-header {
+                    flex-direction: column;
+                    margin-bottom: 44px;
+                    gap: 16px;
+                }
+                .process-title {
+                    font-size: clamp(1.9rem, 6.5vw, 2.8rem);
+                }
+                .process-note {
+                    font-size: 0.92rem;
+                    padding-top: 0;
+                    max-width: 100%;
+                }
+                .step-item {
+                    grid-template-columns: 56px 1fr;
+                    gap: 16px;
+                    padding: 28px 0;
+                }
+                .step-num {
+                    font-size: 0.72rem;
+                }
+                .step-name {
+                    font-size: 1.2rem;
+                }
+                .step-desc {
+                    display: none;
+                }
 
-<!-- ── OWNERSHIP ── -->
-<section class="compare-sec">
-  <div class="container">
-    <div class="reveal">
-      <p class="sec-label">Ägarskap</p>
-      <h2 class="compare-title">Din hemsida.<br/>Inte din hyresrätt.</h2>
-      <p class="compare-sub">De flesta webbtjänster låser in dig. Du betalar varje månad — och om du slutar betala försvinner allt. Inte hos oss.</p>
-    </div>
-    <div class="numbers-grid reveal d1" style="margin-top:0">
-      <div class="num-cell">
-        <div class="num-value" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:16px">Ingen inlåsning</div>
-        <p class="num-label">Domänen och koden tillhör dig från dag ett. Byt leverantör när du vill — vi håller dig inte kvar.</p>
-      </div>
-      <div class="num-cell">
-        <div class="num-value" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:16px">Inga månadsavgifter</div>
-        <p class="num-label">8 000 kr en gång. Underhåll på 500 kr/mån är helt valfritt — inte ett krav för att sidan ska fungera.</p>
-      </div>
-      <div class="num-cell">
-        <div class="num-value" style="font-size:clamp(1.6rem,3vw,2.4rem);margin-bottom:16px">Alltid online</div>
-        <p class="num-label">Om du aldrig betalar oss en krona till — är sidan fortfarande din och fortfarande live.</p>
-      </div>
-    </div>
-  </div>
-</section>
+                .portfolio-sec {
+                    padding: 72px 0;
+                }
+                .portfolio-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    margin-bottom: 32px;
+                    gap: 12px;
+                }
+                .portfolio-title {
+                    font-size: clamp(1.9rem, 6.5vw, 2.8rem);
+                }
+                .portfolio-count {
+                    font-size: 0.75rem;
+                }
+                .port-item {
+                    grid-template-columns: 1fr auto;
+                    gap: 12px;
+                    padding: 18px 16px;
+                }
+                .port-cat {
+                    display: none;
+                }
+                .port-name {
+                    font-size: 1.1rem;
+                }
+                .port-city {
+                    font-size: 0.8rem;
+                }
+                .port-arrow {
+                    opacity: 1;
+                }
 
-<!-- ── PROCESS ── -->
-<section class="process-sec">
-  <div class="container">
-    <div class="process-header">
-      <div>
-        <p class="sec-label reveal">Processen</p>
-        <h2 class="process-title reveal d1">Tre steg.<br/>Klart.</h2>
-      </div>
-      <p class="process-note reveal d2">Du behöver inte förbereda något. Vi tar första steget — du tar det sista.</p>
-    </div>
-    <div class="steps-list">
-      <div class="step-item reveal">
-        <p class="step-num">01</p>
-        <p class="step-name">Vi bygger först</p>
-        <p class="step-desc">Vi hittar ditt företag, bygger en hemsida och skickar länken. Inget möte. Ingen brief. Inga förpliktelser.</p>
-      </div>
-      <div class="step-item reveal">
-        <p class="step-num">02</p>
-        <p class="step-name">Du bestämmer</p>
-        <p class="step-desc">Gillar du det? Perfekt — vi kör vidare. Vill du ha ändringar? Inga problem. Vill du inte ha den? Den försvinner.</p>
-      </div>
-      <div class="step-item reveal">
-        <p class="step-num">03</p>
-        <p class="step-name">Online på en dag</p>
-        <p class="step-desc">När du godkänner publicerar vi. Ditt företag syns på Google, kunderna hittar dig och du slipper tänka på det mer.</p>
-      </div>
-    </div>
-  </div>
-</section>
+                .testi-sec {
+                    padding: 72px 0;
+                }
+                .testi-title {
+                    font-size: clamp(1.9rem, 6.5vw, 2.8rem);
+                    margin-bottom: 44px;
+                }
+                .testi-card {
+                    padding: 28px 24px;
+                }
+                .testi-q {
+                    font-size: 0.95rem;
+                    margin-bottom: 24px;
+                    line-height: 1.75;
+                }
+                .testi-name {
+                    font-size: 0.9rem;
+                }
+                .testi-role {
+                    font-size: 0.78rem;
+                }
 
-<!-- ── PORTFOLIO ── -->
-<section class="portfolio-sec" id="projekt">
-  <div class="container">
-    <div class="portfolio-header reveal">
-      <h2 class="portfolio-title">Byggt av Orbixa</h2>
-      <span class="portfolio-count">5 projekt</span>
-    </div>
-    <div class="port-items" id="portItems"></div>
-  </div>
-</section>
+                .pricing-sec {
+                    padding: 72px 0;
+                }
+                .pricing-title {
+                    font-size: clamp(1.9rem, 6.5vw, 2.8rem);
+                }
+                .pricing-sub {
+                    font-size: 0.95rem;
+                    margin-bottom: 44px;
+                }
+                .price-card {
+                    padding: 32px 24px;
+                }
+                .price-label {
+                    margin-bottom: 24px;
+                    font-size: 0.7rem;
+                }
+                .price-name {
+                    font-size: 1.45rem;
+                }
+                .price-amount {
+                    font-size: 3rem;
+                }
+                .price-amount small {
+                    font-size: 1rem;
+                }
+                .price-note {
+                    font-size: 0.88rem;
+                }
+                .price-list li {
+                    font-size: 0.9rem;
+                }
 
-<!-- ── TESTIMONIALS ── -->
-<section class="testi-sec">
-  <div class="container">
-    <p class="sec-label reveal">Vad kunderna säger</p>
-    <h2 class="testi-title reveal d1">Vad som<br/>händer sen.</h2>
-    <div class="testi-grid">
-      <div class="testi-card reveal">
-        <p class="testi-q">Ingen hemsida på tio år. Fick en på en dag. Tre nya kunder via Google redan första veckan — det hade inte hänt annars.</p>
-        <div class="testi-rule"></div>
-        <p class="testi-name">Erik Persson</p>
-        <p class="testi-role">Rörmokare, Göteborg</p>
-      </div>
-      <div class="testi-card reveal d1">
-        <p class="testi-q">Chatboten svarar på frågor kl 23 när jag har stängt. Förra månaden fick jag tre bokningar som jag annars hade missat helt.</p>
-        <div class="testi-rule"></div>
-        <p class="testi-name">Linda Holm</p>
-        <p class="testi-role">Städfirma, Stockholm</p>
-      </div>
-      <div class="testi-card reveal d2">
-        <p class="testi-q">Visste inte vad jag behövde. De byggde något, skickade länken — och det såg exakt rätt ut. Snabbt, enkelt, inga konstigheter.</p>
-        <div class="testi-rule"></div>
-        <p class="testi-name">Klas Bengtsson</p>
-        <p class="testi-role">Bilverkstad, Borås</p>
-      </div>
-    </div>
-  </div>
-</section>
+                .faq-sec {
+                    padding: 72px 0;
+                }
+                .faq-title {
+                    font-size: clamp(1.9rem, 6.5vw, 2.8rem);
+                    margin-bottom: 36px;
+                }
+                .faq-btn {
+                    padding: 22px 0;
+                    min-height: 56px;
+                }
+                .faq-q {
+                    font-size: 0.98rem;
+                    line-height: 1.5;
+                    padding-right: 16px;
+                }
+                .faq-a p {
+                    font-size: 0.92rem;
+                    padding-bottom: 24px;
+                    line-height: 1.75;
+                }
 
-<!-- ── PRICING ── -->
-<section class="pricing-sec" id="priser">
-  <div class="container">
-    <p class="sec-label reveal">Priser</p>
-    <h2 class="pricing-title reveal d1">Pris utan<br/>överraskningar.</h2>
-    <p class="pricing-sub reveal d2">Vad du ser är vad du betalar. Inget mer.</p>
-    <div class="pricing-grid">
-      <div class="price-card reveal">
-        <p class="price-label">01 — Hemsida</p>
-        <h3 class="price-name">Professionell hemsida</h3>
-        <div class="price-amount">8 000 kr</div>
-        <p class="price-note">Betalar du en gång. Äger för alltid.</p>
-        <div class="price-divider"></div>
-        <ul class="price-list">
-          <li>Design anpassad för din bransch</li>
-          <li>Mobilanpassad & SEO-grundoptimerad</li>
-          <li>Kontaktformulär + Google Maps</li>
-          <li>SSL-certifikat & snabb hosting</li>
-          <li>Du äger domänen och sidan</li>
-          <li>Underhåll 500 kr/mån (valfritt)</li>
-        </ul>
-        <a href="#kontakt" class="btn-gold" style="width:100%;justify-content:center">Beställ nu <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
-      </div>
-      <div class="price-card reveal d1">
-        <p class="price-label">02 — AI-Chatbot</p>
-        <h3 class="price-name">Orbixa Chat AI</h3>
-        <div class="price-amount">699 kr <small>/mån</small></div>
-        <p class="price-note">Engångsavgift för uppsättning: 990 kr</p>
-        <div class="price-divider"></div>
-        <p style="font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px">Start — 699 kr/mån</p>
-        <ul class="price-list" style="margin-bottom:24px">
-          <li>Tränad på ditt företags info</li>
-          <li>Installation med en kodrad</li>
-          <li>Svarar på frågor 24/7</li>
-          <li>GDPR-kompatibel (EU-servrar)</li>
-        </ul>
-        <p style="font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px">Pro — 999 kr/mån</p>
-        <ul class="price-list">
-          <li>Obegränsade konversationer</li>
-          <li>Avancerad anpassning & branding</li>
-          <li>Prioriterad support</li>
-        </ul>
-        <a href="#kontakt" class="btn-gold" style="width:100%;justify-content:center;margin-top:44px">Kom igång <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
-      </div>
-    </div>
-  </div>
-</section>
+                .cta-sec {
+                    padding: 80px 0;
+                }
+                .cta-title {
+                    font-size: clamp(2.2rem, 10vw, 3.5rem);
+                    margin-bottom: 20px;
+                }
+                .cta-sub {
+                    font-size: 1rem;
+                    margin-bottom: 36px;
+                }
 
-<!-- ── FAQ ── -->
-<section class="faq-sec" id="faq">
-  <div class="container">
-    <p class="sec-label reveal">FAQ</p>
-    <h2 class="faq-title reveal d1">Vanliga frågor.</h2>
-    <div class="faq-list" id="faqList"></div>
-  </div>
-</section>
+                .contact-form {
+                    padding: 0;
+                    max-width: 100%;
+                }
+                .form-label {
+                    font-size: 0.75rem;
+                }
+                .form-input,
+                .form-textarea {
+                    padding: 14px 16px;
+                    font-size: 16px;
+                    min-height: 52px;
+                }
+                .form-textarea {
+                    min-height: 120px;
+                }
 
-<!-- ── CTA ── -->
-<section class="cta-sec" id="kontakt">
-  <div class="container">
-    <div class="cta-inner reveal">
-      <h2 class="cta-title">Vill du<br/><em>se din?</em></h2>
-      <p class="cta-sub">Lämna ditt namn och nummer. Vi bygger en demo och hör av oss.</p>
-      <div class="contact-form">
-        <div id="formMsg"></div>
-        <div class="form-row">
-          <label class="form-label" for="name">Namn</label>
-          <input class="form-input" type="text" id="name" placeholder="Ditt namn" required/>
+                footer {
+                    padding: 48px 0;
+                }
+                .foot-inner {
+                    flex-direction: column;
+                    text-align: center;
+                    gap: 20px;
+                }
+                .foot-logo {
+                    font-size: 1.1rem;
+                }
+                .foot-links {
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    gap: 20px;
+                }
+                .foot-links a {
+                    font-size: 0.8rem;
+                }
+                .foot-copy {
+                    font-size: 0.78rem;
+                }
+
+                .reveal {
+                    transform: translateY(20px);
+                }
+            }
+
+            /* ── SMALL MOBILE ── */
+            @media (max-width: 480px) {
+                body {
+                    font-size: 14px;
+                }
+                .nav-inner {
+                    padding: 0 16px;
+                }
+                .container {
+                    padding: 0 16px;
+                }
+                .hero-inner {
+                    padding: 0 16px;
+                }
+
+                h1 {
+                    font-size: clamp(2rem, 12vw, 3rem);
+                    margin-bottom: 24px;
+                }
+                .hero {
+                    padding: 90px 0 48px;
+                    min-height: 100svh;
+                    justify-content: center;
+                }
+                .hero-eyebrow {
+                    font-size: 0.65rem;
+                    margin-bottom: 16px;
+                }
+                .hero-desc {
+                    font-size: 0.95rem;
+                }
+
+                .btn-gold {
+                    padding: 14px 20px;
+                    width: 100%;
+                    justify-content: center;
+                    font-size: 0.8rem;
+                    min-height: 52px;
+                }
+                .btn-ghost {
+                    font-size: 0.8rem;
+                    min-height: 52px;
+                }
+                .hero-actions {
+                    flex-direction: column;
+                    width: 100%;
+                    gap: 12px;
+                }
+
+                .num-cell {
+                    padding: 28px 20px;
+                }
+                .num-value {
+                    font-size: clamp(2.2rem, 8vw, 3rem);
+                }
+                .num-label {
+                    font-size: 0.88rem;
+                }
+
+                .svc {
+                    padding: 28px 20px;
+                }
+                .svc-title {
+                    font-size: 1.55rem;
+                }
+                .svc-price-tag {
+                    font-size: 1.4rem;
+                }
+                .svc-price-tag small {
+                    font-size: 0.9rem;
+                }
+                .svc-body {
+                    font-size: 0.9rem;
+                }
+
+                .price-card {
+                    padding: 28px 20px;
+                }
+                .price-name {
+                    font-size: 1.3rem;
+                }
+                .price-amount {
+                    font-size: 2.6rem;
+                }
+                .price-amount small {
+                    font-size: 0.9rem;
+                }
+                .price-list li {
+                    font-size: 0.88rem;
+                }
+
+                .testi-card {
+                    padding: 24px 20px;
+                }
+                .testi-q {
+                    font-size: 0.9rem;
+                }
+
+                .mob-nav {
+                    padding: 80px 24px 32px;
+                }
+                .mob-nav a {
+                    font-size: 1.5rem;
+                }
+
+                .form-input,
+                .form-textarea {
+                    font-size: 16px;
+                }
+
+                .faq-q {
+                    font-size: 0.9rem;
+                }
+                .faq-a p {
+                    font-size: 0.88rem;
+                }
+
+                .step-item {
+                    grid-template-columns: 48px 1fr;
+                    padding: 24px 0;
+                }
+                .step-name {
+                    font-size: 1.1rem;
+                }
+
+                .port-item {
+                    padding: 16px;
+                }
+                .port-name {
+                    font-size: 1rem;
+                }
+            }
+
+            /* ── TABLET IMPROVEMENTS ── */
+            @media (min-width: 769px) and (max-width: 1024px) {
+                body {
+                    font-size: 15px;
+                }
+                .container {
+                    padding: 0 32px;
+                }
+                .nav-inner {
+                    padding: 0 32px;
+                }
+                .hero-inner {
+                    padding: 0 32px;
+                }
+
+                h1 {
+                    font-size: clamp(3rem, 9vw, 5rem);
+                }
+
+                .services-title,
+                .process-title,
+                .portfolio-title,
+                .testi-title,
+                .pricing-title,
+                .compare-title,
+                .faq-title,
+                .cta-title {
+                    font-size: clamp(2.2rem, 5vw, 3.5rem);
+                }
+
+                .svc {
+                    padding: 40px 32px;
+                }
+                .svc-title {
+                    font-size: 1.7rem;
+                }
+
+                .price-card {
+                    padding: 40px 32px;
+                }
+                .price-amount {
+                    font-size: 3.2rem;
+                }
+
+                .num-cell {
+                    padding: 40px 32px;
+                }
+                .num-value {
+                    font-size: clamp(2.8rem, 6vw, 4.5rem);
+                }
+
+                .testi-card {
+                    padding: 32px 28px;
+                }
+            }
+
+            /* ── LARGE SCREENS ── */
+            @media (min-width: 1440px) {
+                .container {
+                    max-width: 1400px;
+                }
+                .nav-inner {
+                    max-width: 1400px;
+                }
+                .hero-inner {
+                    max-width: 1400px;
+                }
+                h1 {
+                    font-size: clamp(4rem, 7vw, 10rem);
+                }
+            }
+
+            /* ── REDUCED MOTION ── */
+            @media (prefers-reduced-motion: reduce) {
+                .reveal {
+                    opacity: 1;
+                    transform: none;
+                    transition: none;
+                }
+                .marquee-track {
+                    animation: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="cursor" id="cursor"></div>
+        <div class="cursor-ring" id="cursorRing"></div>
+
+        <!-- ── NAV ── -->
+        <nav id="nav">
+            <div class="nav-inner">
+                <a href="#" class="nav-logo">Orbixa<span>.</span></a>
+                <ul class="nav-links">
+                    <li><a href="#tjanster">Tjänster</a></li>
+                    <li><a href="#projekt">Projekt</a></li>
+                    <li><a href="#priser">Priser</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+                <a href="#kontakt" class="nav-btn"
+                    >Kom igång
+                    <i
+                        data-lucide="arrow-right"
+                        style="width: 13px; height: 13px"
+                    ></i
+                ></a>
+                <button class="nav-ham" id="navHam" aria-label="Meny">
+                    <i data-lucide="menu" style="width: 22px; height: 22px"></i>
+                </button>
+            </div>
+        </nav>
+
+        <div class="mob-nav" id="mobNav">
+            <a href="#tjanster" onclick="closeMob()">Tjänster</a>
+            <a href="#projekt" onclick="closeMob()">Projekt</a>
+            <a href="#priser" onclick="closeMob()">Priser</a>
+            <a href="#faq" onclick="closeMob()">FAQ</a>
+            <a href="#kontakt" onclick="closeMob()">Kom igång →</a>
         </div>
-        <div class="form-row">
-          <label class="form-label" for="email">E-post</label>
-          <input class="form-input" type="email" id="email" placeholder="din@email.se" required/>
+
+        <!-- ── HERO ── -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-lines"></div>
+            <div class="hero-inner">
+                <p class="hero-eyebrow reveal">
+                    Hemsidor för svenska småföretag
+                </p>
+                <h1 class="reveal d1">
+                    Byggd.<br />
+                    <em>Klar. Din.</em>
+                </h1>
+                <div class="hero-bottom reveal d2">
+                    <p class="hero-desc">
+                        Vi bygger hemsidan innan vi ens ringer dig. Du ser
+                        resultatet direkt — betalar bara om du gillar det.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#kontakt" class="btn-gold"
+                            >Kom igång idag
+                            <i
+                                data-lucide="arrow-right"
+                                style="width: 14px; height: 14px"
+                            ></i
+                        ></a>
+                        <a href="#tjanster" class="btn-ghost"
+                            >Hur det fungerar
+                            <i
+                                data-lucide="chevron-down"
+                                style="width: 14px; height: 14px"
+                            ></i
+                        ></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── MARQUEE ── -->
+        <div class="marquee-wrap">
+            <div class="marquee-track" id="marquee"></div>
         </div>
-        <div class="form-row" style="margin-bottom:24px">
-          <label class="form-label" for="msg">Meddelande</label>
-          <textarea class="form-textarea" id="msg" placeholder="Ditt företag, vad du gör, var ni finns..." required></textarea>
+
+        <!-- ── NUMBERS ── -->
+        <div class="numbers-sec">
+            <div class="container">
+                <div class="numbers-grid">
+                    <div class="num-cell reveal">
+                        <div class="num-value">8<span>k</span></div>
+                        <p class="num-label">
+                            Engångspris. Ingen bindningstid. Du äger sidan för
+                            alltid.
+                        </p>
+                    </div>
+                    <div class="num-cell reveal d1">
+                        <div class="num-value">1<span>dag</span></div>
+                        <p class="num-label">
+                            Från tomt till färdig demo — anpassad för just ditt
+                            företag.
+                        </p>
+                    </div>
+                    <div class="num-cell reveal d2">
+                        <div class="num-value">24<span>/7</span></div>
+                        <p class="num-label">
+                            Din hemsida och chatbot jobbar medan du inte gör
+                            det.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button class="btn-gold" id="submitBtn" type="button" onclick="submitForm()" style="width:100%;justify-content:center;font-size:0.85rem;padding:16px 28px">
-          Skicka meddelande <i data-lucide="send" style="width:14px;height:14px"></i>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="container">
-    <div class="foot-inner">
-      <span class="foot-logo">Orbixa<span>.</span></span>
-      <ul class="foot-links">
-        <li><a href="#tjanster">Tjänster</a></li>
-        <li><a href="#projekt">Projekt</a></li>
-        <li><a href="#priser">Priser</a></li>
-        <li><a href="mailto:hej@orbixa.se">hej@orbixa.se</a></li>
-      </ul>
-      <p class="foot-copy">© 2026 Orbixa — Byggt i Sverige</p>
-    </div>
-  </div>
-</footer>
+        <!-- ── SERVICES ── -->
+        <section class="services-sec" id="tjanster">
+            <div class="container">
+                <div class="services-header">
+                    <div>
+                        <p class="sec-label reveal">Tjänster</p>
+                        <h2 class="services-title reveal d1">
+                            Två produkter.<br /><em>Ett beslut.</em>
+                        </h2>
+                    </div>
+                    <p class="services-desc reveal d2">
+                        Hemsidan sätter dig på kartan. Chatboten ser till att
+                        ingen fråga går obesvarad. Fungerar var för sig — men är
+                        starkare ihop.
+                    </p>
+                </div>
+                <div class="service-cards">
+                    <div class="svc reveal">
+                        <p class="svc-num">01 — Hemsida</p>
+                        <h3 class="svc-title">Professionell<br />hemsida</h3>
+                        <p class="svc-price-tag">
+                            8 000 kr <small>engångspris</small>
+                        </p>
+                        <p class="svc-body">
+                            Skräddarsydd för din bransch. Vi bygger den, du
+                            godkänner den — sedan är den din. Domänen, koden,
+                            allt. För alltid.
+                        </p>
+                        <ul class="svc-features">
+                            <li>Mobilanpassad & blixtsnabb</li>
+                            <li>SEO-grundoptimerad från dag ett</li>
+                            <li>Kontaktformulär & Google Maps</li>
+                            <li>SSL-certifikat inkluderat</li>
+                            <li>Du äger domänen och sidan</li>
+                            <li>Underhåll 500 kr/mån (valfritt)</li>
+                        </ul>
+                        <a href="#kontakt" class="svc-cta"
+                            >Beställ hemsida
+                            <i
+                                data-lucide="arrow-right"
+                                style="width: 14px; height: 14px"
+                            ></i
+                        ></a>
+                    </div>
+                    <div class="svc reveal d1">
+                        <p class="svc-num">02 — AI-Chatbot</p>
+                        <h3 class="svc-title">Orbixa Chat<br />AI</h3>
+                        <p class="svc-price-tag">
+                            från 699 kr <small>/mån</small>
+                        </p>
+                        <p class="svc-body">
+                            Tränad på ditt företag. Svarar på kundernas frågor
+                            kl 02 på natten lika bra som kl 10 på morgonen. Du
+                            missar inga leads mer.
+                        </p>
+                        <ul class="svc-features">
+                            <li>Tränad på just ert företag</li>
+                            <li>Installation med en rad kod</li>
+                            <li>Svarar på frågor 24/7</li>
+                            <li>White-label — inga logotyper</li>
+                            <li>GDPR-kompatibel (EU-servrar)</li>
+                            <li>Uppsättning 990 kr (engångs)</li>
+                        </ul>
+                        <a href="#kontakt" class="svc-cta"
+                            >Kom igång
+                            <i
+                                data-lucide="arrow-right"
+                                style="width: 14px; height: 14px"
+                            ></i
+                        ></a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<script>
-// ── CURSOR ──
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx = 0, my = 0, rx = 0, ry = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px';
-  cursor.style.top = my + 'px';
-});
-function animRing() {
-  rx += (mx - rx) * 0.12;
-  ry += (my - ry) * 0.12;
-  ring.style.left = rx + 'px';
-  ring.style.top = ry + 'px';
-  requestAnimationFrame(animRing);
-}
-animRing();
+        <!-- ── OWNERSHIP ── -->
+        <section class="compare-sec">
+            <div class="container">
+                <div class="reveal">
+                    <p class="sec-label">Ägarskap</p>
+                    <h2 class="compare-title">
+                        Din hemsida.<br />Inte din hyresrätt.
+                    </h2>
+                    <p class="compare-sub">
+                        De flesta webbtjänster låser in dig. Du betalar varje
+                        månad — och om du slutar betala försvinner allt. Inte
+                        hos oss.
+                    </p>
+                </div>
+                <div class="numbers-grid reveal d1" style="margin-top: 0">
+                    <div class="num-cell">
+                        <div
+                            class="num-value"
+                            style="
+                                font-size: clamp(1.6rem, 3vw, 2.4rem);
+                                margin-bottom: 16px;
+                            "
+                        >
+                            Ingen inlåsning
+                        </div>
+                        <p class="num-label">
+                            Domänen och koden tillhör dig från dag ett. Byt
+                            leverantör när du vill — vi håller dig inte kvar.
+                        </p>
+                    </div>
+                    <div class="num-cell">
+                        <div
+                            class="num-value"
+                            style="
+                                font-size: clamp(1.6rem, 3vw, 2.4rem);
+                                margin-bottom: 16px;
+                            "
+                        >
+                            Inga månadsavgifter
+                        </div>
+                        <p class="num-label">
+                            8 000 kr en gång. Underhåll på 500 kr/mån är helt
+                            valfritt — inte ett krav för att sidan ska fungera.
+                        </p>
+                    </div>
+                    <div class="num-cell">
+                        <div
+                            class="num-value"
+                            style="
+                                font-size: clamp(1.6rem, 3vw, 2.4rem);
+                                margin-bottom: 16px;
+                            "
+                        >
+                            Alltid online
+                        </div>
+                        <p class="num-label">
+                            Om du aldrig betalar oss en krona till — är sidan
+                            fortfarande din och fortfarande live.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-// ── NAV ──
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
-});
-document.getElementById('navHam').addEventListener('click', () => {
-  document.getElementById('mobNav').classList.toggle('open');
-});
-function closeMob() { document.getElementById('mobNav').classList.remove('open'); }
+        <!-- ── PROCESS ── -->
+        <section class="process-sec">
+            <div class="container">
+                <div class="process-header">
+                    <div>
+                        <p class="sec-label reveal">Processen</p>
+                        <h2 class="process-title reveal d1">
+                            Tre steg.<br />Klart.
+                        </h2>
+                    </div>
+                    <p class="process-note reveal d2">
+                        Du behöver inte förbereda något. Vi tar första steget —
+                        du tar det sista.
+                    </p>
+                </div>
+                <div class="steps-list">
+                    <div class="step-item reveal">
+                        <p class="step-num">01</p>
+                        <p class="step-name">Vi bygger först</p>
+                        <p class="step-desc">
+                            Vi hittar ditt företag, bygger en hemsida och
+                            skickar länken. Inget möte. Ingen brief. Inga
+                            förpliktelser.
+                        </p>
+                    </div>
+                    <div class="step-item reveal">
+                        <p class="step-num">02</p>
+                        <p class="step-name">Du bestämmer</p>
+                        <p class="step-desc">
+                            Gillar du det? Perfekt — vi kör vidare. Vill du ha
+                            ändringar? Inga problem. Vill du inte ha den? Den
+                            försvinner.
+                        </p>
+                    </div>
+                    <div class="step-item reveal">
+                        <p class="step-num">03</p>
+                        <p class="step-name">Online på en dag</p>
+                        <p class="step-desc">
+                            När du godkänner publicerar vi. Ditt företag syns på
+                            Google, kunderna hittar dig och du slipper tänka på
+                            det mer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-// ── MARQUEE ──
-const items = ['Hemsidor', 'AI-Chatbot', 'Bilverkstäder', 'Städfirmor', 'Restauranger', 'Fasta priser', 'Ingen bindningstid', 'Du äger allt', 'Snabb leverans', 'GDPR-kompatibel', 'Baserade i Sverige'];
-let html = '';
-for(let i=0;i<4;i++) items.forEach(t => { html += `<span class="marquee-item"><span class="marquee-dot"></span>${t}</span>`; });
-document.getElementById('marquee').innerHTML = html;
+        <!-- ── PORTFOLIO ── -->
+        <section class="portfolio-sec" id="projekt">
+            <div class="container">
+                <div class="portfolio-header reveal">
+                    <h2 class="portfolio-title">Byggt av Orbixa</h2>
+                    <span class="portfolio-count">5 projekt</span>
+                </div>
+                <div class="port-items" id="portItems"></div>
+            </div>
+        </section>
 
-// ── PORTFOLIO ──
-const projects = [
-  { cat: 'Bilverkstad', name: 'Torquetech', city: 'Borås', url: 'https://torquetech.netlify.app' },
-  { cat: 'Frisör', name: 'Nordic Fade', city: 'Stockholm', url: 'https://nordicfade.netlify.app' },
-  { cat: 'Städfirma', name: 'Stockholm Städ & Hem', city: 'Stockholm', url: 'https://stadfirma.netlify.app' },
-  { cat: 'Restaurang', name: 'Korai Indian', city: 'Stockholm', url: 'https://korai.se' },
-];
-document.getElementById('portItems').innerHTML = projects.map((p,i) => `
-  <a href="${p.url}" target="_blank" rel="noopener" class="port-item reveal${i>0?' d'+(i>3?3:i):''}">
+        <!-- ── TESTIMONIALS ── -->
+        <section class="testi-sec">
+            <div class="container">
+                <p class="sec-label reveal">Vad kunderna säger</p>
+                <h2 class="testi-title reveal d1">Vad som<br />händer sen.</h2>
+                <div class="testi-grid">
+                    <div class="testi-card reveal">
+                        <p class="testi-q">
+                            Ingen hemsida på tio år. Fick en på en dag. Tre nya
+                            kunder via Google redan första veckan — det hade
+                            inte hänt annars.
+                        </p>
+                        <div class="testi-rule"></div>
+                        <p class="testi-name">Erik Persson</p>
+                        <p class="testi-role">Rörmokare, Göteborg</p>
+                    </div>
+                    <div class="testi-card reveal d1">
+                        <p class="testi-q">
+                            Chatboten svarar på frågor kl 23 när jag har stängt.
+                            Förra månaden fick jag tre bokningar som jag annars
+                            hade missat helt.
+                        </p>
+                        <div class="testi-rule"></div>
+                        <p class="testi-name">Linda Holm</p>
+                        <p class="testi-role">Städfirma, Stockholm</p>
+                    </div>
+                    <div class="testi-card reveal d2">
+                        <p class="testi-q">
+                            Visste inte vad jag behövde. De byggde något,
+                            skickade länken — och det såg exakt rätt ut. Snabbt,
+                            enkelt, inga konstigheter.
+                        </p>
+                        <div class="testi-rule"></div>
+                        <p class="testi-name">Klas Bengtsson</p>
+                        <p class="testi-role">Bilverkstad, Borås</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── PRICING ── -->
+        <section class="pricing-sec" id="priser">
+            <div class="container">
+                <p class="sec-label reveal">Priser</p>
+                <h2 class="pricing-title reveal d1">
+                    Pris utan<br />överraskningar.
+                </h2>
+                <p class="pricing-sub reveal d2">
+                    Vad du ser är vad du betalar. Inget mer.
+                </p>
+                <div class="pricing-grid">
+                    <div class="price-card reveal">
+                        <p class="price-label">01 — Hemsida</p>
+                        <h3 class="price-name">Professionell hemsida</h3>
+                        <div class="price-amount">8 000 kr</div>
+                        <p class="price-note">
+                            Betalar du en gång. Äger för alltid.
+                        </p>
+                        <div class="price-divider"></div>
+                        <ul class="price-list">
+                            <li>Design anpassad för din bransch</li>
+                            <li>Mobilanpassad & SEO-grundoptimerad</li>
+                            <li>Kontaktformulär + Google Maps</li>
+                            <li>SSL-certifikat & snabb hosting</li>
+                            <li>Du äger domänen och sidan</li>
+                            <li>Underhåll 500 kr/mån (valfritt)</li>
+                        </ul>
+                        <a
+                            href="#kontakt"
+                            class="btn-gold"
+                            style="width: 100%; justify-content: center"
+                            >Beställ nu
+                            <i
+                                data-lucide="arrow-right"
+                                style="width: 14px; height: 14px"
+                            ></i
+                        ></a>
+                    </div>
+                    <div class="price-card reveal d1">
+                        <p class="price-label">02 — AI-Chatbot</p>
+                        <h3 class="price-name">Orbixa Chat AI</h3>
+                        <div class="price-amount">
+                            699 kr <small>/mån</small>
+                        </div>
+                        <p class="price-note">
+                            Engångsavgift för uppsättning: 990 kr
+                        </p>
+                        <div class="price-divider"></div>
+                        <p
+                            style="
+                                font-size: 0.72rem;
+                                font-weight: 600;
+                                letter-spacing: 0.1em;
+                                text-transform: uppercase;
+                                color: var(--text-3);
+                                margin-bottom: 12px;
+                            "
+                        >
+                            Start — 699 kr/mån
+                        </p>
+                        <ul class="price-list" style="margin-bottom: 24px">
+                            <li>Tränad på ditt företags info</li>
+                            <li>Installation med en kodrad</li>
+                            <li>Svarar på frågor 24/7</li>
+                            <li>GDPR-kompatibel (EU-servrar)</li>
+                        </ul>
+                        <p
+                            style="
+                                font-size: 0.72rem;
+                                font-weight: 600;
+                                letter-spacing: 0.1em;
+                                text-transform: uppercase;
+                                color: var(--text-3);
+                                margin-bottom: 12px;
+                            "
+                        >
+                            Pro — 999 kr/mån
+                        </p>
+                        <ul class="price-list">
+                            <li>Obegränsade konversationer</li>
+                            <li>Avancerad anpassning & branding</li>
+                            <li>Prioriterad support</li>
+                        </ul>
+                        <a
+                            href="#kontakt"
+                            class="btn-gold"
+                            style="
+                                width: 100%;
+                                justify-content: center;
+                                margin-top: 44px;
+                            "
+                            >Kom igång
+                            <i
+                                data-lucide="arrow-right"
+                                style="width: 14px; height: 14px"
+                            ></i
+                        ></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── FAQ ── -->
+        <section class="faq-sec" id="faq">
+            <div class="container">
+                <p class="sec-label reveal">FAQ</p>
+                <h2 class="faq-title reveal d1">Vanliga frågor.</h2>
+                <div class="faq-list" id="faqList"></div>
+            </div>
+        </section>
+
+        <!-- ── CTA ── -->
+        <section class="cta-sec" id="kontakt">
+            <div class="container">
+                <div class="cta-inner reveal">
+                    <h2 class="cta-title">Vill du<br /><em>se din?</em></h2>
+                    <p class="cta-sub">
+                        Lämna ditt namn och nummer. Vi bygger en demo och hör av
+                        oss.
+                    </p>
+                    <div class="contact-form">
+                        <div id="formMsg"></div>
+                        <div class="form-row">
+                            <label class="form-label" for="name">Namn</label>
+                            <input
+                                class="form-input"
+                                type="text"
+                                id="name"
+                                placeholder="Ditt namn"
+                                required
+                            />
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label" for="email">E-post</label>
+                            <input
+                                class="form-input"
+                                type="email"
+                                id="email"
+                                placeholder="din@email.se"
+                                required
+                            />
+                        </div>
+                        <div class="form-row" style="margin-bottom: 24px">
+                            <label class="form-label" for="msg"
+                                >Meddelande</label
+                            >
+                            <textarea
+                                class="form-textarea"
+                                id="msg"
+                                placeholder="Ditt företag, vad du gör, var ni finns..."
+                                required
+                            ></textarea>
+                        </div>
+                        <button
+                            class="btn-gold"
+                            id="submitBtn"
+                            type="button"
+                            onclick="submitForm()"
+                            style="
+                                width: 100%;
+                                justify-content: center;
+                                font-size: 0.85rem;
+                                padding: 16px 28px;
+                            "
+                        >
+                            Skicka meddelande
+                            <i
+                                data-lucide="send"
+                                style="width: 14px; height: 14px"
+                            ></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── FOOTER ── -->
+        <footer>
+            <div class="container">
+                <div class="foot-inner">
+                    <span class="foot-logo">Orbixa<span>.</span></span>
+                    <ul class="foot-links">
+                        <li><a href="#tjanster">Tjänster</a></li>
+                        <li><a href="#projekt">Projekt</a></li>
+                        <li><a href="#priser">Priser</a></li>
+                        <li>
+                            <a href="mailto:hej@orbixa.se">hej@orbixa.se</a>
+                        </li>
+                    </ul>
+                    <p class="foot-copy">© 2026 Orbixa — Byggt i Sverige</p>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            // ── CURSOR ──
+            const cursor = document.getElementById("cursor");
+            const ring = document.getElementById("cursorRing");
+            let mx = 0,
+                my = 0,
+                rx = 0,
+                ry = 0;
+            document.addEventListener("mousemove", (e) => {
+                mx = e.clientX;
+                my = e.clientY;
+                cursor.style.left = mx + "px";
+                cursor.style.top = my + "px";
+            });
+            function animRing() {
+                rx += (mx - rx) * 0.12;
+                ry += (my - ry) * 0.12;
+                ring.style.left = rx + "px";
+                ring.style.top = ry + "px";
+                requestAnimationFrame(animRing);
+            }
+            animRing();
+
+            // ── NAV ──
+            window.addEventListener("scroll", () => {
+                document
+                    .getElementById("nav")
+                    .classList.toggle("scrolled", window.scrollY > 60);
+            });
+            document.getElementById("navHam").addEventListener("click", () => {
+                document.getElementById("mobNav").classList.toggle("open");
+            });
+            function closeMob() {
+                document.getElementById("mobNav").classList.remove("open");
+            }
+
+            // ── MARQUEE ──
+            const items = [
+                "Hemsidor",
+                "AI-Chatbot",
+                "Bilverkstäder",
+                "Städfirmor",
+                "Restauranger",
+                "Fasta priser",
+                "Ingen bindningstid",
+                "Du äger allt",
+                "Snabb leverans",
+                "GDPR-kompatibel",
+                "Baserade i Sverige",
+            ];
+            let html = "";
+            for (let i = 0; i < 4; i++)
+                items.forEach((t) => {
+                    html += `<span class="marquee-item"><span class="marquee-dot"></span>${t}</span>`;
+                });
+            document.getElementById("marquee").innerHTML = html;
+
+            // ── PORTFOLIO ──
+            const projects = [
+                {
+                    cat: "Bilverkstad",
+                    name: "Torquetech",
+                    city: "Borås",
+                    url: "https://torquetech.netlify.app",
+                },
+                {
+                    cat: "Frisör",
+                    name: "Nordic Fade",
+                    city: "Stockholm",
+                    url: "https://nordicfade.netlify.app",
+                },
+                {
+                    cat: "Städfirma",
+                    name: "Stockholm Städ & Hem",
+                    city: "Stockholm",
+                    url: "https://stadfirma.netlify.app",
+                },
+                {
+                    cat: "Restaurang",
+                    name: "Korai Indian",
+                    city: "Stockholm",
+                    url: "https://korai.se",
+                },
+            ];
+            document.getElementById("portItems").innerHTML = projects
+                .map(
+                    (p, i) => `
+  <a href="${p.url}" target="_blank" rel="noopener" class="port-item reveal${i > 0 ? " d" + (i > 3 ? 3 : i) : ""}">
     <span class="port-cat">${p.cat}</span>
     <div>
       <p class="port-name">${p.name}</p>
@@ -1399,82 +2428,119 @@ document.getElementById('portItems').innerHTML = projects.map((p,i) => `
     </div>
     <i data-lucide="arrow-up-right" style="width:18px;height:18px" class="port-arrow"></i>
   </a>
-`).join('');
+`,
+                )
+                .join("");
 
-// ── FAQ ──
-const faqs = [
-  { q: 'Hur funkar det — behöver jag göra något?', a: 'Ingenting. Vi hittar ditt företag, bygger en demo och skickar länken. Du tittar, säger vad du tänker — och vi fixar resten.' },
-  { q: 'Vad händer om jag inte är nöjd med demon?', a: 'Vi ändrar tills det stämmer. Inget publiceras utan ditt godkännande. Vill du inte ha den? Den försvinner. Inga konstigheter.' },
-  { q: 'Äger jag verkligen hemsidan?', a: 'Ja — helt och fullt. Domänen, koden och innehållet tillhör dig från dag ett. Inte oss. Inte någon plattform. Dig.' },
-  { q: 'Är chatboten GDPR-säker?', a: 'Ja. All data stannar inom EU. Vi följer GDPR fullt ut — inget skickas utanför Europa.' },
-  { q: 'Kan jag ha både hemsida och chatbot?', a: 'Absolut. De flesta som får mest ut av det kombinerar båda. Hemsidan syns, chatboten konverterar.' },
-];
-document.getElementById('faqList').innerHTML = faqs.map((f, i) => `
-  <div class="faq-item reveal${i>0?' d'+(i>3?3:i):''}">
+            // ── FAQ ──
+            const faqs = [
+                {
+                    q: "Hur funkar det — behöver jag göra något?",
+                    a: "Ingenting. Vi hittar ditt företag, bygger en demo och skickar länken. Du tittar, säger vad du tänker — och vi fixar resten.",
+                },
+                {
+                    q: "Vad händer om jag inte är nöjd med demon?",
+                    a: "Vi ändrar tills det stämmer. Inget publiceras utan ditt godkännande. Vill du inte ha den? Den försvinner. Inga konstigheter.",
+                },
+                {
+                    q: "Äger jag verkligen hemsidan?",
+                    a: "Ja — helt och fullt. Domänen, koden och innehållet tillhör dig från dag ett. Inte oss. Inte någon plattform. Dig.",
+                },
+                {
+                    q: "Är chatboten GDPR-säker?",
+                    a: "Ja. All data stannar inom EU. Vi följer GDPR fullt ut — inget skickas utanför Europa.",
+                },
+                {
+                    q: "Kan jag ha både hemsida och chatbot?",
+                    a: "Absolut. De flesta som får mest ut av det kombinerar båda. Hemsidan syns, chatboten konverterar.",
+                },
+            ];
+            document.getElementById("faqList").innerHTML = faqs
+                .map(
+                    (f, i) => `
+  <div class="faq-item reveal${i > 0 ? " d" + (i > 3 ? 3 : i) : ""}">
     <button class="faq-btn" onclick="toggleFaq(this)">
       <span class="faq-q">${f.q}</span>
       <i data-lucide="plus" style="width:16px;height:16px" class="faq-icon"></i>
     </button>
     <div class="faq-a"><p>${f.a}</p></div>
   </div>
-`).join('');
+`,
+                )
+                .join("");
 
-function toggleFaq(btn) {
-  const item = btn.parentElement;
-  const isOpen = item.classList.contains('open');
-  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-  if (!isOpen) item.classList.add('open');
-  lucide.createIcons();
-}
+            function toggleFaq(btn) {
+                const item = btn.parentElement;
+                const isOpen = item.classList.contains("open");
+                document
+                    .querySelectorAll(".faq-item")
+                    .forEach((i) => i.classList.remove("open"));
+                if (!isOpen) item.classList.add("open");
+                lucide.createIcons();
+            }
 
-// ── FORM ──
-async function submitForm() {
-  const btn = document.getElementById('submitBtn');
-  const msg = document.getElementById('formMsg');
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const body = document.getElementById('msg').value.trim();
-  if (!name || !email || !body) return;
-  btn.disabled = true;
-  btn.innerHTML = 'Skickar...';
-  try {
-    const res = await fetch('/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, message: body })
-    });
-    if (res.ok) {
-      msg.style.display = 'block';
-      msg.style.background = 'rgba(200,165,100,0.08)';
-      msg.style.border = '1px solid rgba(200,165,100,0.2)';
-      msg.style.color = 'var(--accent)';
-      msg.textContent = 'Tack! Vi återkommer inom 24 timmar.';
-      document.getElementById('name').value = '';
-      document.getElementById('email').value = '';
-      document.getElementById('msg').value = '';
-    } else { throw new Error(); }
-  } catch {
-    msg.style.display = 'block';
-    msg.style.background = 'rgba(239,68,68,0.08)';
-    msg.style.border = '1px solid rgba(239,68,68,0.2)';
-    msg.style.color = '#f87171';
-    msg.textContent = 'Kunde inte skicka. Maila gärna hej@orbixa.se';
-  }
-  btn.disabled = false;
-  btn.innerHTML = 'Skicka meddelande <i data-lucide="send" style="width:14px;height:14px"></i>';
-  lucide.createIcons();
-}
+            // ── FORM ──
+            async function submitForm() {
+                const btn = document.getElementById("submitBtn");
+                const msg = document.getElementById("formMsg");
+                const name = document.getElementById("name").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const body = document.getElementById("msg").value.trim();
+                if (!name || !email || !body) return;
+                btn.disabled = true;
+                btn.innerHTML = "Skickar...";
+                try {
+                    const res = await fetch("/contact", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ name, email, message: body }),
+                    });
+                    if (res.ok) {
+                        msg.style.display = "block";
+                        msg.style.background = "rgba(200,165,100,0.08)";
+                        msg.style.border = "1px solid rgba(200,165,100,0.2)";
+                        msg.style.color = "var(--accent)";
+                        msg.textContent = "Tack! Vi återkommer inom 24 timmar.";
+                        document.getElementById("name").value = "";
+                        document.getElementById("email").value = "";
+                        document.getElementById("msg").value = "";
+                    } else {
+                        throw new Error();
+                    }
+                } catch {
+                    msg.style.display = "block";
+                    msg.style.background = "rgba(239,68,68,0.08)";
+                    msg.style.border = "1px solid rgba(239,68,68,0.2)";
+                    msg.style.color = "#f87171";
+                    msg.textContent =
+                        "Kunde inte skicka. Maila gärna hej@orbixa.se";
+                }
+                btn.disabled = false;
+                btn.innerHTML =
+                    'Skicka meddelande <i data-lucide="send" style="width:14px;height:14px"></i>';
+                lucide.createIcons();
+            }
 
-// ── REVEAL ──
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-  });
-}, { threshold: 0.06, rootMargin: '0px 0px -32px 0px' });
-function observe() { document.querySelectorAll('.reveal').forEach(el => io.observe(el)); }
+            // ── REVEAL ──
+            const io = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((e) => {
+                        if (e.isIntersecting) {
+                            e.target.classList.add("visible");
+                            io.unobserve(e.target);
+                        }
+                    });
+                },
+                { threshold: 0.06, rootMargin: "0px 0px -32px 0px" },
+            );
+            function observe() {
+                document
+                    .querySelectorAll(".reveal")
+                    .forEach((el) => io.observe(el));
+            }
 
-lucide.createIcons();
-observe();
-</script>
-</body>
+            lucide.createIcons();
+            observe();
+        </script>
+    </body>
 </html>
