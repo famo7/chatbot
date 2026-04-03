@@ -88,6 +88,18 @@ def root(request: Request):
     return FileResponse("static/index.html")
 
 
+@app.get("/robots.txt")
+def robots_txt():
+    """Serve robots.txt for SEO crawlers."""
+    return FileResponse("static/robots.txt", media_type="text/plain")
+
+
+@app.get("/sitemap.xml")
+def sitemap_xml():
+    """Serve sitemap.xml for SEO."""
+    return FileResponse("static/sitemap.xml", media_type="application/xml")
+
+
 @app.get("/chat-ui")
 def chat_ui():
     return FileResponse("static/index.html")
