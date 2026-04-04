@@ -1,3 +1,4 @@
+import html as html_module
 import json
 import os
 
@@ -59,9 +60,9 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["https://*.aloitus.se", "https://aloitus.se"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 
@@ -140,7 +141,13 @@ async def chat(request: Request, body: ChatRequest):
     tenant = get_tenant_from_request(request)
     company_data, company_config, _ = load_tenant_data(tenant)
 
-    trimmed_history = body.history[-MAX_HISTORY:]
+    if len(body.message) > 2000:
+        return {"response": "Meddelandet är för långt."}
+
+    trimmed_history = [
+        msg for msg in body.history[-MAX_HISTORY:]
+        if isinstance(msg, dict) and msg.get("role") in ("user", "assistant")
+    ]
 
     system_prompt = (
         f"Du är en hjälpsam kundtjänstassistent för {company_config['company_name']}. "
@@ -198,10 +205,10 @@ async def contact(request: Request, body: ContactRequest):
                 "subject": f"Ny förfrågan från {body.name}",
                 "html": f"""
                 <h2>Ny förfrågan från Aloitus.se</h2>
-                <p><strong>Namn:</strong> {body.name}</p>
-                <p><strong>E-post:</strong> {body.email}</p>
+                <p><strong>Namn:</strong> {html_module.escape(body.name)}</p>
+                <p><strong>E-post:</strong> {html_module.escape(body.email)}</p>
                 <p><strong>Meddelande:</strong></p>
-                <p>{body.message}</p>
+                <p>{html_module.escape(body.message)}</p>
             """,
             }
         )
