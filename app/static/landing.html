@@ -214,7 +214,7 @@ section{position:relative}
 
 /* NUMBERS */
 .numbers-sec{padding:100px 0;border-bottom:1px solid var(--border)}
-.numbers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.numbers-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
 .num-cell{background:var(--navy);padding:52px 44px;transition:background .3s;border:1px solid transparent;margin:-1px}
 .num-cell:hover{background:var(--navy-3)}
 .num-value{font-family:'Fraunces',serif;font-size:clamp(3rem,5vw,5.5rem);font-weight:900;line-height:1;letter-spacing:-.05em;color:var(--white);margin-bottom:12px}
@@ -478,11 +478,7 @@ footer{border-top:1px solid var(--border);padding:56px 0}
         <div class="num-value">500<span>kr</span></div>
         <p class="num-label">Per månad, faktureras årsvis (6 000 kr/år). Inget startpris — demo är gratis.</p>
       </div>
-      <div class="num-cell reveal d1">
-        <div class="num-value">1<span>dag</span></div>
-        <p class="num-label">Från tomt till färdig demo anpassad för just ditt företag.</p>
-      </div>
-      <div class="num-cell reveal d2">
+<div class="num-cell reveal d2">
         <div class="num-value">24<span>/7</span></div>
         <p class="num-label">Din hemsida och AI-chatbot jobbar för dig dygnet runt.</p>
       </div>
@@ -599,34 +595,6 @@ footer{border-top:1px solid var(--border);padding:56px 0}
       <span class="portfolio-count">4 projekt</span>
     </div>
     <div class="port-items" id="portItems" role="list"></div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section class="testi-sec" aria-labelledby="testi-heading">
-  <div class="container">
-    <span class="sec-eyebrow reveal">Vad kunderna säger</span>
-    <h2 class="testi-title reveal d1" id="testi-heading">Vad som<br/>händer sen.</h2>
-    <div class="testi-grid">
-      <div class="testi-card reveal" role="article">
-        <p class="testi-q">Ingen hemsida på tio år. Fick en på en dag. Tre nya kunder via Google redan första veckan — det hade inte hänt annars.</p>
-        <div class="testi-divider" aria-hidden="true"></div>
-        <p class="testi-name">Erik Persson</p>
-        <p class="testi-role">Rörmokare, Göteborg</p>
-      </div>
-      <div class="testi-card reveal d1" role="article">
-        <p class="testi-q">Chatboten svarar på frågor kl 23 när jag har stängt. Förra månaden fick jag tre bokningar som jag annars hade missat helt.</p>
-        <div class="testi-divider" aria-hidden="true"></div>
-        <p class="testi-name">Linda Holm</p>
-        <p class="testi-role">Städfirma, Stockholm</p>
-      </div>
-      <div class="testi-card reveal d2" role="article">
-        <p class="testi-q">Visste inte vad jag behövde. De byggde något, skickade länken — och det såg exakt rätt ut. Snabbt, enkelt, inga konstigheter.</p>
-        <div class="testi-divider" aria-hidden="true"></div>
-        <p class="testi-name">Klas Bengtsson</p>
-        <p class="testi-role">Bilverkstad, Borås</p>
-      </div>
-    </div>
   </div>
 </section>
 
