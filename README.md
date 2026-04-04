@@ -130,7 +130,7 @@ New companies work automatically — no DNS changes needed!
 
 Visit your subdomain:
 ```
-https://comp1.orbixa.se
+https://comp1.aloitus.se
 ```
 
 ### Embed on Any Website
@@ -138,7 +138,7 @@ https://comp1.orbixa.se
 Add this script tag to any HTML page:
 
 ```html
-<script src="https://comp1.orbixa.se/widget.js"></script>
+<script src="https://comp1.aloitus.se/widget.js"></script>
 ```
 
 The widget will:
@@ -160,7 +160,7 @@ The widget will:
 ### Chat Example
 
 ```bash
-curl -X POST https://comp1.orbixa.se/chat \
+curl -X POST https://comp1.aloitus.se/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "Vad kostar städning?", "history": []}'
 ```
@@ -182,7 +182,7 @@ Response:
    - `data.json` - Q&A pairs
    - `logo.png` - Company logo (optional)
 
-3. **Done!** Live at `https://newcompany.orbixa.se`
+3. **Done!** Live at `https://newcompany.aloitus.se`
 
 ## Tech Stack
 

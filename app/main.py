@@ -39,7 +39,7 @@ def load_tenant_data(tenant_name):
 def get_tenant_from_request(request: Request):
     """Extract tenant from subdomain and validate against existing folders."""
     host = request.headers.get("Host", "")
-    # "comp1.orbixa.se" → "comp1"
+    # "comp1.aloitus.se" → "comp1"
     subdomain = host.split(".")[0]
 
     # Validate that the subdomain is an actual tenant folder
@@ -83,7 +83,7 @@ MAX_HISTORY = 10
 def root(request: Request):
     host = request.headers.get("Host", "")
     subdomain = host.split(".")[0]
-    if subdomain in ["orbixa", "www", ""]:
+    if subdomain in ["aloitus", "www", ""]:
         return FileResponse("static/landing.html")
     return FileResponse("static/index.html")
 
@@ -192,12 +192,12 @@ async def contact(request: Request, body: ContactRequest):
     try:
         resend.Emails.send(
             {
-                "from": "Orbixa <kontakt@mail.orbixa.se>",
-                "to": ["hej@orbixa.se"],
+                "from": "Aloitus <kontakt@mail.aloitus.se>",
+                "to": ["famo1901@gmail.com"],
                 "reply_to": body.email,
                 "subject": f"Ny förfrågan från {body.name}",
                 "html": f"""
-                <h2>Ny förfrågan från Orbixa.se</h2>
+                <h2>Ny förfrågan från Aloitus.se</h2>
                 <p><strong>Namn:</strong> {body.name}</p>
                 <p><strong>E-post:</strong> {body.email}</p>
                 <p><strong>Meddelande:</strong></p>
