@@ -199,7 +199,7 @@ async def contact(request: Request, body: ContactRequest):
     try:
         resend.Emails.send(
             {
-                "from": "Aloitus <kontakt@mail.aloitus.se>",
+                "from": "Aloitus <kontakt@aloitus.se>",
                 "to": ["famo1901@gmail.com"],
                 "reply_to": body.email,
                 "subject": f"Ny förfrågan från {body.name}",
